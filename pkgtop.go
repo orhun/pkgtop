@@ -12,18 +12,36 @@ func main() {
 	}
 	defer ui.Close()
 
-	appParagraph := widgets.NewParagraph()
-	appParagraph.Text = "pkgtop"
-	appParagraph.SetRect(0, 0, 10, 5)
-	appParagraph.BorderStyle.Fg = ui.ColorBlue
+	pkgText := widgets.NewParagraph()
+	pkgText.Text = "pkgtop"
+	pkgText.SetRect(0, 0, 10, 5)
+	pkgText.BorderStyle.Fg = ui.ColorBlue
 
-	ui.Render(appParagraph)
+	termGrid := ui.NewGrid()
+	termWidth, termHeight := ui.TerminalDimensions()
+	termGrid.SetRect(0, 0, termWidth, termHeight)
+	termGrid.Set(
+		ui.NewRow(1.0/1,
+			ui.NewCol(1.0/2, pkgText),
+			ui.NewCol(1.0/2, pkgText),
+		),
+	)
+	ui.Render(termGrid)
 	uiEvents := ui.PollEvents()
 	for {
-		e := <-uiEvents
-		switch e.ID {
-		case "q", "<C-c>", "<C-d>":
-			return
+		select {
+		case e := <-uiEvents:
+			switch e.ID {
+			case "q", "<C-c>", "<C-d>":
+				return
+			case "<Resize>":
+				payload := e.Payload.(ui.Resize)
+				termGrid.SetRect(0, 0, payload.Width, payload.Height)
+				ui.Clear()
+				ui.Render(termGrid)
+			}
 		}
 	}
+
+
 }
