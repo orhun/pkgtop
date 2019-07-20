@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	ui "github.com/gizak/termui/v3"
+	_ "github.com/gizak/termui/v3/widgets"
 )
 
 func main() {
@@ -10,4 +11,5 @@ func main() {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
 	defer ui.Close()
+
 }
