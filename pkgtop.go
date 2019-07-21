@@ -10,6 +10,13 @@ import (
 
 var diskUsageText string
 
+func btoi(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
+}
+
 func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
@@ -25,8 +32,9 @@ func main() {
 	termWidth, termHeight := ui.TerminalDimensions()
 
 	for k, v := range diskUsage {
-		diskUsageText += fmt.Sprintf("  %s%s[%s %d%%] \n", k, 
-			strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((termWidth/3)*v)/100), v)
+		diskUsageText += fmt.Sprintf("  %s%s[%s %s%d%%] \n", k, 
+			strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((termWidth/3)*v)/100), 
+			strings.Repeat(" ", (termWidth/3)-((termWidth/3)*v)/100 + btoi(v < 10)), v)
 	}
 
 	dfText := widgets.NewParagraph()
@@ -58,8 +66,9 @@ func main() {
 				termGrid.SetRect(0, 0, payload.Width, payload.Height)
 				diskUsageText = ""
 				for k, v := range diskUsage {
-					diskUsageText += fmt.Sprintf("  %s%s[%s %d%%] \n", k, 
-						strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((payload.Width/3)*v)/100), v)
+					diskUsageText += fmt.Sprintf("  %s%s[%s %s%d%%] \n", k, 
+						strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((payload.Width/3)*v)/100), 
+						strings.Repeat(" ", (payload.Width/3)-((payload.Width/3)*v)/100 + btoi(v < 10)), v)
 				}
 				dfText.Text = diskUsageText
 				ui.Clear()
