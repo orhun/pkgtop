@@ -37,7 +37,7 @@ func main() {
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
-		ui.NewRow(0.125,
+		ui.NewRow(1.0/4,
 			ui.NewCol(0.8, dfText),
 			ui.NewCol(0.2, pkgText),
 		),
