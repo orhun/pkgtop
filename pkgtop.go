@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -21,16 +22,16 @@ func main() {
 	}
 	var diskUsageText string
 	for k, v := range diskUsage {
-		diskUsageText += fmt.Sprintf("%s [||| %d%%] \n", k, v)
+		diskUsageText += fmt.Sprintf("  %s%s[||| %d%%] \n", k, strings.Repeat(" ", 15-len(k)), v)
 	}
 
 	dfText := widgets.NewParagraph()
 	dfText.Text = diskUsageText
-	dfText.Border = false
+	//dfText.Border = false
 
 	pkgText := widgets.NewParagraph()
 	pkgText.Text = "~"
-	pkgText.Border = false
+	//pkgText.Border = false
 
 	termGrid := ui.NewGrid()
 	termWidth, termHeight := ui.TerminalDimensions()
