@@ -32,7 +32,7 @@ func main() {
 	termWidth, termHeight := ui.TerminalDimensions()
 
 	for k, v := range diskUsage {
-		diskUsageText += fmt.Sprintf("  %s%s[%s %s%d%%] \n", k, 
+		diskUsageText += fmt.Sprintf(" %s%s[%s %s%d%%] \n", k, 
 			strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((termWidth/3)*v)/100), 
 			strings.Repeat(" ", (termWidth/3)-((termWidth/3)*v)/100 + btoi(v < 10)), v)
 	}
@@ -49,8 +49,8 @@ func main() {
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
 		ui.NewRow(1.0/4,
-			ui.NewCol(0.8, dfText),
-			ui.NewCol(0.2, pkgText),
+			ui.NewCol(0.7, dfText),
+			ui.NewCol(0.3, pkgText),
 		),
 	)
 	ui.Render(termGrid)
@@ -66,7 +66,7 @@ func main() {
 				termGrid.SetRect(0, 0, payload.Width, payload.Height)
 				diskUsageText = ""
 				for k, v := range diskUsage {
-					diskUsageText += fmt.Sprintf("  %s%s[%s %s%d%%] \n", k, 
+					diskUsageText += fmt.Sprintf(" %s%s[%s %s%d%%] \n", k, 
 						strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((payload.Width/3)*v)/100), 
 						strings.Repeat(" ", (payload.Width/3)-((payload.Width/3)*v)/100 + btoi(v < 10)), v)
 				}
