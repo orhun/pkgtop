@@ -17,6 +17,18 @@ func btoi(b bool) int {
 	return 0
 }
 
+func maxValMap(m map[string]int) string {
+	var max int = 0
+	var key string = ""
+	for k, v := range m {
+        if max < v {
+			max = v
+			key = k
+        }
+    }
+    return key
+}
+
 func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
@@ -33,7 +45,8 @@ func main() {
 
 	for k, v := range diskUsage {
 		diskUsageText += fmt.Sprintf(" %s%s[%s %s%d%%] \n", k, 
-			strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((termWidth/3)*v)/100), 
+			strings.Repeat(" ", len(maxValMap(diskUsage)) + 5 -len(k)), 
+			strings.Repeat("|", ((termWidth/3)*v)/100), 
 			strings.Repeat(" ", (termWidth/3)-((termWidth/3)*v)/100 + btoi(v < 10)), v)
 	}
 
@@ -67,7 +80,8 @@ func main() {
 				diskUsageText = ""
 				for k, v := range diskUsage {
 					diskUsageText += fmt.Sprintf(" %s%s[%s %s%d%%] \n", k, 
-						strings.Repeat(" ", 15-len(k)), strings.Repeat("|", ((payload.Width/3)*v)/100), 
+						strings.Repeat(" ", len(maxValMap(diskUsage)) + 5 -len(k)), 
+						strings.Repeat("|", ((payload.Width/3)*v)/100), 
 						strings.Repeat(" ", (payload.Width/3)-((payload.Width/3)*v)/100 + btoi(v < 10)), v)
 				}
 				dfText.Text = diskUsageText
