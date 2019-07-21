@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
@@ -12,18 +13,32 @@ func main() {
 	}
 	defer ui.Close()
 
+	diskUsage:= map[string]int{
+		"dev": 0,
+		"run": 1,
+		"/dev/sda1": 75,
+		"tmpfs": 4,
+	}
+	var diskUsageText string
+	for k, v := range diskUsage {
+		diskUsageText += fmt.Sprintf("%s [||| %d%%] \n", k, v)
+	}
+
+	dfText := widgets.NewParagraph()
+	dfText.Text = diskUsageText
+	dfText.Border = false
+
 	pkgText := widgets.NewParagraph()
-	pkgText.Text = "pkgtop"
-	pkgText.SetRect(0, 0, 10, 5)
-	pkgText.BorderStyle.Fg = ui.ColorBlue
+	pkgText.Text = "~"
+	pkgText.Border = false
 
 	termGrid := ui.NewGrid()
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
-		ui.NewRow(1.0/1,
-			ui.NewCol(1.0/2, pkgText),
-			ui.NewCol(1.0/2, pkgText),
+		ui.NewRow(0.125,
+			ui.NewCol(0.8, dfText),
+			ui.NewCol(0.2, pkgText),
 		),
 	)
 	ui.Render(termGrid)
@@ -42,6 +57,5 @@ func main() {
 			}
 		}
 	}
-
 
 }
