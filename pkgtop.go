@@ -86,7 +86,7 @@ func main() {
 			ui.NewCol(0.5, pkgText),
 		),
 		ui.NewRow(3.0/4,
-			ui.NewCol(1.0/8, pkgList),
+			ui.NewCol(1.0, pkgList),
 		),
 	)
 	ui.Render(termGrid)
