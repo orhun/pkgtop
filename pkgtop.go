@@ -101,9 +101,9 @@ func main() {
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
 		pkgs[i] = ""
-		for pi, prop := range pkg {
+		for ip, prop := range pkg {
 			pkgs[i] += prop
-			if pi != len(pkg) - 1 {
+			if ip != len(pkg) - 1 {
 				pkgs[i] += strings.Repeat(" ", pd - len(prop) + 1)
 			}
 		}
