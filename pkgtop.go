@@ -29,11 +29,11 @@ func maxValMap(m map[string]int) string {
     return key
 }
 
-func getDiskUsage(diskUsage map[string]int, width int) string {
+func getDfText(diskUsage map[string]int, width int) string {
 	var diskUsageText string
 	for k, v := range diskUsage {
 		diskUsageText += fmt.Sprintf(" %s%s[%s %s%d%%] \n", k, 
-			strings.Repeat(" ", len(maxValMap(diskUsage)) + 5 -len(k)), 
+			strings.Repeat(" ", len(maxValMap(diskUsage)) + 5 - len(k)), 
 			strings.Repeat("|", ((width/3)*v)/100), 
 			strings.Repeat(" ", (width/3)-((width/3)*v)/100 + btoi(v < 10)), v)
 	}
@@ -56,7 +56,7 @@ func main() {
 
 
 	dfText := widgets.NewParagraph()
-	dfText.Text = getDiskUsage(diskUsage, termWidth)
+	dfText.Text = getDfText(diskUsage, termWidth)
 	//dfText.Border = false
 
 	pkgText := widgets.NewParagraph()
@@ -82,7 +82,7 @@ func main() {
 			case "<Resize>":
 				payload := e.Payload.(ui.Resize)
 				termGrid.SetRect(0, 0, payload.Width, payload.Height)
-				dfText.Text = getDiskUsage(diskUsage, payload.Width)
+				dfText.Text = getDfText(diskUsage, payload.Width)
 				ui.Clear()
 				ui.Render(termGrid)
 			}
