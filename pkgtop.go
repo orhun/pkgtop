@@ -31,7 +31,7 @@ func maxValMap(m map[string]int) string {
     return key
 }
 
-// Calculate the items size in a string array.
+// Find the maximum item size in a string array.
 func maxArrItemSize(s []string) int {
 	var arr []int
 	var max int = 0
@@ -98,14 +98,15 @@ func main() {
 	pd := (termWidth - maxArrItemSize(pkgs))/len(strings.Split(pkgs[0], "~"))
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
-		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s", 
+		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s %d", 
 			pkg[0], 
 			strings.Repeat(" ", pd-len(pkg[0])),
 			pkg[1], 
 			strings.Repeat(" ", pd-len(pkg[1])),
 			pkg[2], 
 			strings.Repeat(" ", pd-len(pkg[2])),
-			pkg[3])
+			pkg[3],
+			pd)
 	}
 
 	pkgList := widgets.NewList()
