@@ -6,18 +6,29 @@ import (
 	"github.com/gizak/termui/v3/widgets"
 )
 
+var i int
+var termGrid, dfGrid *ui.Grid
+var pkgText *widgets.Paragraph
+var gau0, gau1, gau2, gau3 *widgets.Gauge
+
+func initWidgets() {
+	termGrid = ui.NewGrid()
+	dfGrid =  ui.NewGrid()
+	pkgText = widgets.NewParagraph()
+	gau0, gau1, gau2, gau3 = 
+		widgets.NewGauge(), 
+		widgets.NewGauge(), 
+		widgets.NewGauge(), 
+		widgets.NewGauge()
+	
+}
+
 func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
+	initWidgets()
 	defer ui.Close()
-
-	diskUsage := map[string]int{
-		"dev": 0,
-		"run": 1,
-		"/dev/sda1": 75,
-		"tmpfs": 4,
-	}
 
 	pkgs := []string{
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -32,35 +43,52 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
-	_ = diskUsage
 	_ = pkgs
 
-	dfGrid := ui.NewGrid()
+	diskUsage := map[string]int {
+		"dev": 0,
+		"run": 1,
+		"/dev/sda1": 75,
+		"tmpfs": 4,
+	}
 
-	g0 := widgets.NewGauge()
-	g0.Title = "/dev/sda1"
-	g0.Percent = 75
+	i := len(diskUsage)
+	for name, perc := range diskUsage {
+		switch (i){
+		case 1:
+			gau0.Title = name
+			gau0.Percent = perc
+		case 2:
+			gau1.Title = name
+			gau1.Percent = perc
+		case 3:
+			gau2.Title = name
+			gau2.Percent = perc
+		case 4:
+			gau3.Title = name
+			gau3.Percent = perc
+		}
+		i--
+	}
 
 	dfGrid.Set(
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, g0),
+			ui.NewCol(1.0, gau0),
 		),
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, g0),
+			ui.NewCol(1.0, gau1),
 		),
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, g0),
+			ui.NewCol(1.0, gau2),
 		),
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, g0),
+			ui.NewCol(1.0, gau3),
 		),
 	)
 
-	pkgText := widgets.NewParagraph()
 	pkgText.Text = "~"
 	//pkgText.Border = false
-
-	termGrid := ui.NewGrid()
+	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
