@@ -31,11 +31,12 @@ func maxValMap(m map[string]int) string {
 
 func getDfText(diskUsage map[string]int, width int) string {
 	var diskUsageText string
+	width /= 3
 	for k, v := range diskUsage {
 		diskUsageText += fmt.Sprintf(" %s%s[%s %s%d%%] \n", k, 
-			strings.Repeat(" ", len(maxValMap(diskUsage)) + 5 - len(k)), 
-			strings.Repeat("|", ((width/3)*v)/100), 
-			strings.Repeat(" ", (width/3)-((width/3)*v)/100 + btoi(v < 10)), v)
+			strings.Repeat(" ", len(maxValMap(diskUsage)) + 1 - len(k)), 
+			strings.Repeat("|", (width*v)/100), 
+			strings.Repeat(" ", width-(width*v)/100 + btoi(v < 10)), v)
 	}
 	return diskUsageText
 }
@@ -67,8 +68,8 @@ func main() {
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
 		ui.NewRow(1.0/4,
-			ui.NewCol(0.7, dfText),
-			ui.NewCol(0.3, pkgText),
+			ui.NewCol(0.6, dfText),
+			ui.NewCol(0.4, pkgText),
 		),
 	)
 	ui.Render(termGrid)
