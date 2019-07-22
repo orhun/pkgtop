@@ -81,12 +81,15 @@ func main() {
 	termGrid := ui.NewGrid()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
-		ui.NewRow(1.0/4,
+		ui.NewRow(0.25,
 			ui.NewCol(0.5, dfText),
 			ui.NewCol(0.5, pkgText),
 		),
-		ui.NewRow(3.0/4,
+		ui.NewRow(0.65,
 			ui.NewCol(1.0, pkgList),
+		),
+		ui.NewRow(0.10,
+			ui.NewCol(1.0, pkgText),
 		),
 	)
 	ui.Render(termGrid)
