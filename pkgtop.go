@@ -10,6 +10,7 @@ import (
 
 var diskUsage map[string]int
 
+// Convert boolean value to integer.
 func btoi(b bool) int {
 	if b {
 		return 1
@@ -17,6 +18,7 @@ func btoi(b bool) int {
 	return 0
 }
 
+// Find maximum key-value pair in map.
 func maxValMap(m map[string]int) string {
 	var max int = 0
 	var key string = ""
