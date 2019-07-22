@@ -31,6 +31,15 @@ func maxValMap(m map[string]int) string {
     return key
 }
 
+// Calculate the items size in a string array.
+func getArrItemSize(s []string) int {
+	var l int
+	for _, e := range s {
+		l += len(e)
+	}
+	return l
+}
+
 func getDfText(diskUsage map[string]int, width int) string {
 	var diskUsageText string
 	width = int(float64(width)/2.5)
@@ -81,11 +90,12 @@ func main() {
 
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
-		pkgs[i] = fmt.Sprintf("%s %s %s %s", 
+		pkgs[i] = fmt.Sprintf("%s %s %s %s %d", 
 			pkg[0], 
-			pkg[1],
-			pkg[2],
-			pkg[3])
+			pkg[1], 
+			pkg[2], 
+			pkg[3],
+			getArrItemSize(pkg))
 	}
 
 	pkgList := widgets.NewList()
