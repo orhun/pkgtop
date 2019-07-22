@@ -20,7 +20,42 @@ func initWidgets() {
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
 		widgets.NewGauge()
-	
+}
+
+func setDiskUsage(diskUsage map[string]int) bool {
+	i := len(diskUsage)
+	for name, perc := range diskUsage {
+		switch (i){
+		case 1:
+			gau0.Title = name
+			gau0.Percent = perc
+		case 2:
+			gau1.Title = name
+			gau1.Percent = perc
+		case 3:
+			gau2.Title = name
+			gau2.Percent = perc
+		case 4:
+			gau3.Title = name
+			gau3.Percent = perc
+		}
+		i--
+	}
+	dfGrid.Set(
+		ui.NewRow(1.0/4,
+			ui.NewCol(1.0, gau0),
+		),
+		ui.NewRow(1.0/4,
+			ui.NewCol(1.0, gau1),
+		),
+		ui.NewRow(1.0/4,
+			ui.NewCol(1.0, gau2),
+		),
+		ui.NewRow(1.0/4,
+			ui.NewCol(1.0, gau3),
+		),
+	)
+	return true
 }
 
 func main() {
@@ -52,39 +87,9 @@ func main() {
 		"tmpfs": 4,
 	}
 
-	i := len(diskUsage)
-	for name, perc := range diskUsage {
-		switch (i){
-		case 1:
-			gau0.Title = name
-			gau0.Percent = perc
-		case 2:
-			gau1.Title = name
-			gau1.Percent = perc
-		case 3:
-			gau2.Title = name
-			gau2.Percent = perc
-		case 4:
-			gau3.Title = name
-			gau3.Percent = perc
-		}
-		i--
-	}
+	setDiskUsage(diskUsage)
 
-	dfGrid.Set(
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau0),
-		),
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau1),
-		),
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau2),
-		),
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau3),
-		),
-	)
+	
 
 	pkgText.Text = "~"
 	//pkgText.Border = false
