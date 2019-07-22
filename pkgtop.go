@@ -64,12 +64,29 @@ func main() {
 	pkgText.Text = "~"
 	//pkgText.Border = false
 
+	pkgList := widgets.NewList()
+	pkgList.Rows = []string{
+		"apache 2.4.39-1 6.25MiB 'Fri 11 Jan 2019 03:34:39'",
+		"autoconf 2.69-5 2.06MiB 'Fri 11 Jan 2019 03:34:39'",
+		"automake 1.16.1-1 1598.00KiB 'Fri 11 Jan 2019 03:34:39'",
+		"bind-tools 9.14.2-1 5.85MiB 'Fri 11 Jan 2019 03:34:39'",
+		"bison 3.3.2-1 2013.00KiB 'Fri 11 Jan 2019 03:34:39'",
+		"brook 20190401-1 13.98MiB 'Fri 11 Jan 2019 03:34:39'",
+		"chafa 1.0.1-1 327.00KiB 'Fri 11 Jan 2019 03:34:39'",
+		"cmatrix 2.0-1 95.00KiB 'Fri 11 Jan 2019 03:34:39'",
+		"compton 6.2-2 306.00KiB 'Fri 11 Jan 2019 03:34:39'",
+		"docker 1:18.09.6-1 170.98MiB 'Fri 11 Jan 2019 03:34:39'",
+	}
+	
 	termGrid := ui.NewGrid()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
 		ui.NewRow(1.0/4,
 			ui.NewCol(0.5, dfText),
 			ui.NewCol(0.5, pkgText),
+		),
+		ui.NewRow(3.0/4,
+			ui.NewCol(1.0/8, pkgList),
 		),
 	)
 	ui.Render(termGrid)
