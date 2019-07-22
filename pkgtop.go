@@ -90,12 +90,15 @@ func main() {
 
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
-		pkgs[i] = fmt.Sprintf("%s %s %s %s %d", 
+		pd := (termWidth - getArrItemSize(pkg))/len(pkg)
+		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s", 
 			pkg[0], 
+			strings.Repeat(" ", pd),
 			pkg[1], 
+			strings.Repeat(" ", pd),
 			pkg[2], 
-			pkg[3],
-			getArrItemSize(pkg))
+			strings.Repeat(" ", pd),
+			pkg[3])
 	}
 
 	pkgList := widgets.NewList()
