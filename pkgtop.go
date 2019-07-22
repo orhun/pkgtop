@@ -33,15 +33,10 @@ func maxValMap(m map[string]int) string {
 
 // Calculate the items size in a string array.
 func maxArrItemSize(s []string) int {
-	var l int
 	var arr []int
 	var max int = 0
 	for _, p := range s {
-		l = 0
-		for _, e := range strings.Split(p, "~") {
-			l += len(e)
-		}
-		arr = append(arr, l)
+		arr = append(arr, len(p))
 	}
 	for _, l := range arr {
         if max < l {
