@@ -32,13 +32,25 @@ func maxValMap(m map[string]int) string {
 }
 
 // Calculate the items size in a string array.
-func getArrItemSize(s []string) int {
+func maxArrItemSize(s []string) int {
 	var l int
-	for _, e := range s {
-		l += len(e)
+	var arr []int
+	var max int = 0
+	for _, p := range s {
+		l = 0
+		for _, e := range strings.Split(p, "~") {
+			l += len(e)
+		}
+		arr = append(arr, l)
 	}
-	return l
+	for _, l := range arr {
+        if max < l {
+			max = l
+        }
+    }
+	return max
 }
+
 
 func getDfText(diskUsage map[string]int, width int) string {
 	var diskUsageText string
@@ -88,16 +100,16 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
+	pd := (termWidth - maxArrItemSize(pkgs))/len(strings.Split(pkgs[0], "~"))
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
-		pd := (termWidth - getArrItemSize(pkg))/len(pkg)
 		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s", 
 			pkg[0], 
-			strings.Repeat(" ", pd),
+			strings.Repeat(" ", pd-len(pkg[0])),
 			pkg[1], 
-			strings.Repeat(" ", pd),
+			strings.Repeat(" ", pd-len(pkg[1])),
 			pkg[2], 
-			strings.Repeat(" ", pd),
+			strings.Repeat(" ", pd-len(pkg[2])),
 			pkg[3])
 	}
 
