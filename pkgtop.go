@@ -98,14 +98,13 @@ func main() {
 	pd := (termWidth - maxArrItemSize(pkgs))/(len(strings.Split(pkgs[0], "~"))-1)
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
-		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s", 
-			pkg[0], 
-			strings.Repeat(" ", pd-len(pkg[0])),
-			pkg[1], 
-			strings.Repeat(" ", pd-len(pkg[1])),
-			pkg[2], 
-			strings.Repeat(" ", pd-len(pkg[2])),
-			pkg[3])
+		pkgs[i] = ""
+		for pi, prop := range pkg {
+			pkgs[i] += prop
+			if pi != len(pkg) - 1 {
+				pkgs[i] += strings.Repeat(" ", pd - len(prop) + 1)
+			}
+		}
 	}
 
 	pkgList := widgets.NewList()
