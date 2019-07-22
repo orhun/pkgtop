@@ -95,18 +95,17 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
-	pd := (termWidth - maxArrItemSize(pkgs))/len(strings.Split(pkgs[0], "~"))
+	pd := (termWidth - maxArrItemSize(pkgs))/(len(strings.Split(pkgs[0], "~"))-1)
 	for i, p := range pkgs {
 		pkg := strings.Split(p, "~")
-		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s %d", 
+		pkgs[i] = fmt.Sprintf("%s %s %s %s %s %s %s", 
 			pkg[0], 
 			strings.Repeat(" ", pd-len(pkg[0])),
 			pkg[1], 
 			strings.Repeat(" ", pd-len(pkg[1])),
 			pkg[2], 
 			strings.Repeat(" ", pd-len(pkg[2])),
-			pkg[3],
-			pd)
+			pkg[3])
 	}
 
 	pkgList := widgets.NewList()
