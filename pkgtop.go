@@ -38,25 +38,20 @@ func main() {
 	dfGrid := ui.NewGrid()
 
 	g0 := widgets.NewGauge()
-	g0.Title = "Slim Gauge"
-	g0.SetRect(20, 20, 30, 30)
+	g0.Title = "/dev/sda1"
 	g0.Percent = 75
-	g0.BarColor = ui.ColorRed
-	g0.BorderStyle.Fg = ui.ColorWhite
-	g0.TitleStyle.Fg = ui.ColorCyan
 
-	
 	dfGrid.Set(
-		ui.NewRow(0.25,
+		ui.NewRow(1.0/4,
 			ui.NewCol(1.0, g0),
 		),
-		ui.NewRow(0.25,
+		ui.NewRow(1.0/4,
 			ui.NewCol(1.0, g0),
 		),
-		ui.NewRow(0.25,
+		ui.NewRow(1.0/4,
 			ui.NewCol(1.0, g0),
 		),
-		ui.NewRow(0.25,
+		ui.NewRow(1.0/4,
 			ui.NewCol(1.0, g0),
 		),
 	)
@@ -69,14 +64,14 @@ func main() {
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
-		ui.NewRow(1.0/8,
-			ui.NewCol(1.0/2, pkgText),
+		ui.NewRow(1.0/4,
+			ui.NewCol(1.0/2, dfGrid),
 			ui.NewCol(1.0/2, pkgText),
 		),
-		ui.NewRow(1.0/1.5,
+		ui.NewRow(1.0/1.6,
 			ui.NewCol(1.0/1, pkgText),
 		),
-		ui.NewRow(1.0/5,
+		ui.NewRow(1.0/8,
 			ui.NewCol(1.0/1, pkgText),
 		),
 	)
