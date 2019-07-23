@@ -118,7 +118,6 @@ func main() {
 	setPkgList(pkgs)
 	
 	pkgText.Text = "~"
-	//pkgText.Border = false
 
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
