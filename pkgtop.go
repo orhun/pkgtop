@@ -22,8 +22,12 @@ func initWidgets() {
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
 		widgets.NewGauge()
+	pkgl0, pkgl1, pkgl2, pkgl3 = 
+		widgets.NewList(),
+		widgets.NewList(),
+		widgets.NewList(),
+		widgets.NewList()
 	pkgText = widgets.NewParagraph()
-	pkgl0 = widgets.NewList()
 }
 
 func setDiskUsage(diskUsage map[string]int) bool {
