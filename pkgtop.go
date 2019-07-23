@@ -7,19 +7,21 @@ import (
 )
 
 var i int
-var termGrid, dfGrid *ui.Grid
+var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
 var gau0, gau1, gau2, gau3 *widgets.Gauge
 
 func initWidgets() {
-	termGrid = ui.NewGrid()
-	dfGrid =  ui.NewGrid()
-	pkgText = widgets.NewParagraph()
+	termGrid, dfGrid, pkgGrid = 
+		ui.NewGrid(),
+		ui.NewGrid(),
+		ui.NewGrid()
 	gau0, gau1, gau2, gau3 = 
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
 		widgets.NewGauge()
+	pkgText = widgets.NewParagraph()
 }
 
 func setDiskUsage(diskUsage map[string]int) bool {
@@ -88,8 +90,6 @@ func main() {
 	}
 
 	setDiskUsage(diskUsage)
-
-	
 
 	pkgText.Text = "~"
 	//pkgText.Border = false
