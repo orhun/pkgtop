@@ -98,6 +98,15 @@ func main() {
 	pkgList.Title = "List"
 	pkgList.Rows = pkgs
 	pkgList.WrapText = false
+
+	pkgGrid.Set(
+		ui.NewRow(1.0,
+			ui.NewCol(1.0/4, pkgList),
+			ui.NewCol(1.0/4, pkgList),
+			ui.NewCol(1.0/4, pkgList),
+			ui.NewCol(1.0/4, pkgList),
+		),
+	)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
@@ -107,7 +116,7 @@ func main() {
 			ui.NewCol(1.0/2, pkgText),
 		),
 		ui.NewRow(1.0/1.6,
-			ui.NewCol(1.0/1, pkgText),
+			ui.NewCol(1.0/1, pkgGrid),
 		),
 		ui.NewRow(1.0/8,
 			ui.NewCol(1.0/1, pkgText),
