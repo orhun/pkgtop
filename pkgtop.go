@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"strings"
-	"strconv"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -64,13 +63,13 @@ func setDiskUsage(diskUsage map[string]int) bool {
 	return true
 }
 
-func setPkgList(pkgs []string) bool {
+func setPkgList(pkgs []string, titles []string) bool {
 	for i = 0; i < len(pkgl); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
 			rows = append(rows, strings.Split(pkg, "~")[i])
 		}
-		pkgl[i].Title = strconv.Itoa(i)
+		pkgl[i].Title = titles[i]
 		pkgl[i].Rows = rows
 		pkgl[i].WrapText = false
 		pkgl[i].Border = false
@@ -114,8 +113,9 @@ func main() {
 		"compton~6.2-2~306.00KiB~'Fri 11 Jan 2019 03:34:39'",
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
-
-	setPkgList(pkgs)
+	titles := []string{"1", "2", "3", "4",}
+	
+	setPkgList(pkgs, titles)
 	
 	pkgText.Text = "~"
 
