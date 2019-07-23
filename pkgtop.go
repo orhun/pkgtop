@@ -9,7 +9,7 @@ import (
 var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
-var gau0, gau1, gau2, gau3 *widgets.Gauge
+var dfgau0, dfgau1, dfgau2, dfgau3 *widgets.Gauge
 var dfgau []*widgets.Gauge
 var pkgl0, pkgl1, pkgl2, pkgl3 *widgets.List
 
@@ -18,7 +18,7 @@ func initWidgets() {
 		ui.NewGrid(),
 		ui.NewGrid(),
 		ui.NewGrid()
-	gau0, gau1, gau2, gau3 = 
+	dfgau0, dfgau1, dfgau2, dfgau3 = 
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
@@ -30,7 +30,7 @@ func initWidgets() {
 		widgets.NewList()
 	pkgText = widgets.NewParagraph()
 	dfgau = []*widgets.Gauge{
-		gau0, gau1, gau2, gau3,
+		dfgau0, dfgau1, dfgau2, dfgau3,
 	}
 }
 
@@ -43,16 +43,16 @@ func setDiskUsage(diskUsage map[string]int) bool {
 	}
 	dfGrid.Set(
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau0),
+			ui.NewCol(1.0, dfgau0),
 		),
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau1),
+			ui.NewCol(1.0, dfgau1),
 		),
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau2),
+			ui.NewCol(1.0, dfgau2),
 		),
 		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, gau3),
+			ui.NewCol(1.0, dfgau3),
 		),
 	)
 	return true
