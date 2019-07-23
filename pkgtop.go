@@ -10,6 +10,7 @@ var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
 var gau0, gau1, gau2, gau3 *widgets.Gauge
+var dfgau []*widgets.Gauge
 var pkgl0, pkgl1, pkgl2, pkgl3 *widgets.List
 
 func initWidgets() {
@@ -28,26 +29,17 @@ func initWidgets() {
 		widgets.NewList(),
 		widgets.NewList()
 	pkgText = widgets.NewParagraph()
+	dfgau = []*widgets.Gauge{
+		gau0, gau1, gau2, gau3,
+	}
 }
 
 func setDiskUsage(diskUsage map[string]int) bool {
-	i := len(diskUsage)
+	i := 0
 	for name, perc := range diskUsage {
-		switch (i){
-		case 1:
-			gau0.Title = name
-			gau0.Percent = perc
-		case 2:
-			gau1.Title = name
-			gau1.Percent = perc
-		case 3:
-			gau2.Title = name
-			gau2.Percent = perc
-		case 4:
-			gau3.Title = name
-			gau3.Percent = perc
-		}
-		i--
+		dfgau[i].Title = name
+		dfgau[i].Percent = perc
+		i++
 	}
 	dfGrid.Set(
 		ui.NewRow(1.0/4,
