@@ -10,6 +10,7 @@ var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
 var gau0, gau1, gau2, gau3 *widgets.Gauge
+var pkgList *widgets.List
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
@@ -22,6 +23,7 @@ func initWidgets() {
 		widgets.NewGauge(), 
 		widgets.NewGauge()
 	pkgText = widgets.NewParagraph()
+	pkgList = widgets.NewList()
 }
 
 func setDiskUsage(diskUsage map[string]int) bool {
@@ -67,6 +69,19 @@ func main() {
 	initWidgets()
 	defer ui.Close()
 
+	diskUsage := map[string]int {
+		"dev": 0,
+		"run": 1,
+		"/dev/sda1": 75,
+		"tmpfs": 4,
+	}
+
+	setDiskUsage(diskUsage)
+
+	pkgText.Text = "~"
+	//pkgText.Border = false
+
+
 	pkgs := []string{
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
 		"autoconf~2.69-5~2.06MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -80,19 +95,9 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
-	_ = pkgs
-
-	diskUsage := map[string]int {
-		"dev": 0,
-		"run": 1,
-		"/dev/sda1": 75,
-		"tmpfs": 4,
-	}
-
-	setDiskUsage(diskUsage)
-
-	pkgText.Text = "~"
-	//pkgText.Border = false
+	pkgList.Title = "List"
+	pkgList.Rows = pkgs
+	pkgList.WrapText = false
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
