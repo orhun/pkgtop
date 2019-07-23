@@ -95,6 +95,7 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
+	pkgList.Title = "List"
 	pkgList.Rows = pkgs
 	pkgList.WrapText = false
 	pkgList.Border = false
