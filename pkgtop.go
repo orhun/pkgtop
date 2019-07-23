@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"strings"
+	"strconv"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -94,17 +96,23 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
-	pkgl0.Title = "List"
-	pkgl0.Rows = pkgs
-	pkgl0.WrapText = false
-	pkgl0.Border = false
+	for i = 0; i < len(pkgl); i++ {
+		var rows []string
+		for _, pkg := range pkgs {
+			rows = append(rows, strings.Split(pkg, "~")[i])
+		}
+		pkgl[i].Title = strconv.Itoa(i)
+		pkgl[i].Rows = rows
+		pkgl[i].WrapText = false
+		//pkgl[i].Border = false
+	}
 
 	pkgGrid.Set(
 		ui.NewRow(1.0,
 			ui.NewCol(1.0/4, pkgl0),
-			ui.NewCol(1.0/4, pkgl0),
-			ui.NewCol(1.0/4, pkgl0),
-			ui.NewCol(1.0/4, pkgl0),
+			ui.NewCol(1.0/4, pkgl1),
+			ui.NewCol(1.0/4, pkgl2),
+			ui.NewCol(1.0/4, pkgl3),
 		),
 	)
 	
