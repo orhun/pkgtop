@@ -12,6 +12,7 @@ var pkgText *widgets.Paragraph
 var dfgau0, dfgau1, dfgau2, dfgau3 *widgets.Gauge
 var dfgau []*widgets.Gauge
 var pkgl0, pkgl1, pkgl2, pkgl3 *widgets.List
+var pkgl []*widgets.List
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
@@ -23,15 +24,18 @@ func initWidgets() {
 		widgets.NewGauge(), 
 		widgets.NewGauge(), 
 		widgets.NewGauge()
+	dfgau = []*widgets.Gauge{
+		dfgau0, dfgau1, dfgau2, dfgau3,
+	}
 	pkgl0, pkgl1, pkgl2, pkgl3 = 
 		widgets.NewList(),
 		widgets.NewList(),
 		widgets.NewList(),
 		widgets.NewList()
-	pkgText = widgets.NewParagraph()
-	dfgau = []*widgets.Gauge{
-		dfgau0, dfgau1, dfgau2, dfgau3,
+	pkgl = []*widgets.List{
+		pkgl0, pkgl1, pkgl2, pkgl3,
 	}
+	pkgText = widgets.NewParagraph()
 }
 
 func setDiskUsage(diskUsage map[string]int) bool {
