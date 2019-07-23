@@ -64,6 +64,28 @@ func setDiskUsage(diskUsage map[string]int) bool {
 	return true
 }
 
+func setPkgList(pkgs []string) bool {
+	for i = 0; i < len(pkgl); i++ {
+		var rows []string
+		for _, pkg := range pkgs {
+			rows = append(rows, strings.Split(pkg, "~")[i])
+		}
+		pkgl[i].Title = strconv.Itoa(i)
+		pkgl[i].Rows = rows
+		pkgl[i].WrapText = false
+		pkgl[i].Border = false
+	}
+	pkgGrid.Set(
+		ui.NewRow(1.0,
+			ui.NewCol(1.0/4, pkgl0),
+			ui.NewCol(1.0/4, pkgl1),
+			ui.NewCol(1.0/4, pkgl2),
+			ui.NewCol(1.0/4, pkgl3),
+		),
+	)
+	return true
+}
+
 func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
@@ -80,10 +102,7 @@ func main() {
 
 	setDiskUsage(diskUsage)
 
-	pkgText.Text = "~"
-	//pkgText.Border = false
-
-	pkgs := []string{
+	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
 		"autoconf~2.69-5~2.06MiB~'Fri 11 Jan 2019 03:34:39'",
 		"automake~1.16.1-1~1598.00KiB~'Fri 11 Jan 2019 03:34:39'",
@@ -96,26 +115,11 @@ func main() {
 		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 
-	for i = 0; i < len(pkgl); i++ {
-		var rows []string
-		for _, pkg := range pkgs {
-			rows = append(rows, strings.Split(pkg, "~")[i])
-		}
-		pkgl[i].Title = strconv.Itoa(i)
-		pkgl[i].Rows = rows
-		pkgl[i].WrapText = false
-		//pkgl[i].Border = false
-	}
-
-	pkgGrid.Set(
-		ui.NewRow(1.0,
-			ui.NewCol(1.0/4, pkgl0),
-			ui.NewCol(1.0/4, pkgl1),
-			ui.NewCol(1.0/4, pkgl2),
-			ui.NewCol(1.0/4, pkgl3),
-		),
-	)
+	setPkgList(pkgs)
 	
+	pkgText.Text = "~"
+	//pkgText.Border = false
+
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
