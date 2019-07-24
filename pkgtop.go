@@ -107,11 +107,11 @@ func main() {
 		"automake~1.16.1-1~1598.00KiB~'Fri 11 Jan 2019 03:34:39'",
 		"bind-tools~9.14.2-1~5.85MiB~'Fri 11 Jan 2019 03:34:39'",
 		"bison~3.3.2-1~2013.00KiB~'Fri 11 Jan 2019 03:34:39'",
-		"brook~20190401-1~13.98MiB~'Fri 11 Jan 2019 03:34:39'",
+		"brook~1-1~13.98MiB~'Fri 11 Jan 2019 03:34:39'",
 		"chafa~1.0.1-1~327.00KiB~'Fri 11 Jan 2019 03:34:39'",
 		"cmatrix~2.0-1~95.00KiB~'Fri 11 Jan 2019 03:34:39'",
 		"compton~6.2-2~306.00KiB~'Fri 11 Jan 2019 03:34:39'",
-		"docker~1:18.09.6-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
+		"docker~1-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 	titles := []string{"1", "2", "3", "4",}
 	
@@ -124,7 +124,8 @@ func main() {
 	termGrid.Set(
 		ui.NewRow(1.0/4,
 			ui.NewCol(1.0/2, dfGrid),
-			ui.NewCol(1.0/2, pkgText),
+			ui.NewCol(1.0/4, pkgText),
+			ui.NewCol(1.0/4, pkgText),
 		),
 		ui.NewRow(1.0/1.6,
 			ui.NewCol(1.0/1, pkgGrid),
