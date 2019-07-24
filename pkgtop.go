@@ -92,8 +92,6 @@ func main() {
 	titles := []string{"1", "2", "3", "4",}
 	
 	setPkgList(pkgs, titles)
-	
-	pkgText.Text = "~"
 
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
