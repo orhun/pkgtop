@@ -12,7 +12,7 @@ var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
 var dfgau *widgets.Gauge
 var pkgl *widgets.List
-var pkglx []*widgets.List
+var lists []*widgets.List
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
@@ -53,7 +53,7 @@ func setPkgList(pkgs []string, titles []string) bool {
 		pkgl.Border = false
 		pkgl.TextStyle = ui.NewStyle(ui.ColorYellow)
 		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
-		pkglx = append(pkglx, pkgl)
+		lists = append(lists, pkgl)
 	}
 	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 	return true
@@ -122,16 +122,16 @@ func main() {
 				ui.Clear()
 				ui.Render(termGrid)
 			case "j", "<Down>":
-				for _, l := range pkglx {
+				for _, l := range lists {
 					l.ScrollDown()
 				}
 			case "k", "<Up>":
-				for _, l := range pkglx {
+				for _, l := range lists {
 					l.ScrollUp()
 				}
 			}
 		}
-		for _, l := range pkglx {
+		for _, l := range lists {
 			ui.Render(l)
 		}
 	}
