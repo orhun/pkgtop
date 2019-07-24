@@ -41,25 +41,17 @@ func initWidgets() {
 
 func setDiskUsage(diskUsage map[string]int) bool {
 	i := 0
+	entries := make([]interface{}, len(diskUsage))
 	for name, perc := range diskUsage {
 		dfgau[i].Title = name
 		dfgau[i].Percent = perc
+		entries[i] = ui.NewRow(
+			1.0/float64(len(diskUsage)),
+			ui.NewCol(1.0, dfgau[i]),
+		)
 		i++
 	}
-	dfGrid.Set(
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, dfgau0),
-		),
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, dfgau1),
-		),
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, dfgau2),
-		),
-		ui.NewRow(1.0/4,
-			ui.NewCol(1.0, dfgau3),
-		),
-	)
+	dfGrid.Set(entries...)
 	return true
 }
 
