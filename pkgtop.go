@@ -9,17 +9,19 @@ import (
 
 var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
-var pkgText *widgets.Paragraph
+var pkgText, infoText *widgets.Paragraph
 var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
-		ui.NewGrid(),
-		ui.NewGrid(),
+		ui.NewGrid(), 
+		ui.NewGrid(), 
 		ui.NewGrid()
-	pkgText = widgets.NewParagraph()
+	pkgText, infoText = 
+		widgets.NewParagraph(), 
+		widgets.NewParagraph()
 }
 
 func setDiskUsage(diskUsage map[string]int) bool {
