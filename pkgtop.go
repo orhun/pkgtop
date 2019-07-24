@@ -51,7 +51,7 @@ func setPkgList(pkgs []string, titles []string) bool {
 		pkgl.Rows = rows
 		pkgl.WrapText = false
 		pkgl.Border = false
-		pkgl.TextStyle = ui.NewStyle(ui.ColorYellow)
+		pkgl.TextStyle = ui.NewStyle(ui.ColorBlue)
 		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
 		lists = append(lists, pkgl)
 	}
