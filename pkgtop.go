@@ -100,7 +100,7 @@ func main() {
 	termGrid.Set(
 		ui.NewRow(1.0/4,
 			ui.NewCol(1.0/2, dfGrid),
-			ui.NewCol(1.0/4, pkgText),
+			ui.NewCol(1.0/4, infoText),
 			ui.NewCol(1.0/4, pkgText),
 		),
 		ui.NewRow(1.0/1.6,
