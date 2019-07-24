@@ -48,6 +48,7 @@ func setDiskUsage(diskUsage map[string]int) bool {
 }
 
 func setPkgList(pkgs []string, titles []string) bool {
+	entries := make([]interface{}, len(titles))
 	for i = 0; i < len(pkgl); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
@@ -57,13 +58,11 @@ func setPkgList(pkgs []string, titles []string) bool {
 		pkgl[i].Rows = rows
 		pkgl[i].WrapText = false
 		pkgl[i].Border = false
+		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl[i])
 	}
 	pkgGrid.Set(
 		ui.NewRow(1.0,
-			ui.NewCol(1.0/4, pkgl0),
-			ui.NewCol(1.0/4, pkgl1),
-			ui.NewCol(1.0/4, pkgl2),
-			ui.NewCol(1.0/4, pkgl3),
+			entries...
 		),
 	)
 	return true
