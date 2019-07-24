@@ -11,22 +11,13 @@ var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
 var dfgau *widgets.Gauge
-var pkgl0, pkgl1, pkgl2, pkgl3 *widgets.List
-var pkgl []*widgets.List
+var pkgl *widgets.List
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
 		ui.NewGrid(),
 		ui.NewGrid(),
 		ui.NewGrid()
-	pkgl0, pkgl1, pkgl2, pkgl3 = 
-		widgets.NewList(),
-		widgets.NewList(),
-		widgets.NewList(),
-		widgets.NewList()
-	pkgl = []*widgets.List{
-		pkgl0, pkgl1, pkgl2, pkgl3,
-	}
 	pkgText = widgets.NewParagraph()
 }
 
@@ -49,22 +40,19 @@ func setDiskUsage(diskUsage map[string]int) bool {
 
 func setPkgList(pkgs []string, titles []string) bool {
 	entries := make([]interface{}, len(titles))
-	for i = 0; i < len(pkgl); i++ {
+	for i = 0; i < len(titles); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
 			rows = append(rows, strings.Split(pkg, "~")[i])
 		}
-		pkgl[i].Title = titles[i]
-		pkgl[i].Rows = rows
-		pkgl[i].WrapText = false
-		pkgl[i].Border = false
-		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl[i])
+		pkgl = widgets.NewList()
+		pkgl.Title = titles[i]
+		pkgl.Rows = rows
+		pkgl.WrapText = false
+		pkgl.Border = false
+		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
 	}
-	pkgGrid.Set(
-		ui.NewRow(1.0,
-			entries...
-		),
-	)
+	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 	return true
 }
 
