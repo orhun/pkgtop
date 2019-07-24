@@ -10,8 +10,7 @@ import (
 var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText *widgets.Paragraph
-var dfgau0, dfgau1, dfgau2, dfgau3 *widgets.Gauge
-var dfgau []*widgets.Gauge
+var dfgau *widgets.Gauge
 var pkgl0, pkgl1, pkgl2, pkgl3 *widgets.List
 var pkgl []*widgets.List
 
@@ -20,14 +19,6 @@ func initWidgets() {
 		ui.NewGrid(),
 		ui.NewGrid(),
 		ui.NewGrid()
-	dfgau0, dfgau1, dfgau2, dfgau3 = 
-		widgets.NewGauge(), 
-		widgets.NewGauge(), 
-		widgets.NewGauge(), 
-		widgets.NewGauge()
-	dfgau = []*widgets.Gauge{
-		dfgau0, dfgau1, dfgau2, dfgau3,
-	}
 	pkgl0, pkgl1, pkgl2, pkgl3 = 
 		widgets.NewList(),
 		widgets.NewList(),
@@ -43,11 +34,12 @@ func setDiskUsage(diskUsage map[string]int) bool {
 	i := 0
 	entries := make([]interface{}, len(diskUsage))
 	for name, perc := range diskUsage {
-		dfgau[i].Title = name
-		dfgau[i].Percent = perc
+		dfgau = widgets.NewGauge()
+		dfgau.Title = name
+		dfgau.Percent = perc
 		entries[i] = ui.NewRow(
 			1.0/float64(len(diskUsage)),
-			ui.NewCol(1.0, dfgau[i]),
+			ui.NewCol(1.0, dfgau),
 		)
 		i++
 	}
