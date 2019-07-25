@@ -93,6 +93,19 @@ func main() {
 	
 	setPkgList(pkgs, titles)
 
+	// uname -s && uname -n && uname -r && uname -v && uname --m && uname -o
+	osInfo := []string{
+		"Kernel~Linux", 
+		"Hostname~arch", 
+		"Kernel Release~5.1.7-arch1-1-ARCH", 
+		"Kernel Version~#1 SMP PREEMPT Tue Jun 4 15:47:45 UTC 2019", 
+		"Architecture~x86_64", 
+		"OS~GNU/Linux",
+	}
+
+	_ = osInfo
+
+	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
