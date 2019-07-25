@@ -25,7 +25,7 @@ func initWidgets() {
 		widgets.NewParagraph()
 }
 
-func setDiskUsage(diskUsage []string) bool {
+func getDfEntries(diskUsage []string) []interface {} {
 	entries := make([]interface{}, len(diskUsage))
 	for i, val := range diskUsage {
 		dfval := strings.Split(val, "~")
@@ -33,7 +33,7 @@ func setDiskUsage(diskUsage []string) bool {
 		dfgau.Title = dfval[0]
 		percent, err := strconv.Atoi(dfval[1])
 		if err != nil {
-			return false
+			return nil
 		}
 		dfgau.Percent = percent
 		entries[i] = ui.NewRow(
@@ -41,8 +41,7 @@ func setDiskUsage(diskUsage []string) bool {
 			ui.NewCol(1.0, dfgau),
 		)
 	}
-	dfGrid.Set(entries...)
-	return true
+	return entries
 }
 
 func setPkgList(pkgs []string, titles []string) bool {
@@ -89,7 +88,7 @@ func main() {
 		"tmpfs~10",
 	}
 
-	setDiskUsage(diskUsage)
+	dfGrid.Set(getDfEntries(diskUsage)...)
 
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -121,7 +120,6 @@ func main() {
 
 	setOsInfo(osInfo)
 	
-
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
