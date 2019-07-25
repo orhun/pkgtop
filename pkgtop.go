@@ -65,6 +65,16 @@ func setPkgList(pkgs []string, titles []string) bool {
 	return true
 }
 
+func setOsInfo(osInfo []string) bool {
+	var infoStr string
+	for _, val := range osInfo {
+		info := strings.Split(val, "~")
+		infoStr += " " + info[0] + ": " + info[1] + "\n"
+	}
+	infoText.Text = infoStr
+	return true
+}
+
 func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
@@ -109,12 +119,8 @@ func main() {
 		"OS~GNU/Linux",
 	}
 
-	var infoStr string
-	for _, val := range osInfo {
-		info := strings.Split(val, "~")
-		infoStr += " " + info[0] + ": " + info[1] + "\n"
-	}
-	infoText.Text = infoStr
+	setOsInfo(osInfo)
+	
 
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
