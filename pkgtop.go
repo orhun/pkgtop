@@ -107,8 +107,12 @@ func main() {
 		"OS~GNU/Linux",
 	}
 
-	_ = osInfo
-
+	var infoStr string
+	for _, val := range osInfo {
+		info := strings.Split(val, "~")
+		infoStr += info[0] + ": " + info[1] + "\n"
+	}
+	infoText.Text = infoStr
 
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
