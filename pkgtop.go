@@ -85,7 +85,6 @@ func main() {
 		"/dev/sda1~75",
 		"tmpfs~10",
 	}
-
 	dfGrid.Set(getDfEntries(diskUsage)...)
 
 	pkgs := []string {
@@ -101,7 +100,6 @@ func main() {
 		"docker~1-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 	titles := []string{"1", "2", "3", "4",}
-
 	pkgGrid.Set(
 		ui.NewRow(
 			1.0, 
@@ -119,7 +117,6 @@ func main() {
 		"Processor Type~unknown",
 		"OS~GNU/Linux",
 	}
-
 	infoText.Text = getOsInfoText(osInfo)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
