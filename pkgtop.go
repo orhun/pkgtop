@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"strings"
+	"strconv"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -24,18 +25,21 @@ func initWidgets() {
 		widgets.NewParagraph()
 }
 
-func setDiskUsage(diskUsage map[string]int) bool {
-	i := 0
+func setDiskUsage(diskUsage []string) bool {
 	entries := make([]interface{}, len(diskUsage))
-	for name, perc := range diskUsage {
+	for i, val := range diskUsage {
+		dfval := strings.Split(val, "~")
 		dfgau = widgets.NewGauge()
-		dfgau.Title = name
-		dfgau.Percent = perc
+		dfgau.Title = dfval[0]
+		percent, err := strconv.Atoi(dfval[1])
+		if err != nil {
+			return false
+		}
+		dfgau.Percent = percent
 		entries[i] = ui.NewRow(
 			1.0/float64(len(diskUsage)),
 			ui.NewCol(1.0, dfgau),
 		)
-		i++
 	}
 	dfGrid.Set(entries...)
 	return true
@@ -68,11 +72,11 @@ func main() {
 	initWidgets()
 	defer ui.Close()
 
-	diskUsage := map[string]int {
-		"dev": 0,
-		"run": 1,
-		"/dev/sda1": 75,
-		"tmpfs": 4,
+	diskUsage := []string {
+		"dev~0",
+		"run~1",
+		"/dev/sda1~75",
+		"tmpfs~10",
 	}
 
 	setDiskUsage(diskUsage)
@@ -105,7 +109,7 @@ func main() {
 
 	_ = osInfo
 
-	
+
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
