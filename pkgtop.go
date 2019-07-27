@@ -126,8 +126,8 @@ func main() {
 		"Processor Type~unknown",
 		"OS~GNU/Linux",
 	}
-
-	infoText.Text = getOsInfoText(osInfo)
+	_ = osInfo
+	infoText.Text = execCmd("sh", "-c", "printf \"Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n\"")
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
