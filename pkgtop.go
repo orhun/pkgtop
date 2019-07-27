@@ -73,15 +73,6 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, []inter
 	return pkgls, entries
 }
 
-func getOsInfoText(osInfo []string) string {
-	var infoStr string
-	for _, val := range osInfo {
-		info := strings.Split(val, "~")
-		infoStr += " " + info[0] + ": " + info[1] + "\n"
-	}
-	return infoStr
-}
-
 func execCmd(name string, arg ...string) string {
 	cmd := exec.Command(name, arg...)
 	out, err := cmd.CombinedOutput()
