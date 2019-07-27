@@ -90,10 +90,13 @@ func main() {
 
 	// df -h | awk '{$1=$1};1 {if(NR>1)print}'
 	diskUsage := []string {
-		"dev~0",
-		"run~1",
-		"/dev/sda1~75",
-		"tmpfs~10",
+		"dev 1.9G 0 1.9G 0% /dev", 
+		"run 1.9G 1008K 1.9G 1% /run", 
+		"/dev/sda3 72G 51G 18G 75% /", 
+		"tmpfs 1.9G 157M 1.8G 9% /dev/shm", 
+		"tmpfs 1.9G 0 1.9G 0% /sys/fs/cgroup", 
+		"tmpfs 1.9G 2.8M 1.9G 1% /tmp", 
+		"tmpfs 387M 20K 387M 1% /run/user/1000", 
 	}
 	dfGrid.Set(getDfEntries(diskUsage)...)
 
