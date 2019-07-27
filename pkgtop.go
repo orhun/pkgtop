@@ -116,18 +116,8 @@ func main() {
 	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 
 	//printf "Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n"
-	osInfo := []string{
-		"Kernel~Linux", 
-		"Hostname~arch", 
-		"Kernel Release~5.1.7-arch1-1-ARCH", 
-		"Kernel Version~#1 SMP PREEMPT Tue Jun 4 15:47:45 UTC 2019", 
-		"Architecture~x86_64", 
-		"Hardware Platform~unknown", 
-		"Processor Type~unknown",
-		"OS~GNU/Linux",
-	}
-	_ = osInfo
-	infoText.Text = execCmd("sh", "-c", "printf \"Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n\"")
+	infoCmd := "printf \"Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n\""
+	infoText.Text = execCmd("sh", "-c", infoCmd1)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
