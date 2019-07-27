@@ -105,7 +105,7 @@ func main() {
 	lists, entries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 
-	// uname -s && uname -n && uname -r && uname -v && uname --m && uname -i && uname -p && uname -o
+	//printf "Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n"
 	osInfo := []string{
 		"Kernel~Linux", 
 		"Hostname~arch", 
@@ -116,6 +116,7 @@ func main() {
 		"Processor Type~unknown",
 		"OS~GNU/Linux",
 	}
+
 	infoText.Text = getOsInfoText(osInfo)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
