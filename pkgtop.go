@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 	"strconv"
+	"os/exec"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -71,6 +72,15 @@ func getOsInfoText(osInfo []string) string {
 		infoStr += " " + info[0] + ": " + info[1] + "\n"
 	}
 	return infoStr
+}
+
+func execCmd(name string, arg ...string) string {
+	cmd := exec.Command(name, arg...)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Fatalf("Execution of '%s' failed with %s\n", name, err)
+	}
+	return string(out)
 }
 
 func main() {
@@ -161,5 +171,4 @@ func main() {
 			ui.Render(l)
 		}
 	}
-
 }
