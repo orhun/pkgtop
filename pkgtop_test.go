@@ -9,7 +9,8 @@ func TestGetDfEntries(t *testing.T){
 		"y~40",
 		"z~25",
 	}
-	if getDfEntries(dfTest) == nil || len(getDfEntries(dfTest)) == 0 {
+	if getDfEntries(dfTest) == nil || 
+		len(getDfEntries(dfTest)) == 0 {
 		t.Error("Error occurred while parsing the values")
 	}
 }
