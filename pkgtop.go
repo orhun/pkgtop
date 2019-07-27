@@ -44,7 +44,8 @@ func getDfEntries(diskUsage []string) []interface {} {
 	return entries
 }
 
-func getPkgListEntries(pkgs []string, titles []string) []interface {} {
+func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, []interface {}) {
+	var pkgls []*widgets.List
 	entries := make([]interface{}, len(titles))
 	for i = 0; i < len(titles); i++ {
 		var rows []string
@@ -58,9 +59,9 @@ func getPkgListEntries(pkgs []string, titles []string) []interface {} {
 		pkgl.Border = false
 		pkgl.TextStyle = ui.NewStyle(ui.ColorBlue)
 		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
-		lists = append(lists, pkgl)
+		pkgls = append(pkgls, pkgl)
 	}
-	return entries
+	return pkgls, entries
 }
 
 func getOsInfoText(osInfo []string) string {
@@ -100,11 +101,9 @@ func main() {
 		"docker~1-1~170.98MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 	titles := []string{"1", "2", "3", "4",}
-	pkgGrid.Set(
-		ui.NewRow(
-			1.0, 
-			getPkgListEntries(pkgs, titles)...),
-	)
+
+	lists, entries := getPkgListEntries(pkgs, titles)
+	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 
 	// uname -s && uname -n && uname -r && uname -v && uname --m && uname -i && uname -p && uname -o
 	osInfo := []string{
