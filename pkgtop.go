@@ -9,7 +9,6 @@ import (
 	"github.com/gizak/termui/v3/widgets"
 )
 
-var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText, sysInfoText *widgets.Paragraph
 var dfgau *widgets.Gauge
@@ -56,7 +55,7 @@ func getDfEntries(diskUsage []string) []interface {} {
 func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, []interface {}) {
 	var pkgls []*widgets.List
 	entries := make([]interface{}, len(titles))
-	for i = 0; i < len(titles); i++ {
+	for i := 0; i < len(titles); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
 			rows = append(rows, str.Split(pkg, "~")[i])
