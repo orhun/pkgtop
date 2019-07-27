@@ -15,6 +15,14 @@ var pkgText, infoText *widgets.Paragraph
 var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
+var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
+		"Kernel: $(uname -s)\n" + 
+		"Kernel Release: $(uname -r)\n" + 
+		"Kernel Version: $(uname -v)\n" + 
+		"Processor Type: $(uname -p)\n" + 
+		"Hardware: $(uname --m)\n" + 
+		"Hardware Platform: $(uname -i)\n" + 
+		"OS: $(uname -o)\n\""
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
@@ -115,15 +123,7 @@ func main() {
 	lists, entries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 
-	infoCmd := "printf \"Hostname: $(uname -n)\n" + 
-		"Kernel: $(uname -s)\n" + 
-		"Kernel Release: $(uname -r)\n" + 
-		"Kernel Version: $(uname -v)\n" + 
-		"Processor Type: $(uname -p)\n" + 
-		"Hardware: $(uname --m)\n" + 
-		"Hardware Platform: $(uname -i)\n" + 
-		"OS: $(uname -o)\n\""
-	infoText.Text = execCmd("sh", "-c", infoCmd)
+	infoText.Text = execCmd("sh", "-c", sysInfoCmd)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
