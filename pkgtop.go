@@ -115,9 +115,8 @@ func main() {
 	lists, entries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 
-	//printf "Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n"
-	infoCmd := "printf \"Kernel: $(uname -s)\nHostname: $(uname -n)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nArchitecture: $(uname --m)\nHardware Platform: $(uname -i)\nProcessor Type: $(uname -p)\nOS: $(uname -o)\n\""
-	infoText.Text = execCmd("sh", "-c", infoCmd1)
+	infoCmd := "printf \"Hostname: $(uname -n)\nKernel: $(uname -s)\nKernel Release: $(uname -r)\nKernel Version: $(uname -v)\nProcessor Type: $(uname -p)\nHardware: $(uname --m)\nHardware Platform: $(uname -i)\nOS: $(uname -o)\n\""
+	infoText.Text = execCmd("sh", "-c", infoCmd)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
