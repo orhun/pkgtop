@@ -36,10 +36,11 @@ func initWidgets() {
 func getDfEntries(diskUsage []string) []interface {} {
 	entries := make([]interface{}, len(diskUsage))
 	for i, val := range diskUsage {
-		dfval := str.Split(val, "~")
+		// dev 1.9G 0 1.9G 0% /dev
+		dfval := str.Split(val, " ")
 		dfgau = widgets.NewGauge()
 		dfgau.Title = dfval[0]
-		percent, err := strconv.Atoi(dfval[1])
+		percent, err := strconv.Atoi(str.Replace(dfval[4], "%", "", 1))
 		if err != nil {
 			return nil
 		}
