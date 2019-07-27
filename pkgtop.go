@@ -88,6 +88,7 @@ func main() {
 	initWidgets()
 	defer ui.Close()
 
+	// df -h | awk '{$1=$1};1 {if(NR>1)print}'
 	diskUsage := []string {
 		"dev~0",
 		"run~1",
