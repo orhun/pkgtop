@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"strings"
 	"strconv"
 	"os/exec"
+	str "strings"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -37,7 +37,7 @@ func initWidgets() {
 func getDfEntries(diskUsage []string) []interface {} {
 	entries := make([]interface{}, len(diskUsage))
 	for i, val := range diskUsage {
-		dfval := strings.Split(val, "~")
+		dfval := str.Split(val, "~")
 		dfgau = widgets.NewGauge()
 		dfgau.Title = dfval[0]
 		percent, err := strconv.Atoi(dfval[1])
@@ -59,7 +59,7 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, []inter
 	for i = 0; i < len(titles); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
-			rows = append(rows, strings.Split(pkg, "~")[i])
+			rows = append(rows, str.Split(pkg, "~")[i])
 		}
 		pkgl = widgets.NewList()
 		pkgl.Title = titles[i]
