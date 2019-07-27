@@ -11,7 +11,7 @@ import (
 
 var i int
 var termGrid, dfGrid, pkgGrid *ui.Grid
-var pkgText, infoText *widgets.Paragraph
+var pkgText, sysInfoText *widgets.Paragraph
 var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
@@ -29,7 +29,7 @@ func initWidgets() {
 		ui.NewGrid(), 
 		ui.NewGrid(), 
 		ui.NewGrid()
-	pkgText, infoText = 
+	pkgText, sysInfoText = 
 		widgets.NewParagraph(), 
 		widgets.NewParagraph()
 }
@@ -114,14 +114,14 @@ func main() {
 	lists, entries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, entries...),)
 
-	infoText.Text = execCmd("sh", "-c", sysInfoCmd)
+	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
 	
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
 		ui.NewRow(1.0/4,
 			ui.NewCol(1.0/2, dfGrid),
-			ui.NewCol(1.0/4, infoText),
+			ui.NewCol(1.0/4, sysInfoText),
 			ui.NewCol(1.0/4, pkgText),
 		),
 		ui.NewRow(1.0/1.6,
