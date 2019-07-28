@@ -32,8 +32,8 @@ func TestGetPkgListEntries(t *testing.T) {
 	lists, entries := getPkgListEntries(pkgs, titles)
 	if(len(lists) != len(titles) || 
 		len(entries) != len(titles)) {
-		t.Errorf("Error occurred while parsing the 'pkg' values")
-		t.Errorf("Expected length %d, got %d-%d", 
+		t.Errorf("Error occurred while parsing the 'pkg' values. " + 
+			"Expected length %d, got %d-%d", 
 			len(titles), len(lists), len(entries))
 	}
 }
