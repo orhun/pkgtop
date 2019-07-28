@@ -69,16 +69,20 @@ func showDfInfo(dfIndex int) int {
 	
 	//dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
 	dfOutput := []string {
-		"dev 1.9G 0 1.9G 0% /dev",
-		"run 1.9G 988K 1.9G 1% /run",
-		"/dev/sda3 72G 51G 18G 75% /",
+		"0~dev 1.9G 0 1.9G 0% /dev",
+		"1~dev 1.9G 0 1.9G 0% /dev",
+		"3~sdev 1.9G 0 1.9G 0% /dev",
+		"3~sdev 1.9G 0 1.9G 0% /dev",
 	}
 
-	if dfIndex > len(dfOutput) - (dfCount + 1) {
-		return len(dfOutput) - (dfCount + 1)
+	if len(dfOutput) - dfIndex < dfCount && len(dfOutput) > dfCount {
+		return len(dfOutput) - dfCount
+	}else if len(dfOutput) <= dfCount {
+		dfIndex = 0
 	}
+	
 	gauges, dfEntries := getDfEntries(
-		dfOutput,
+		dfOutput, 
 		dfIndex, 
 		dfCount)
 	dfGrid.Set(dfEntries...)
