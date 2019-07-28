@@ -94,7 +94,10 @@ func execCmd(name string, arg ...string) string {
 	return string(out)
 }
 
-func showDfInfo(dfIndex int) {
+func showDfInfo(dfIndex int) int {
+	if dfIndex < 0 {
+		return 0
+	}
 	gauges, dfEntries = getDfEntries(
 		str.Split(execCmd("sh", "-c", dfCmd), "\n"),
 		dfIndex, 
@@ -104,6 +107,7 @@ func showDfInfo(dfIndex int) {
 	for _, g := range gauges {
 		ui.Render(g)
 	}
+	return dfIndex
 }
 
 func main() {
@@ -172,15 +176,10 @@ func main() {
 				}
 		
 			case "d":
-				
-				dfIndex++
-				showDfInfo(dfIndex)
+				dfIndex = showDfInfo(dfIndex + 1)
 				
 			case "f":
-				if dfIndex - 1 >= 0 {
-					dfIndex--
-					showDfInfo(dfIndex)
-				}
+				dfIndex = showDfInfo(dfIndex - 1)
 			}
 		}
 		for _, l := range lists {
