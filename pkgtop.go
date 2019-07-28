@@ -101,6 +101,9 @@ func showDfInfo(dfIndex int) {
 		dfCount)
 	dfGrid.Set(dfEntries...)
 	ui.Render(dfGrid)
+	for _, g := range gauges {
+		ui.Render(g)
+	}
 }
 
 func main() {
@@ -171,30 +174,17 @@ func main() {
 			case "d":
 				
 				dfIndex++
-				gauges, dfEntries = getDfEntries(
-					str.Split(execCmd("sh", "-c", dfCmd), "\n"),
-					dfIndex, 
-					dfCount)
-				dfGrid.Set(dfEntries...)
-				ui.Render(dfGrid)
+				showDfInfo(dfIndex)
 				
 			case "f":
 				if dfIndex - 1 >= 0 {
 					dfIndex--
-					gauges, dfEntries = getDfEntries(
-						str.Split(execCmd("sh", "-c", dfCmd), "\n"),
-						dfIndex, 
-						dfCount)
-					dfGrid.Set(dfEntries...)
-					ui.Render(dfGrid)
+					showDfInfo(dfIndex)
 				}
 			}
 		}
 		for _, l := range lists {
 			ui.Render(l)
-		}
-		for _, g := range gauges {
-			ui.Render(g)
 		}
 		
 	}
