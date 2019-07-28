@@ -98,13 +98,11 @@ func main() {
 	initWidgets()
 	defer ui.Close()
 
-	gauges, entries := getDfEntries(
+	gauges, dfEntries := getDfEntries(
 			str.Split(execCmd("sh", "-c", dfCmd), "\n"),
 			dfIndex, 
 			dfCount)
-	dfGrid.Set(entries...)
-
-	_ = gauges
+	dfGrid.Set(dfEntries...)
 
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -120,8 +118,8 @@ func main() {
 	}
 	titles := []string{"1", "2", "3", "4",}
 
-	lists, entries := getPkgListEntries(pkgs, titles)
-	pkgGrid.Set(ui.NewRow(1.0, entries...),)
+	lists, pkgEntries := getPkgListEntries(pkgs, titles)
+	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
 
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
 	
@@ -161,10 +159,35 @@ func main() {
 				for _, l := range lists {
 					l.ScrollUp()
 				}
+		
+			case "d":
+				if dfIndex + dfCount - 2 <= len(dfEntries){
+					dfIndex++
+					gauges, dfEntries = getDfEntries(
+						str.Split(execCmd("sh", "-c", dfCmd), "\n"),
+						dfIndex, 
+						dfCount)
+					dfGrid.Set(dfEntries...)
+					ui.Render(dfGrid)
+				}
+				
+			case "f":
+				if dfIndex - 1 >= 0 {
+					dfIndex--
+					gauges, dfEntries = getDfEntries(
+						str.Split(execCmd("sh", "-c", dfCmd), "\n"),
+						dfIndex, 
+						dfCount)
+					dfGrid.Set(dfEntries...)
+					ui.Render(dfGrid)
+				}
 			}
 		}
 		for _, l := range lists {
 			ui.Render(l)
+		}
+		for _, g := range gauges {
+			ui.Render(g)
 		}
 		
 	}
