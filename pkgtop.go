@@ -98,8 +98,12 @@ func showDfInfo(dfIndex int) int {
 	if dfIndex < 0 {
 		return 0
 	}
+	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
+	if dfIndex > len(dfOutput) - (dfCount + 1) {
+		return len(dfOutput) - (dfCount + 1)
+	}
 	gauges, dfEntries = getDfEntries(
-		str.Split(execCmd("sh", "-c", dfCmd), "\n"),
+		dfOutput,
 		dfIndex, 
 		dfCount)
 	dfGrid.Set(dfEntries...)
