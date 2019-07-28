@@ -94,7 +94,7 @@ func execCmd(name string, arg ...string) string {
 	return string(out)
 }
 
-func showDfInfo() {
+func showDfInfo(dfIndex int) {
 	gauges, dfEntries = getDfEntries(
 		str.Split(execCmd("sh", "-c", dfCmd), "\n"),
 		dfIndex, 
@@ -126,7 +126,7 @@ func main() {
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
 
-	showDfInfo()
+	showDfInfo(dfIndex)
 
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
 	
