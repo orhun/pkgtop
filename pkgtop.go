@@ -44,9 +44,6 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 	}
 	dfindex := 0
 	for i := s; i < s + n; i++ {
-		if len(diskUsage[i]) < 5 {
-			continue
-		}
 		dfval := str.Split(diskUsage[i], " ")
 		dfgau = widgets.NewGauge()
 		dfgau.Title = dfval[0]
@@ -71,6 +68,7 @@ func showDfInfo(dfIndex int) int {
 	}
 	
 	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
+	dfOutput = dfOutput[:len(dfOutput)-1]
 
 	if len(dfOutput) - dfIndex < dfCount && len(dfOutput) > dfCount {
 		return len(dfOutput) - dfCount
