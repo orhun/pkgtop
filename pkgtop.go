@@ -14,6 +14,7 @@ var pkgText, sysInfoText *widgets.Paragraph
 var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
+var gauges []*widgets.Gauge
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
 		"Kernel: $(uname -s)\n" + 
 		"Kernel Release: $(uname -r)\n" + 
@@ -22,6 +23,7 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" +
 		"Hardware: $(uname --m)\n" + 
 		"Hardware Platform: $(uname -i)\n" + 
 		"OS: $(uname -o)\n\""
+var dfCount, dfIndex = 4, 0
 
 func initWidgets() {
 	termGrid, dfGrid, pkgGrid = 
@@ -33,27 +35,30 @@ func initWidgets() {
 		widgets.NewParagraph()
 }
 
-func getDfEntries(diskUsage []string) []interface {} {
-	c := 4
-	if len(diskUsage) < c {
-		c = len(diskUsage)
+func getDfEntries(diskUsage []string, x int, n int) ([]*widgets.Gauge, []interface {}) {
+	var gauges []*widgets.Gauge
+	entries := make([]interface{}, n)
+	if len(diskUsage) < n {
+		n = len(diskUsage)
 	}
-	entries := make([]interface{}, c)
-	for i := 0; i < c; i++ {
+	dfindex := 0
+	for i := x; i < x + n; i++ {
 		dfval := str.Split(diskUsage[i], " ")
 		dfgau = widgets.NewGauge()
 		dfgau.Title = dfval[0]
 		percent, err := strconv.Atoi(str.Replace(dfval[4], "%", "", 1))
 		if err != nil {
-			return nil
+			return gauges, nil
 		}
 		dfgau.Percent = percent
-		entries[i] = ui.NewRow(
-			1.0/float64(c),
+		gauges = append(gauges, dfgau)
+		entries[dfindex] = ui.NewRow(
+			1.0/float64(n),
 			ui.NewCol(1.0, dfgau),
 		)
+		dfindex++
 	}
-	return entries
+	return gauges, entries
 }
 
 func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, []interface {}) {
@@ -102,7 +107,10 @@ func main() {
 		"tmpfs 1.9G 2.8M 1.9G 1% /tmp", 
 		"tmpfs 387M 20K 387M 1% /run/user/1000", 
 	}
-	dfGrid.Set(getDfEntries(diskUsage)...)
+	gauges, entries := getDfEntries(diskUsage, dfIndex, dfCount)
+	dfGrid.Set(entries...)
+
+	_ = gauges
 
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -164,5 +172,6 @@ func main() {
 		for _, l := range lists {
 			ui.Render(l)
 		}
+		
 	}
 }
