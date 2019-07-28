@@ -62,6 +62,26 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 	return gauges, entries
 }
 
+func showDfInfo(dfIndex int) int {
+	if dfIndex < 0 {
+		return 0
+	}
+	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
+	if dfIndex > len(dfOutput) - (dfCount + 1) {
+		return len(dfOutput) - (dfCount + 1)
+	}
+	gauges, dfEntries := getDfEntries(
+		dfOutput,
+		dfIndex, 
+		dfCount)
+	dfGrid.Set(dfEntries...)
+	ui.Render(dfGrid)
+	for _, g := range gauges {
+		ui.Render(g)
+	}
+	return dfIndex
+}
+
 func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, 
 		[]interface {}) {
 	var pkgls []*widgets.List
@@ -90,26 +110,6 @@ func execCmd(name string, arg ...string) string {
 		log.Fatalf("Execution of '%s' failed with %s\n", name, err)
 	}
 	return string(out)
-}
-
-func showDfInfo(dfIndex int) int {
-	if dfIndex < 0 {
-		return 0
-	}
-	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
-	if dfIndex > len(dfOutput) - (dfCount + 1) {
-		return len(dfOutput) - (dfCount + 1)
-	}
-	gauges, dfEntries := getDfEntries(
-		dfOutput,
-		dfIndex, 
-		dfCount)
-	dfGrid.Set(dfEntries...)
-	ui.Render(dfGrid)
-	for _, g := range gauges {
-		ui.Render(g)
-	}
-	return dfIndex
 }
 
 func main() {
