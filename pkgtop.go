@@ -36,7 +36,8 @@ func initWidgets() {
 		widgets.NewParagraph()
 }
 
-func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge, []interface {}) {
+func getDfEntries(diskUsage []string, s int, n int) 
+					([]*widgets.Gauge, []interface {}) {
 	var gauges []*widgets.Gauge
 	entries := make([]interface{}, n)
 	if len(diskUsage) < n {
@@ -62,7 +63,8 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge, []interfa
 	return gauges, entries
 }
 
-func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, []interface {}) {
+func getPkgListEntries(pkgs []string, titles []string) 
+					([]*widgets.List, []interface {}) {
 	var pkgls []*widgets.List
 	entries := make([]interface{}, len(titles))
 	for i := 0; i < len(titles); i++ {
