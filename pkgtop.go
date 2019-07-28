@@ -138,7 +138,7 @@ func main() {
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
 
-	showDfInfo(dfIndex)
+	dfIndex = showDfInfo(dfIndex)
 
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
 	
@@ -178,10 +178,8 @@ func main() {
 				for _, l := range lists {
 					l.ScrollUp()
 				}
-		
 			case "d":
 				dfIndex = showDfInfo(dfIndex + 1)
-				
 			case "f":
 				dfIndex = showDfInfo(dfIndex - 1)
 			}
@@ -189,6 +187,5 @@ func main() {
 		for _, l := range lists {
 			ui.Render(l)
 		}
-		
 	}
 }
