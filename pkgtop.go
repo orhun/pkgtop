@@ -50,7 +50,8 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 		dfval := str.Split(diskUsage[i], " ")
 		dfgau = widgets.NewGauge()
 		dfgau.Title = dfval[0]
-		percent, err := strconv.Atoi(str.Replace(dfval[4], "%", "", 1))
+		percent, err := strconv.Atoi(
+			str.Replace(dfval[4], "%", "", 1))
 		if err != nil {
 			return gauges, nil
 		}
@@ -173,7 +174,8 @@ func main() {
 				return
 			case "<Resize>":
 				payload := e.Payload.(ui.Resize)
-				termGrid.SetRect(0, 0, payload.Width, payload.Height)		
+				termGrid.SetRect(0, 0, 
+					payload.Width, payload.Height)		
 				ui.Clear()
 				ui.Render(termGrid)
 			case "j", "<Down>":
