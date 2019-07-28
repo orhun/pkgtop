@@ -14,8 +14,6 @@ var pkgText, sysInfoText *widgets.Paragraph
 var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
-var gauges []*widgets.Gauge
-var dfEntries []interface {}
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
 		"Kernel: $(uname -s)\n" + 
 		"Kernel Release: $(uname -r)\n" + 
@@ -102,7 +100,7 @@ func showDfInfo(dfIndex int) int {
 	if dfIndex > len(dfOutput) - (dfCount + 1) {
 		return len(dfOutput) - (dfCount + 1)
 	}
-	gauges, dfEntries = getDfEntries(
+	gauges, dfEntries := getDfEntries(
 		dfOutput,
 		dfIndex, 
 		dfCount)
