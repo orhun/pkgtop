@@ -36,14 +36,14 @@ func initWidgets() {
 		widgets.NewParagraph()
 }
 
-func getDfEntries(diskUsage []string, x int, n int) ([]*widgets.Gauge, []interface {}) {
+func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge, []interface {}) {
 	var gauges []*widgets.Gauge
 	entries := make([]interface{}, n)
 	if len(diskUsage) < n {
 		n = len(diskUsage)
 	}
 	dfindex := 0
-	for i := x; i < x + n; i++ {
+	for i := s; i < s + n; i++ {
 		dfval := str.Split(diskUsage[i], " ")
 		dfgau = widgets.NewGauge()
 		dfgau.Title = dfval[0]
