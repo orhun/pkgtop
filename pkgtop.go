@@ -100,6 +100,7 @@ func showDfInfo(dfIndex int) {
 		dfIndex, 
 		dfCount)
 	dfGrid.Set(dfEntries...)
+	ui.Render(dfGrid)
 }
 
 func main() {
