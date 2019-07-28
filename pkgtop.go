@@ -11,7 +11,6 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText, sysInfoText *widgets.Paragraph
-var pkgl *widgets.List
 var lists []*widgets.List
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
 		"Kernel: $(uname -s)\n" + 
@@ -97,7 +96,7 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List,
 		for _, pkg := range pkgs {
 			rows = append(rows, str.Split(pkg, "~")[i])
 		}
-		pkgl = widgets.NewList()
+		pkgl := widgets.NewList()
 		pkgl.Title = titles[i]
 		pkgl.Rows = rows
 		pkgl.WrapText = false
