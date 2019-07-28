@@ -37,3 +37,11 @@ func TestGetPkgListEntries(t *testing.T) {
 			len(titles), len(lists), len(entries))
 	}
 }
+
+func TestExecCmd(t *testing.T) {
+	printfCmd := execCmd("printf", "test")
+	testCmd := execCmd("sh", "-c", "test 10 -eq 10 && printf \"true\"")
+	if printfCmd != "test" || testCmd != "true" {
+		t.Errorf("Expected 'test-True', got '%s-%s'", printfCmd, testCmd)
+	}
+}
