@@ -23,6 +23,7 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" +
 		"Hardware: $(uname --m)\n" + 
 		"Hardware Platform: $(uname -i)\n" + 
 		"OS: $(uname -o)\n\""
+var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'"
 var dfCount, dfIndex = 4, 0
 
 func initWidgets() {
@@ -97,17 +98,10 @@ func main() {
 	initWidgets()
 	defer ui.Close()
 
-	// df -h | awk '{$1=$1};1 {if(NR>1)print}'
-	diskUsage := []string {
-		"dev 1.9G 0 1.9G 0% /dev", 
-		"run 1.9G 1008K 1.9G 1% /run", 
-		"/dev/sda3 72G 51G 18G 75% /", 
-		"tmpfs 1.9G 157M 1.8G 9% /dev/shm", 
-		"tmpfs 1.9G 0 1.9G 0% /sys/fs/cgroup", 
-		"tmpfs 1.9G 2.8M 1.9G 1% /tmp", 
-		"tmpfs 387M 20K 387M 1% /run/user/1000", 
-	}
-	gauges, entries := getDfEntries(diskUsage, dfIndex, dfCount)
+	gauges, entries := getDfEntries(
+			str.Split(execCmd("sh", "-c", dfCmd), "\n"),
+			dfIndex, 
+			dfCount)
 	dfGrid.Set(entries...)
 
 	_ = gauges
