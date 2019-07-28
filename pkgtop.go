@@ -11,7 +11,6 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText, sysInfoText *widgets.Paragraph
-var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
@@ -37,31 +36,29 @@ func initWidgets() {
 
 func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge, 
 		[]interface {}) {
-	var gauges []*widgets.Gauge
-	entries := make([]interface{}, n)
 	if len(diskUsage) < n {
 		n = len(diskUsage)
 	}
-	dfindex := 0
+	entries := make([]interface{}, n)
+	var gauges []*widgets.Gauge
 	for i := s; i < s + n; i++ {
 		if len(diskUsage[i]) < 5 {
 			continue
 		}
-		dfval := str.Split(diskUsage[i], " ")
-		dfgau = widgets.NewGauge()
-		dfgau.Title = dfval[0]
+		dfVal := str.Split(diskUsage[i], " ")
+		dfGau := widgets.NewGauge()
+		dfGau.Title = dfVal[0]
 		percent, err := strconv.Atoi(
-			str.Replace(dfval[4], "%", "", 1))
+			str.Replace(dfVal[4], "%", "", 1))
 		if err != nil {
 			return gauges, nil
 		}
-		dfgau.Percent = percent
-		gauges = append(gauges, dfgau)
-		entries[dfindex] = ui.NewRow(
+		dfGau.Percent = percent
+		gauges = append(gauges, dfGau)
+		entries[i - s] = ui.NewRow(
 			1.0/float64(n),
-			ui.NewCol(1.0, dfgau),
+			ui.NewCol(1.0, dfGau),
 		)
-		dfindex++
 	}
 	return gauges, entries
 }
