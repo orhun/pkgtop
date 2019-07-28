@@ -15,6 +15,7 @@ var dfgau *widgets.Gauge
 var pkgl *widgets.List
 var lists []*widgets.List
 var gauges []*widgets.Gauge
+var dfEntries []interface {}
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
 		"Kernel: $(uname -s)\n" + 
 		"Kernel Release: $(uname -r)\n" + 
@@ -93,18 +94,20 @@ func execCmd(name string, arg ...string) string {
 	return string(out)
 }
 
+func showDfInfo() {
+	gauges, dfEntries = getDfEntries(
+		str.Split(execCmd("sh", "-c", dfCmd), "\n"),
+		dfIndex, 
+		dfCount)
+	dfGrid.Set(dfEntries...)
+}
+
 func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
 	initWidgets()
 	defer ui.Close()
-
-	gauges, dfEntries := getDfEntries(
-			str.Split(execCmd("sh", "-c", dfCmd), "\n"),
-			dfIndex, 
-			dfCount)
-	dfGrid.Set(dfEntries...)
 
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -122,6 +125,8 @@ func main() {
 
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
+
+	showDfInfo()
 
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
 	
@@ -163,15 +168,14 @@ func main() {
 				}
 		
 			case "d":
-				if dfIndex + dfCount - 2 <= len(dfEntries){
-					dfIndex++
-					gauges, dfEntries = getDfEntries(
-						str.Split(execCmd("sh", "-c", dfCmd), "\n"),
-						dfIndex, 
-						dfCount)
-					dfGrid.Set(dfEntries...)
-					ui.Render(dfGrid)
-				}
+				
+				dfIndex++
+				gauges, dfEntries = getDfEntries(
+					str.Split(execCmd("sh", "-c", dfCmd), "\n"),
+					dfIndex, 
+					dfCount)
+				dfGrid.Set(dfEntries...)
+				ui.Render(dfGrid)
 				
 			case "f":
 				if dfIndex - 1 >= 0 {
