@@ -66,7 +66,14 @@ func showDfInfo(dfIndex int) int {
 	if dfIndex < 0 {
 		return 0
 	}
-	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
+	
+	//dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
+	dfOutput := []string {
+		"dev 1.9G 0 1.9G 0% /dev",
+		"run 1.9G 988K 1.9G 1% /run",
+		"/dev/sda3 72G 51G 18G 75% /",
+	}
+
 	if dfIndex > len(dfOutput) - (dfCount + 1) {
 		return len(dfOutput) - (dfCount + 1)
 	}
