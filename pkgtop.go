@@ -69,18 +69,15 @@ func showDfInfo(dfIndex int) int {
 	if dfIndex < 0 {
 		return 0
 	}
-	
 	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
 	if len(dfOutput) > 0 && len(dfOutput[len(dfOutput)-1]) < 5 {
 		dfOutput = dfOutput[:len(dfOutput)-1]
 	}
-
 	if len(dfOutput) - dfIndex < dfCount && len(dfOutput) > dfCount {
 		return len(dfOutput) - dfCount
 	}else if len(dfOutput) <= dfCount {
 		dfIndex = 0
 	}
-	
 	gauges, dfEntries := getDfEntries(
 		dfOutput, 
 		dfIndex, 
