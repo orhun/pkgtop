@@ -33,6 +33,15 @@ func initWidgets() {
 		widgets.NewParagraph()
 }
 
+
+/*!
+ * Parse the 'df' command output as Gauge and GridItem.
+ *
+ * \param diskUsage (array of 'df' lines)
+ * \param s (starting index)
+ * \param n (n * entry)
+ * \return gauges, entries 
+ */
 func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge, 
 		[]interface {}) {
 	if len(diskUsage) < n {
