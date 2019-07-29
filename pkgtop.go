@@ -121,8 +121,8 @@ func main() {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
-	initWidgets()
 	defer ui.Close()
+	initWidgets()
 
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -140,6 +140,7 @@ func main() {
 
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
+	ui.Render(pkgGrid)
 
 	dfIndex = showDfInfo(dfIndex)
 
@@ -157,7 +158,7 @@ func main() {
 			ui.NewCol(1.0/1, pkgGrid),
 		),
 		ui.NewRow(1.0/8,
-			ui.NewCol(1.0/1, pkgText),
+			ui.NewCol(1.0, pkgText),
 		),
 	)
 	ui.Render(termGrid)
