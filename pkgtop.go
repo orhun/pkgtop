@@ -108,6 +108,13 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List,
 	return pkgls, entries
 }
 
+/*!
+ * Execute a operating system command and capture the output.
+ *
+ * \param name
+ * \param arg
+ * \return output
+ */
 func execCmd(name string, arg ...string) string {
 	cmd := exec.Command(name, arg...)
 	out, err := cmd.CombinedOutput()
