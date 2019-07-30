@@ -80,6 +80,12 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 	return gauges, entries
 }
 
+/*!
+ * Execute the 'df' command and show parsed output values with widgets.
+ *
+ * \param dfIndex (starting index of entries to render)
+ * \return dfIndex
+ */
 func showDfInfo(dfIndex int) int {
 	if dfIndex < 0 {
 		return 0
