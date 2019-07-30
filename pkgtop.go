@@ -200,6 +200,7 @@ func main() {
 					payload.Width, payload.Height)		
 				ui.Clear()
 				ui.Render(termGrid)
+				dfIndex = showDfInfo(dfIndex)
 			case "j", "<Down>":
 				for _, l := range lists {
 					l.ScrollDown()
