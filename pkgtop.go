@@ -40,19 +40,26 @@ func initWidgets() {
  * \param diskUsage (array of 'df' lines)
  * \param s (starting index)
  * \param n (n * entry)
- * \return gauges, entries 
+ * \return gauges, entries
  */
 func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge, 
 		[]interface {}) {
+	/* Use the length of 'df' array if "n"
+	 * (entry count to show) is greater. 
+	 */
 	if len(diskUsage) < n {
 		n = len(diskUsage)
 	}
 	entries := make([]interface{}, n)
 	var gauges []*widgets.Gauge
 	for i := s; i < s + n; i++ {
+		/* Pass the insufficient lines */
 		if len(diskUsage[i]) < 5 {
 			continue
 		}
+		/* Create gauge widget from the splitted  
+		 * line and add it to the entries slice.
+		 */
 		dfVal := str.Split(diskUsage[i], " ")
 		dfGau := widgets.NewGauge()
 		dfGau.Title = dfVal[0]
