@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"os/exec"
@@ -62,7 +63,8 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 		 */
 		dfVal := str.Split(diskUsage[i], " ")
 		dfGau := widgets.NewGauge()
-		dfGau.Title = dfVal[0]
+		dfGau.Title = fmt.Sprintf("%s ~ (%s/%s) [%s]", 
+			dfVal[0], dfVal[2], dfVal[1], dfVal[len(dfVal)-1])
 		percent, err := strconv.Atoi(
 			str.Replace(dfVal[4], "%", "", 1))
 		if err != nil {
