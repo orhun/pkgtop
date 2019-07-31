@@ -87,18 +87,24 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
  * \return dfIndex
  */
 func showDfInfo(dfIndex int) int {
+	/* Prevent underflow and return the first index. */
 	if dfIndex < 0 {
 		return 0
 	}
+	/* Execute the 'df' command and split the output by newline. */
 	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
+	/* Remove the last line on invalid length like '\n' */
 	if len(dfOutput) > 0 && len(dfOutput[len(dfOutput)-1]) < 5 {
 		dfOutput = dfOutput[:len(dfOutput)-1]
 	}
+	/* Return the maximum index on overflow */
 	if len(dfOutput) - dfIndex < dfCount && len(dfOutput) > dfCount {
 		return len(dfOutput) - dfCount
+	/* Use the first index on invalid entry count. */
 	}else if len(dfOutput) <= dfCount {
 		dfIndex = 0
 	}
+	/* Create and render the widgets. */
 	gauges, dfEntries := getDfEntries(
 		dfOutput, 
 		dfIndex, 
