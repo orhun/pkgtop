@@ -143,7 +143,7 @@ func execCmd(name string, arg ...string) string {
 	return string(out)
 }
 
-func initUi() {
+func initUi() int {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
 	}
@@ -200,7 +200,7 @@ func initUi() {
 		case e := <-uiEvents:
 			switch e.ID {
 			case "q", "<C-c>", "<C-d>":
-				return
+				return 0
 			case "<Resize>":
 				payload := e.Payload.(ui.Resize)
 				termGrid.SetRect(0, 0, 
@@ -226,6 +226,7 @@ func initUi() {
 			ui.Render(l)
 		}
 	}
+	return 0
 }
 
 
