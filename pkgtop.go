@@ -143,6 +143,11 @@ func execCmd(name string, arg ...string) string {
 	return string(out)
 }
 
+/*!
+ * Initialize the termui and render widgets.
+ *
+ * \return 0 on success
+ */
 func initUi() int {
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
