@@ -10,6 +10,7 @@ import (
 	"github.com/gizak/termui/v3/widgets"
 )
 
+// TODO: Add explanations to variables
 var termGrid, dfGrid, pkgGrid *ui.Grid
 var pkgText, sysInfoText *widgets.Paragraph
 var lists []*widgets.List
@@ -164,7 +165,7 @@ func initUi() int {
 		widgets.NewParagraph(), 
 		widgets.NewParagraph()
 	
-		
+	// TODO: Parse the package list with an OS command
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
 		"autoconf~2.69-5~2.06MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -197,6 +198,7 @@ func initUi() int {
 	ui.Render(pkgGrid)
 	ui.Render(termGrid)
 	
+	// TODO: Improve the UI key events
 	uiEvents := ui.PollEvents()
 	for {
 		select {
