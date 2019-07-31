@@ -107,6 +107,7 @@ func showDfInfo(dfIndex int) int {
 	return dfIndex
 }
 
+// TODO: Update the package parser & unit test
 func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, 
 		[]interface {}) {
 	var pkgls []*widgets.List
