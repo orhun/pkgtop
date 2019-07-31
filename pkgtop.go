@@ -24,17 +24,6 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" +
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'"
 var dfCount, dfIndex = 4, 0
 
-func initWidgets() {
-	termGrid, dfGrid, pkgGrid = 
-		ui.NewGrid(), 
-		ui.NewGrid(), 
-		ui.NewGrid()
-	pkgText, sysInfoText = 
-		widgets.NewParagraph(), 
-		widgets.NewParagraph()
-}
-
-
 /*!
  * Parse the 'df' command output as Gauge and GridItem.
  *
@@ -153,6 +142,18 @@ func execCmd(name string, arg ...string) string {
 	}
 	return string(out)
 }
+
+
+func initWidgets() {
+	termGrid, dfGrid, pkgGrid = 
+		ui.NewGrid(), 
+		ui.NewGrid(), 
+		ui.NewGrid()
+	pkgText, sysInfoText = 
+		widgets.NewParagraph(), 
+		widgets.NewParagraph()
+}
+
 
 /*!
  * Entry-point
