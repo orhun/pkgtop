@@ -149,10 +149,13 @@ func execCmd(name string, arg ...string) string {
  * \return 0 on success
  */
 func initUi() int {
+	/* Initialize the termui library */
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
 	}
+	/* Close the UI on function exit */
 	defer ui.Close()
+	/* Initialize the widgets */
 	termGrid, dfGrid, pkgGrid = 
 		ui.NewGrid(), 
 		ui.NewGrid(), 
@@ -160,21 +163,21 @@ func initUi() int {
 	pkgText, sysInfoText = 
 		widgets.NewParagraph(), 
 		widgets.NewParagraph()
-
+	
+		
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
 		"autoconf~2.69-5~2.06MiB~'Fri 11 Jan 2019 03:34:39'",
 	}
 	titles := []string{"1", "2", "3", "4",}
-
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
-	ui.Render(pkgGrid)
 
+	/* Show the disk usage information */
 	dfIndex = showDfInfo(dfIndex)
-
+	/* Show the OS information */
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
-	
+	/* Configure the main grid layout */
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
@@ -190,7 +193,10 @@ func initUi() int {
 			ui.NewCol(1.0, pkgText),
 		),
 	)
+	/* Render Grid widgets */
+	ui.Render(pkgGrid)
 	ui.Render(termGrid)
+	
 	uiEvents := ui.PollEvents()
 	for {
 		select {
