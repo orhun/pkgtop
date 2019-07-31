@@ -143,8 +143,11 @@ func execCmd(name string, arg ...string) string {
 	return string(out)
 }
 
-
-func initWidgets() {
+func initUi() {
+	if err := ui.Init(); err != nil {
+		log.Fatalf("Failed to initialize termui: %v", err)
+	}
+	defer ui.Close()
 	termGrid, dfGrid, pkgGrid = 
 		ui.NewGrid(), 
 		ui.NewGrid(), 
@@ -152,18 +155,6 @@ func initWidgets() {
 	pkgText, sysInfoText = 
 		widgets.NewParagraph(), 
 		widgets.NewParagraph()
-}
-
-
-/*!
- * Entry-point
- */
-func main() {
-	if err := ui.Init(); err != nil {
-		log.Fatalf("failed to initialize termui: %v", err)
-	}
-	defer ui.Close()
-	initWidgets()
 
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
@@ -235,4 +226,12 @@ func main() {
 			ui.Render(l)
 		}
 	}
+}
+
+
+/*!
+ * Entry-point
+ */
+func main() {
+	initUi()
 }
