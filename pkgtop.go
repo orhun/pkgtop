@@ -21,6 +21,13 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system info *
 		"Hardware Platform: $(uname -i)\n" + 
 		"OS: $(uname -o)\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage */
+var pkgsCmd = map[string]string {
+	"arch": "pacman -Qi | awk '/^Name/{name=$3} " + 
+			"/^Version/{ver=$3} /^Installed Size/{size=$4$5} " + 
+			"/^Description/{desc=substr($0,index($0,$3)); " + 
+			"print name \"~\" ver \"~\" size \"~\" desc}' " + 
+			"| sort -h -r -t '~' -k3",
+}
 var dfCount, dfIndex = 4, 0 /* Index and count values for the disk usage widgets */
 
 /*!
@@ -170,8 +177,7 @@ func initUi() int {
 	// TODO: Parse the package list according to the distribution
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
 
-	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Installed Size/{size=$4$5} /^Description/{desc=substr($0,index($0,$3)); print name \"~\" ver \"~\" size \"~\" desc}' | sort -h -r -t '~' -k3"
-	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd), "\n")
+	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n")
 	titles := []string{"Name", "Version", "Installed Size", "Description",}
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
