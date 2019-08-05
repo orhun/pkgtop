@@ -22,16 +22,14 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system info *
 		"Hardware Platform: $(uname -i)\n" + 
 		"OS: $(uname -o)\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage */
-var pkgTitles = map[string]string { /* Titles of the 'packages table's columns */ 
-	"arch": "Name|Version|Installed Size|Description",
-}
 var pkgsCmd = map[string]string { /* Commands for listing the installed packages */
 	"arch": "pacman -Qi | awk '/^Name/{name=$3} " + 
 			"/^Version/{ver=$3} " + 
 			"/^Description/{desc=substr($0,index($0,$3))} " + 
 			"/^Installed Size/{size=$4$5; " + 
 			"print name \"~\" ver \"~\" size \"~\" desc}' " + 
-			"| sort -h -r -t '~' -k3",
+			"| sort -h -r -t '~' -k3 " + 
+			"&& echo 'Name|Version|Installed Size|Description'",
 }
 
 /*!
@@ -53,7 +51,7 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 	entries := make([]interface{}, n)
 	var gauges []*widgets.Gauge
 	for i := s; i < s + n; i++ {
-		/* Pass the insufficient lines */
+		/* Pass the insufficient lines. */
 		if len(diskUsage[i]) < 5 {
 			continue
 		}
@@ -96,7 +94,7 @@ func showDfInfo(dfIndex int) int {
 	if len(dfOutput) > 0 && len(dfOutput[len(dfOutput)-1]) < 5 {
 		dfOutput = dfOutput[:len(dfOutput)-1]
 	}
-	/* Return the maximum index on overflow */
+	/* Return the maximum index on overflow. */
 	if len(dfOutput) - dfIndex < dfCount && len(dfOutput) > dfCount {
 		return len(dfOutput) - dfCount
 	/* Use the first index on invalid entry count. */
@@ -182,7 +180,10 @@ func initUi() int {
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
 
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n")
-	lists, pkgEntries := getPkgListEntries(pkgs, str.Split(pkgTitles["arch"], "|"))
+	if len(pkgs) > 0 && len(pkgs[len(pkgs)-1]) < 5 {
+		pkgs = pkgs[:len(pkgs)-1]
+	}
+	lists, pkgEntries := getPkgListEntries(pkgs, str.Split(pkgs[len(pkgs)-1], "|"))
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
 	ui.Render(pkgGrid)
 
