@@ -12,7 +12,6 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
-var lists []*widgets.List /* Slice of List widgets */
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system info */
 		"Kernel: $(uname -s)\n" + 
 		"Kernel Release: $(uname -r)\n" + 
