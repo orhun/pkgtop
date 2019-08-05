@@ -162,7 +162,7 @@ func execCmd(name string, arg ...string) string {
 /*!
  * Initialize the termui and render widgets.
  *
- * \return 0 on success
+ * return 0 on exit
  */
 func initUi() int {
 	/* Initialize the termui library */
@@ -241,7 +241,6 @@ func initUi() int {
 			}
 		}
 	}
-	return 0
 }
 
 /*!
