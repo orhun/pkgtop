@@ -225,22 +225,16 @@ func initUi() int {
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
 			case "j", "<Down>":
-				for _, l := range lists {
-					l.ScrollDown()
-				}
+				for _, l := range lists { l.ScrollDown() }
 			case "k", "<Up>":
-				for _, l := range lists {
-					l.ScrollUp()
-				}
+				for _, l := range lists { l.ScrollUp() }
 			case "d":
 				dfIndex = showDfInfo(dfIndex + 1)
 			case "f":
 				dfIndex = showDfInfo(dfIndex - 1)
 			}
 		}
-		for _, l := range lists {
-			ui.Render(l)
-		}
+		for _, l := range lists { ui.Render(l) }
 	}
 	return 0
 }
