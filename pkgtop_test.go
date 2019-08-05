@@ -1,6 +1,7 @@
 package main
 import (
 	"testing"
+	"strings"
 )
 
 func TestGetDfEntries(t *testing.T) {
@@ -27,9 +28,10 @@ func TestGetPkgListEntries(t *testing.T) {
 	pkgs := []string {
 		"val0~10~x~test1",
 		"val1~20~y~test2",
+		"[1]|[2]",
 	}
-	titles := []string{"1", "2",}
-	lists, entries := getPkgListEntries(pkgs, titles)
+	titles := strings.Split(pkgs[len(pkgs)-1], "|")
+	lists, entries := getPkgListEntries(pkgs)
 	if(len(lists) != len(titles) || 
 		len(entries) != len(titles)) {
 		t.Errorf("Error occurred while parsing the 'pkg' values. " + 
