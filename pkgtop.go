@@ -169,6 +169,7 @@ func initUi() int {
 		widgets.NewParagraph()
 	
 	// TODO: Parse the package list according to the distribution
+	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
 
 	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Installed Size/{size=$4$5} /^Description/{desc=substr($0,index($0,$3)); print name \"~\" ver \"~\" size \"~\" desc}' | sort -h -r -t '~' -k3"
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd), "\n")
