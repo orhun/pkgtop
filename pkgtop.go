@@ -169,7 +169,7 @@ func initUi() int {
 		widgets.NewParagraph()
 	
 	// TODO: Parse the package list with an OS command
-	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print name \"~\" ver \"~\" size \"~\" desc}' | sort -h -t '~' -k3"
+	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print name \"~\" ver \"~\" size \"~\" desc}' | sort -h -r -t '~' -k3"
 	
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd), "\n")
 	titles := []string{"1", "2", "3", "4",}
