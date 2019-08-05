@@ -114,6 +114,9 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List,
 	for i := 0; i < len(titles); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
+			if len(str.Split(pkg, "~")) != len(titles) {
+				continue
+			}
 			rows = append(rows, str.Split(pkg, "~")[i])
 		}
 		pkgl := widgets.NewList()
@@ -167,10 +170,13 @@ func initUi() int {
 	
 	// TODO: Parse the package list with an OS command
 	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print size, \"~\", name, \"~\", ver, \"~\", desc}' | sort -h"
-	pkgs := []string {
+	
+	/*pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
 		"autoconf~2.69-5~2.06MiB~'Fri 11 Jan 2019 03:34:39'",
-	}
+	}*/
+
+	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd), "\n")
 	titles := []string{"1", "2", "3", "4",}
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
