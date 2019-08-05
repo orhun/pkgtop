@@ -21,6 +21,9 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system info *
 		"Hardware Platform: $(uname -i)\n" + 
 		"OS: $(uname -o)\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage */
+var pkgTitles = map[string]string { /* Titles of the 'packages table's columns */ 
+	"arch": "Name|Version|Installed Size|Description",
+}
 var pkgsCmd = map[string]string { /* Commands for listing the installed packages */
 	"arch": "pacman -Qi | awk '/^Name/{name=$3} " + 
 			"/^Version/{ver=$3} " + 
@@ -179,8 +182,7 @@ func initUi() int {
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
 
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n")
-	titles := []string{"Name", "Version", "Installed Size", "Description",}
-	lists, pkgEntries := getPkgListEntries(pkgs, titles)
+	lists, pkgEntries := getPkgListEntries(pkgs, str.Split(pkgTitles["arch"], "|"))
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
 	ui.Render(pkgGrid)
 
