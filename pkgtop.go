@@ -227,19 +227,18 @@ func initUi() int {
 			case "j", "<Down>":
 				for _, l := range lists {
 					l.ScrollDown()
+					ui.Render(l)
 				}
 			case "k", "<Up>":
 				for _, l := range lists {
 					l.ScrollUp()
+					ui.Render(l)
 				}
 			case "d":
 				dfIndex = showDfInfo(dfIndex + 1)
 			case "f":
 				dfIndex = showDfInfo(dfIndex - 1)
 			}
-		}
-		for _, l := range lists {
-			ui.Render(l)
 		}
 	}
 	return 0
