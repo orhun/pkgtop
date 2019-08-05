@@ -114,10 +114,10 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List,
 	for i := 0; i < len(titles); i++ {
 		var rows []string
 		for _, pkg := range pkgs {
-			if len(str.Split(pkg, " ~ ")) != len(titles) {
+			if len(str.Split(pkg, "~")) != len(titles) {
 				continue
 			}
-			rows = append(rows, str.Split(pkg, " ~ ")[i])
+			rows = append(rows, str.Split(pkg, "~")[i])
 		}
 		pkgl := widgets.NewList()
 		pkgl.Title = titles[i]
@@ -169,7 +169,7 @@ func initUi() int {
 		widgets.NewParagraph()
 	
 	// TODO: Parse the package list with an OS command
-	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print size, \"~\", name, \"~\", ver, \"~\", desc}' | sort -h"
+	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print name \"~\" ver \"~\" size \"~\" desc}'"
 	
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd), "\n")
 	titles := []string{"1", "2", "3", "4",}
