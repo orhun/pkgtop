@@ -166,8 +166,7 @@ func initUi() int {
 		widgets.NewParagraph()
 	
 	// TODO: Parse the package list with an OS command
-	pkgCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print size, \"~\", name, \"~\", ver, \"~\", desc}' | sort -h"
-	
+	pkgsCmd := "pacman -Qi | awk '/^Name/{name=$3} /^Version/{ver=$3} /^Description/{desc=substr($0,index($0,$3))} /^Installed Size/{size=$4$5; print size, \"~\", name, \"~\", ver, \"~\", desc}' | sort -h"
 	pkgs := []string {
 		"apache~2.4.39-1~6.25MiB~'Fri 11 Jan 2019 03:34:39'",
 		"autoconf~2.69-5~2.06MiB~'Fri 11 Jan 2019 03:34:39'",
