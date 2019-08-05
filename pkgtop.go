@@ -117,7 +117,7 @@ func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List,
 			if len(str.Split(pkg, "~")) != len(titles) {
 				continue
 			}
-			rows = append(rows, str.Split(pkg, "~")[i])
+			rows = append(rows, " " + str.Split(pkg, "~")[i])
 		}
 		pkgl := widgets.NewList()
 		pkgl.Title = titles[i]
