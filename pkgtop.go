@@ -115,9 +115,13 @@ func showDfInfo(dfIndex int) int {
 }
 
 // TODO: Update the package parser & unit test
-func getPkgListEntries(pkgs []string, titles []string) ([]*widgets.List, 
+func getPkgListEntries(pkgs []string) ([]*widgets.List, 
 		[]interface {}) {
 	var pkgls []*widgets.List
+	if len(pkgs) > 0 && len(pkgs[len(pkgs)-1]) < 5 {
+		pkgs = pkgs[:len(pkgs)-1]
+	}
+	titles := str.Split(pkgs[len(pkgs)-1], "|")
 	entries := make([]interface{}, len(titles))
 	for i := 0; i < len(titles); i++ {
 		var rows []string
@@ -178,12 +182,8 @@ func initUi() int {
 	
 	// TODO: Parse the package list according to the distribution
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
-
-	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n")
-	if len(pkgs) > 0 && len(pkgs[len(pkgs)-1]) < 5 {
-		pkgs = pkgs[:len(pkgs)-1]
-	}
-	lists, pkgEntries := getPkgListEntries(pkgs, str.Split(pkgs[len(pkgs)-1], "|"))
+	lists, pkgEntries := getPkgListEntries(
+		str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n"))
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
 	ui.Render(pkgGrid)
 
