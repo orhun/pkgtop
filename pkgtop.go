@@ -10,25 +10,19 @@ import (
 	str "strings"
 )
 
-/* Grid widgets for the layout */
-var termGrid, dfGrid, pkgGrid *ui.Grid
-/* Paragraph widgets for showing text */
-var pkgText, sysInfoText *widgets.Paragraph
-/* Index and count values for the disk usage widgets */
-var dfCount, dfIndex = 4, 0
-/* Print the system information with 'uname' */
-var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" +
+var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
+var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
+var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
+var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
 	"Kernel: $(uname -s)\n" +
 	"Kernel Release: $(uname -r)\n" +
 	"Kernel Version: $(uname -v)\n" +
 	"Processor Type: $(uname -p)\n" +
 	"Hardware: $(uname --m)\n" +
 	"Hardware Platform: $(uname -i)\n" +
-	"OS: $(uname -o)\n\""
-/* Print the disk usage with 'df' */
-var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'"
-/* Commands for listing the installed packages */
-var pkgsCmd = map[string]string{
+							"OS: $(uname -o)\n\""
+var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
+var pkgsCmd = map[string]string{                      /* Commands for listing the installed packages */
 	"arch": "pacman -Qi | awk '/^Name/{name=$3} " +
 		"/^Version/{ver=$3} " +
 		"/^Description/{desc=substr($0,index($0,$3))} " +
