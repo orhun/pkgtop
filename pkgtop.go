@@ -175,12 +175,13 @@ func initUi() int {
 	titles := []string{"1", "2", "3", "4",}
 	lists, pkgEntries := getPkgListEntries(pkgs, titles)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...),)
+	ui.Render(pkgGrid)
 
 	/* Show the disk usage information */
 	dfIndex = showDfInfo(dfIndex)
 	/* Show the OS information */
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
-	/* Configure the main grid layout */
+	/* Configure and render the main grid layout */
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
@@ -196,8 +197,6 @@ func initUi() int {
 			ui.NewCol(1.0, pkgText),
 		),
 	)
-	/* Render Grid widgets */
-	ui.Render(pkgGrid)
 	ui.Render(termGrid)
 	
 	// TODO: Improve the UI key events
