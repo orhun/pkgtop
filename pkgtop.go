@@ -10,11 +10,10 @@ import (
 	"github.com/gizak/termui/v3/widgets"
 )
 
-// TODO: Add explanations to variables
-var termGrid, dfGrid, pkgGrid *ui.Grid
-var pkgText, sysInfoText *widgets.Paragraph
-var lists []*widgets.List
-var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + 
+var termGrid, dfGrid, pkgGrid *ui.Grid /* Grid widgets for the layout */
+var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
+var lists []*widgets.List /* Slice of List widgets */
+var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system info */
 		"Kernel: $(uname -s)\n" + 
 		"Kernel Release: $(uname -r)\n" + 
 		"Kernel Version: $(uname -v)\n" + 
@@ -22,8 +21,8 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" +
 		"Hardware: $(uname --m)\n" + 
 		"Hardware Platform: $(uname -i)\n" + 
 		"OS: $(uname -o)\n\""
-var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'"
-var dfCount, dfIndex = 4, 0
+var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage */
+var dfCount, dfIndex = 4, 0 /* Index and count values for the disk usage widgets */
 
 /*!
  * Parse the 'df' command output as Gauge and GridItem.
