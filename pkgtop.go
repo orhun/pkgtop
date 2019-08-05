@@ -12,6 +12,7 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
+var dfCount, dfIndex = 4, 0 /* Index and count values for the disk usage widgets */
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system info */
 		"Kernel: $(uname -s)\n" + 
 		"Kernel Release: $(uname -r)\n" + 
@@ -32,7 +33,6 @@ var pkgsCmd = map[string]string { /* Commands for listing the installed packages
 			"print name \"~\" ver \"~\" size \"~\" desc}' " + 
 			"| sort -h -r -t '~' -k3",
 }
-var dfCount, dfIndex = 4, 0 /* Index and count values for the disk usage widgets */
 
 /*!
  * Parse the 'df' command output as Gauge and GridItem.
