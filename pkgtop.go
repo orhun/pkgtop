@@ -234,9 +234,9 @@ func initUi() int {
 					l.ScrollUp()
 					ui.Render(l)
 				}
-			case "d":
+			case "l", "<Right>":
 				dfIndex = showDfInfo(dfIndex + 1)
-			case "f":
+			case "h", "<Left>":
 				dfIndex = showDfInfo(dfIndex - 1)
 			}
 		}
