@@ -231,9 +231,19 @@ func initUi() int {
 					l.ScrollDown()
 					ui.Render(l)
 				}
+			case "<C-j>":
+				for _, l := range lists {
+					l.ScrollBottom()
+					ui.Render(l)
+				}
 			case "k", "<Up>":
 				for _, l := range lists {
 					l.ScrollUp()
+					ui.Render(l)
+				}
+			case "<C-k>":
+				for _, l := range lists {
+					l.ScrollTop()
 					ui.Render(l)
 				}
 			case "l", "<Right>":
