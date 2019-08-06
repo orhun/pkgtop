@@ -143,6 +143,17 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	return pkgls, entries
 }
 
+func scrollLists(lists []*widgets.List, amount int, row int) {
+	for _, l := range lists {
+		if row != -1 {
+			l.SelectedRow = row
+		}else {
+			l.ScrollAmount(amount)
+		}
+		ui.Render(l)
+	}
+}
+
 /*!
  * Execute a operating system command and capture the output.
  *
@@ -227,25 +238,14 @@ func initUi() int {
 			case "<Enter>", "<Space>":
 				// TODO: Show package information
 			case "j", "<Down>":
-				for _, l := range lists {
-					l.ScrollDown()
-					ui.Render(l)
-				}
+				scrollLists(lists, 1, -1)
 			case "<C-j>":
-				for _, l := range lists {
-					l.ScrollBottom()
-					ui.Render(l)
-				}
+				scrollLists(lists, -1, 
+					len(lists[0].Rows) - 1)
 			case "k", "<Up>":
-				for _, l := range lists {
-					l.ScrollUp()
-					ui.Render(l)
-				}
+				scrollLists(lists, -1, -1)
 			case "<C-k>":
-				for _, l := range lists {
-					l.ScrollTop()
-					ui.Render(l)
-				}
+				scrollLists(lists, -1, 0)
 			case "l", "<Right>":
 				dfIndex = showDfInfo(dfIndex + 1)
 			case "h", "<Left>":
