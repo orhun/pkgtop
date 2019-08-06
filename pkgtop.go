@@ -143,7 +143,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	return pkgls, entries
 }
 
-func scrollLists(lists []*widgets.List, amount int, row int) {
+func scrollLists(lists []*widgets.List, amount int, row int) int {
 	for _, l := range lists {
 		if row != -1 {
 			l.SelectedRow = row
@@ -152,6 +152,7 @@ func scrollLists(lists []*widgets.List, amount int, row int) {
 		}
 		ui.Render(l)
 	}
+	return 0
 }
 
 /*!
