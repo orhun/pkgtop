@@ -224,6 +224,8 @@ func initUi() int {
 				ui.Clear()
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
+			case "<Enter>", "<Space>":
+				// TODO: Show package information
 			case "j", "<Down>":
 				for _, l := range lists {
 					l.ScrollDown()
