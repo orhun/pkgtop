@@ -29,7 +29,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Installed Size/{size=$4$5; " +
 		"print name \"~\" ver \"~\" size \"~\" desc}' " +
 		"| sort -h -r -t '~' -k3 " +
-		"&& echo 'pacman -Qi|pacman -Rcns' " +
+		"&& echo 'pacman -Qi |pacman -Rcns ' " +
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 
@@ -122,7 +122,8 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	if len(pkgs) > 0 && len(pkgs[len(pkgs)-1]) < 5 {
 		pkgs = pkgs[:len(pkgs)-1]
 	}
-	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"), str.Split(pkgs[len(pkgs)-2], "|")
+	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"), 
+		str.Split(pkgs[len(pkgs)-2], "|")
 	entries := make([]interface{}, len(titles))
 	for i := 0; i < len(titles); i++ {
 		var rows []string
@@ -239,6 +240,8 @@ func initUi() int {
 				dfIndex = showDfInfo(dfIndex)
 			case "<Enter>", "<Space>":
 				// TODO: Show package information
+				_ = optCmds
+				//optCmds[0] + str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
 			case "<C-j>":
