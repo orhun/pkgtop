@@ -13,7 +13,7 @@ import (
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
-var pkgs []string
+var pkgs []string									  /* Slice of installed packages (command output) */
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
 	"Kernel: $(uname -s)\n" +
 	"Kernel Release: $(uname -r)\n" +
