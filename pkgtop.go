@@ -246,16 +246,12 @@ func initUi() int {
 				//optCmds[0] + str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 
 				lists = lists[:0]
-				entries := make([]interface{}, 3)
-				for i := 0; i < 3; i++ {
-					l := widgets.NewList()
-					l.Title = "x"
-					l.WrapText = false
-					l.Border = false
-					lists = append(lists, l)
-					entries[i] = ui.NewCol(1.0/float64(3), l)
-				}
-				pkgGrid.Set(ui.NewRow(1.0, entries...))
+				l := widgets.NewList()
+				l.Title = "x"
+				l.WrapText = false
+				l.Border = false
+				lists = append(lists, l)
+				pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, l)))
 				ui.Render(pkgGrid)
 				for _, l := range lists {
 					ui.Render(l)
