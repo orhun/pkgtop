@@ -254,6 +254,7 @@ func initUi() int {
 					for _, l := range lists {
 						l.Rows = nil
 					}
+					//lists[0].Title = ""
 					lists[0].Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
 					pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, lists[0])))
 					showInfo = false
@@ -266,6 +267,7 @@ func initUi() int {
 				for _, l := range lists {
 					ui.Render(l)
 				}
+				scrollLists(lists, -1, 0)
 				
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
