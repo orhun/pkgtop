@@ -152,7 +152,9 @@ func scrollLists(lists []*widgets.List, amount int, row int) int {
 		}else {
 			l.ScrollAmount(amount)
 		}
-		ui.Render(l)
+		if len(l.Rows) != 0 {
+			ui.Render(l)
+		}
 	}
 	return 0
 }
