@@ -13,6 +13,7 @@ import (
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
+var showInfo = true									  /* Switch to the package information page */ 
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
 	"Kernel: $(uname -s)\n" +
 	"Kernel Release: $(uname -r)\n" +
@@ -244,14 +245,20 @@ func initUi() int {
 				// TODO: Show package information
 				_ = optCmds
 				//optCmds[0] + str.Split(pkgs[lists[0].SelectedRow], "~")[0]
-
-				lists = lists[:0]
-				infoList := widgets.NewList()
-				infoList.Title = "x"
-				infoList.WrapText = false
-				infoList.Border = false
-				lists = append(lists, infoList)
-				pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, infoList)))
+				if showInfo {
+					lists = lists[:0]
+					infoList := widgets.NewList()
+					infoList.Title = "x"
+					infoList.WrapText = false
+					infoList.Border = false
+					lists = append(lists, infoList)
+					pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, infoList)))
+					showInfo = false
+				}else {
+					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
+					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
+					showInfo = true
+				}
 				ui.Render(pkgGrid)
 				for _, l := range lists {
 					ui.Render(l)
