@@ -246,12 +246,12 @@ func initUi() int {
 				//optCmds[0] + str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 
 				lists = lists[:0]
-				l := widgets.NewList()
-				l.Title = "x"
-				l.WrapText = false
-				l.Border = false
-				lists = append(lists, l)
-				pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, l)))
+				infoList := widgets.NewList()
+				infoList.Title = "x"
+				infoList.WrapText = false
+				infoList.Border = false
+				lists = append(lists, infoList)
+				pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, infoList)))
 				ui.Render(pkgGrid)
 				for _, l := range lists {
 					ui.Render(l)
