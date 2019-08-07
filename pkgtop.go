@@ -13,6 +13,7 @@ import (
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
+var pkgs []string
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
 	"Kernel: $(uname -s)\n" +
 	"Kernel Release: $(uname -r)\n" +
@@ -195,8 +196,8 @@ func initUi() int {
 
 	// TODO: Parse the package list according to the distribution
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
-	lists, pkgEntries := getPkgListEntries(
-		str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n"))
+	pkgs = str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n")
+	lists, pkgEntries := getPkgListEntries(pkgs)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
 
@@ -238,6 +239,7 @@ func initUi() int {
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
 			case "<Enter>", "<Space>":
+				
 				// TODO: Show package information
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
