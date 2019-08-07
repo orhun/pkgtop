@@ -29,6 +29,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Installed Size/{size=$4$5; " +
 		"print name \"~\" ver \"~\" size \"~\" desc}' " +
 		"| sort -h -r -t '~' -k3 " +
+		"&& echo 'pacman -Qi|pacman -Rcns' " +
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 
