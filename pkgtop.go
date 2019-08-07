@@ -245,13 +245,17 @@ func initUi() int {
 				// TODO: Show package information
 				if showInfo {
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
-					lists = lists[:0]
+					/*lists = lists[:0]
 					infoList := widgets.NewList()
 					infoList.Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
 					infoList.WrapText = false
 					infoList.Border = false
-					lists = append(lists, infoList)
-					pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, infoList)))
+					lists = append(lists, infoList)*/
+					for _, l := range lists {
+						l.Rows = nil
+					}
+					lists[0].Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
+					pkgGrid.Set(ui.NewRow(1.0, ui.NewCol(1.0, lists[0])))
 					showInfo = false
 				}else {
 					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
