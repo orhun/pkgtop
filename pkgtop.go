@@ -243,12 +243,11 @@ func initUi() int {
 				dfIndex = showDfInfo(dfIndex)
 			case "<Enter>", "<Space>":
 				// TODO: Show package information
-				_ = optCmds
-				//optCmds[0] + str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 				if showInfo {
+					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 					lists = lists[:0]
 					infoList := widgets.NewList()
-					infoList.Title = "x"
+					infoList.Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
 					infoList.WrapText = false
 					infoList.Border = false
 					lists = append(lists, infoList)
