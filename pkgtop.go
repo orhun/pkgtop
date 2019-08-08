@@ -13,6 +13,7 @@ import (
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
+var pkgIndex = 0                                      /* Current row index of the package list */
 var showInfo = true									  /* Switch to the package information page */ 
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
 	"Kernel: $(uname -s)\n" +
@@ -243,6 +244,7 @@ func initUi() int {
 				dfIndex = showDfInfo(dfIndex)
 			case "<Enter>", "<Space>":
 				if showInfo {
+					pkgIndex = lists[0].SelectedRow
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 					lists = lists[:1]
 					lists[0].Title = ""
@@ -259,7 +261,7 @@ func initUi() int {
 					showInfo = true
 				}
 				ui.Render(pkgGrid)
-				scrollLists(lists, -1, 0)
+				scrollLists(lists, pkgIndex, -1)
 				
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
