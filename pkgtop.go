@@ -252,7 +252,8 @@ func initUi() int {
 					infoList.Border = false
 					lists = append(lists, infoList)*/
 					for _, l := range lists {
-						l.Rows = nil
+						l.Title = ""
+						l.Rows = []string{""}
 					}
 					//lists[0].Title = ""
 					lists[0].Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
@@ -264,10 +265,8 @@ func initUi() int {
 					showInfo = true
 				}
 				ui.Render(pkgGrid)
-				for _, l := range lists {
-					ui.Render(l)
-				}
-				scrollLists(lists, -1, 0)
+				
+				//scrollLists(lists, -1, 0)
 				
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
