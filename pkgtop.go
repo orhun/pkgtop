@@ -12,7 +12,6 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
-var pkgInfoList *widgets.List                         /* List widget for showing the package information */
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
 var showInfo = true									  /* Switch to the package information page */ 
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
@@ -197,9 +196,6 @@ func initUi() int {
 	pkgText, sysInfoText =
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
-	pkgInfoList = widgets.NewList()
-	pkgInfoList.WrapText = false
-	pkgInfoList.Border = false
 
 	// TODO: Parse the package list according to the distribution
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
@@ -248,28 +244,22 @@ func initUi() int {
 			case "<Enter>", "<Space>":
 				if showInfo {
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
-
-					pkgInfoList.Title = selectedPkg
-					pkgInfoList.Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
-
 					lists = lists[:1]
-					lists[0] = pkgInfoList
-				
+					lists[0].Title = selectedPkg
+					lists[0].Rows = str.Split(execCmd("sh", "-c", optCmds[0] + selectedPkg), "/n")
 					pkgEntries = nil
-					pkgEntries = append(pkgEntries, ui.NewCol(1.0, pkgInfoList))
+					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 					showInfo = false
-
 				}else {
-					pkgInfoList.Title = ""
-					pkgInfoList.Rows = nil
+					lists[0].Title = ""
+					lists[0].Rows = nil
 					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 					showInfo = true
 				}
 				ui.Render(pkgGrid)
 				scrollLists(lists, -1, 0)
-				
 				
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
