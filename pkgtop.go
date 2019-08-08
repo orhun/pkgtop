@@ -242,6 +242,9 @@ func initUi() int {
 				ui.Clear()
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
+			case "<Backspace>":
+				showInfo = false
+				fallthrough
 			case "<Enter>", "<Space>":
 				if showInfo {
 					pkgIndex = lists[0].SelectedRow
