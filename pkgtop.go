@@ -246,7 +246,7 @@ func initUi(osId string) int {
 	)
 	ui.Render(termGrid)
 
-	// TODO: Improve the UI key events
+	// TODO: Add new key events (remove...)
 	uiEvents := ui.PollEvents()
 	for {
 		select {
@@ -264,7 +264,7 @@ func initUi(osId string) int {
 			case "<Backspace>":
 				showInfo = false
 				fallthrough
-			case "<Enter>", "<Space>":
+			case "i", "<Enter>", "<Space>":
 				if showInfo {
 					pkgIndex = lists[0].SelectedRow
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
