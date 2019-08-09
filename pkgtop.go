@@ -224,7 +224,7 @@ func initUi(osId string) int {
 
 	// TODO: Parse the package list according to the distribution
 	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
-	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd["arch"]), "\n")
+	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
@@ -312,5 +312,5 @@ func initUi(osId string) int {
  * Entry-point
  */
 func main() {
-	initUi(execCmd("sh", "-c", osIdCmd))
+	initUi(str.TrimSpace(execCmd("sh", "-c", osIdCmd)))
 }
