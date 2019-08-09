@@ -29,15 +29,19 @@ func TestGetPkgListEntries(t *testing.T) {
 	pkgs := []string{
 		"val0~10~x~test1",
 		"val1~20~y~test2",
+		"test~echo 'y'",
 		"[1]|[2]",
 	}
 	titles := strings.Split(pkgs[len(pkgs)-1], "|")
-	lists, entries := getPkgListEntries(pkgs)
+	lists, entries, optCmds := getPkgListEntries(pkgs)
 	if len(lists) != len(titles) ||
 		len(entries) != len(titles) {
 		t.Errorf("Error occurred while parsing the 'pkg' values. "+
 			"Expected length %d, got %d-%d",
 			len(titles), len(lists), len(entries))
+	}else if optCmds[1] != "echo 'y'" {
+		t.Errorf("Error occurred while parsing the 'pkg' values. "+
+			"Expected \"echo 'y'\", got \"%s\"", optCmds[1])
 	}
 }
 
