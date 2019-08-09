@@ -95,10 +95,6 @@ func showDfInfo(dfIndex int) int {
 	}
 	/* Execute the 'df' command and split the output by newline. */
 	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
-	/* Remove the last line on invalid length like '\n' */
-	if len(dfOutput) > 0 && len(dfOutput[len(dfOutput)-1]) < 5 {
-		dfOutput = dfOutput[:len(dfOutput)-1]
-	}
 	/* Return the maximum index on overflow. */
 	if len(dfOutput)-dfIndex < dfCount && len(dfOutput) > dfCount {
 		return len(dfOutput) - dfCount
@@ -129,10 +125,6 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	[]interface{}, []string) {
 	/* Create a slice of List widgets. */
 	var pkgls []*widgets.List
-	/* Check and remove the invalid last line. ('\n') */
-	if len(pkgs) > 0 && len(pkgs[len(pkgs)-1]) < 5 {
-		pkgs = pkgs[:len(pkgs)-1]
-	}
 	/* Create the title and option command slices from the last lines. */
 	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"), 
 		str.Split(pkgs[len(pkgs)-2], "~")
@@ -197,7 +189,7 @@ func execCmd(name string, arg ...string) string {
 	if err != nil {
 		log.Fatalf("Execution of '%s' failed with %s\n", name, err)
 	}
-	return string(out)
+	return str.TrimSpace(string(out))
 }
 
 /*!
@@ -315,5 +307,5 @@ func initUi(osId string) int {
  * Entry-point
  */
 func main() {
-	initUi(str.TrimSpace(execCmd("sh", "-c", osIdCmd)))
+	initUi(execCmd("sh", "-c", osIdCmd))
 }
