@@ -117,30 +117,43 @@ func showDfInfo(dfIndex int) int {
 	return dfIndex
 }
 
-// TODO: Update the package parser & unit test
+/*!
+ * Parse the 'packages' command output as List widgets (GridItem) for Grid.
+ * 
+ * \param pkgs (output lines)
+ * \return pkgls, entries, optCmds
+ */
 func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	[]interface{}, []string) {
+	/* Create a slice of List widgets. */
 	var pkgls []*widgets.List
+	/* Check and remove the invalid last line. ('\n') */
 	if len(pkgs) > 0 && len(pkgs[len(pkgs)-1]) < 5 {
 		pkgs = pkgs[:len(pkgs)-1]
 	}
+	/* Create the title and option command slices from the last lines. */
 	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"), 
 		str.Split(pkgs[len(pkgs)-2], "~")
+	/* Loop through the lines for creating GridItems that contain List widget. */
 	entries := make([]interface{}, len(titles))
 	for i := 0; i < len(titles); i++ {
+		/* Parse the line for package details and append to the 'rows'. */
 		var rows []string
 		for _, pkg := range pkgs {
+			/* Pass the lines that have insufficient length. */
 			if len(str.Split(pkg, "~")) != len(titles) {
 				continue
 			}
 			rows = append(rows, " "+str.Split(pkg, "~")[i])
 		}
+		/* Create a List widget and initialize with the parsed values. */
 		pkgl := widgets.NewList()
 		pkgl.Title = titles[i]
 		pkgl.Rows = rows
 		pkgl.WrapText = false
 		pkgl.Border = false
 		pkgl.TextStyle = ui.NewStyle(ui.ColorBlue)
+		/* Add List widget to the GridItem slice. */
 		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
 		pkgls = append(pkgls, pkgl)
 	}
