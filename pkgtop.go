@@ -14,8 +14,7 @@ var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the la
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
 var pkgIndex = 0                                      /* Index value of the current package list row */
-var showInfo = true									  /* Switch to the package information page */
-var osId = ""                                         /* Operating system identity */      
+var showInfo = true									  /* Switch to the package information page */  
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
 	"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
@@ -204,9 +203,10 @@ func execCmd(name string, arg ...string) string {
 /*!
  * Initialize the termui and render widgets.
  *
- * return 0 on exit
+ * \param osId (Operating system identity)
+ * \return 0 on exit
  */
-func initUi() int {
+func initUi(osId string) int {
 	/* Initialize the termui library */
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
@@ -312,6 +312,5 @@ func initUi() int {
  * Entry-point
  */
 func main() {
-	osId = execCmd("sh", "-c", osIdCmd)
-	initUi()
+	initUi(execCmd("sh", "-c", osIdCmd))
 }
