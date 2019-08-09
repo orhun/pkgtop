@@ -46,9 +46,9 @@ func TestGetPkgListEntries(t *testing.T) {
 }
 
 func TestExecCmd(t *testing.T) {
-	printfCmd := execCmd("printf", "test")
-	testCmd := execCmd("sh", "-c", "test 10 -eq 10 && printf \"true\"")
-	if printfCmd != "test" || testCmd != "true" {
-		t.Errorf("Expected 'test-True', got '%s-%s'", printfCmd, testCmd)
+	echoCmd := execCmd("echo", "test")
+	testCmd := execCmd("sh", "-c", "test 10 -eq 10 && echo \"true\"")
+	if echoCmd != "test" || testCmd != "true" {
+		t.Errorf("Expected 'test-true', got '%s-%s'", echoCmd, testCmd)
 	}
 }
