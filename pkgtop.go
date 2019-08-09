@@ -207,13 +207,13 @@ func execCmd(name string, arg ...string) string {
  * \return 0 on exit
  */
 func initUi(osId string) int {
-	/* Initialize the termui library */
+	/* Initialize the termui library. */
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
 	}
-	/* Close the UI on function exit */
+	/* Close the UI on function exit. */
 	defer ui.Close()
-	/* Initialize the widgets */
+	/* Initialize the widgets. */
 	termGrid, dfGrid, pkgGrid =
 		ui.NewGrid(),
 		ui.NewGrid(),
@@ -221,21 +221,22 @@ func initUi(osId string) int {
 	pkgText, sysInfoText =
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
-
+	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
+	/* Check the packages count. */
 	if len(pkgs) < 2 {
 		ui.Close()
 		log.Fatalf("Failed to retrieve package list. (OS: '%s')", osId)
 	}
+	/* Initialize and render the widgets for showing the package list. */
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
-
-	/* Show the disk usage information */
+	/* Show the disk usage information. */
 	dfIndex = showDfInfo(dfIndex)
-	/* Show the OS information */
+	/* Show the OS information. */
 	sysInfoText.Text = execCmd("sh", "-c", sysInfoCmd)
-	/* Configure and render the main grid layout */
+	/* Configure and render the main grid layout. */
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
 	termGrid.Set(
