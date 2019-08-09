@@ -312,5 +312,6 @@ func initUi() int {
  * Entry-point
  */
 func main() {
+	osId = execCmd("sh", "-c", osIdCmd)
 	initUi()
 }
