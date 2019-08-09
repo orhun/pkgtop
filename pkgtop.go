@@ -147,6 +147,14 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	return pkgls, entries, optCmds
 }
 
+/*!
+ * Scroll and render a slice of List widgets.
+ *
+ * \param lists
+ * \param amount
+ * \param row
+ * \return 0 on success
+ */
 func scrollLists(lists []*widgets.List, amount int, row int) int {
 	for _, l := range lists {
 		if row != -1 {
