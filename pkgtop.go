@@ -222,9 +222,11 @@ func initUi(osId string) int {
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
 
-	// TODO: Parse the package list according to the distribution
-	// awk -F '=' '/^ID=/ {print tolower($2)}' /etc/*-release
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
+	if len(pkgs) < 2 {
+		ui.Close()
+		log.Fatalf("Failed to retrieve package list. (OS: '%s')", osId)
+	}
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
