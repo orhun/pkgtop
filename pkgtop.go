@@ -15,7 +15,8 @@ var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for s
 var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
 var pkgIndex = 0                                      /* Index value of the current package list row */
 var showInfo = true									  /* Switch to the package information page */
-var osRlsCmd = "awk -F '=' '/^ID=/ " +                /* Print the OS release information (for distro checking) */
+var osId = ""                                         /* Operating system identity */      
+var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
 	"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
 	"Kernel: $(uname -s)\n" +
