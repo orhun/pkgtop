@@ -270,7 +270,7 @@ func initUi(osId string) int {
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 					lists = lists[:1]
 					lists[0].Title = ""
-					lists[0].Rows = []string{ execCmd("sh", "-c", 
+					lists[0].Rows = []string{"  "+execCmd("sh", "-c", 
 						str.Replace(optCmds[0], "{pkgname}", selectedPkg, 1))}
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
