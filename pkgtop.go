@@ -12,7 +12,7 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
-var dfCount, dfIndex = 4, 0                           /* Index and count values for the disk usage widgets */
+var dfIndex = 0                                       /* Index value for the disk usage widgets */
 var pkgIndex = 0                                      /* Index value of the current package list row */
 var showInfo = true									  /* Switch to the package information page */  
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
@@ -93,6 +93,8 @@ func showDfInfo(dfIndex int) int {
 	if dfIndex < 0 {
 		return 0
 	}
+	/* Find the optimal widget count for the Grid. */
+	dfCount := (sysInfoText.Block.Inner.Max.Y + 1) / 3
 	/* Execute the 'df' command and split the output by newline. */
 	dfOutput := str.Split(execCmd("sh", "-c", dfCmd), "\n")
 	/* Return the maximum index on overflow. */
@@ -224,8 +226,6 @@ func initUi(osId string) int {
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
-	/* Show the disk usage information. */
-	dfIndex = showDfInfo(dfIndex)
 	/* Show the OS information. */
 	sysInfoText.Text = " "+execCmd("sh", "-c", sysInfoCmd)
 	/* Configure and render the main grid layout. */
@@ -245,6 +245,8 @@ func initUi(osId string) int {
 		),
 	)
 	ui.Render(termGrid)
+	/* Show the disk usage information. (post-render) */
+	dfIndex = showDfInfo(dfIndex)
 
 	// TODO: Add new key events (remove...)
 
@@ -264,7 +266,6 @@ func initUi(osId string) int {
 					payload.Width, payload.Height)
 				ui.Clear()
 				ui.Render(termGrid)
-				dfCount = (dfGrid.Block.Inner.Max.Y + 1) / 3
 				dfIndex = showDfInfo(dfIndex)
 				scrollLists(lists, -1, lists[0].SelectedRow)
 			/* Go back from information page. */
