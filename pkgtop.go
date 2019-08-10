@@ -12,8 +12,7 @@ import (
 
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
-var dfIndex = 0                                       /* Index value for the disk usage widgets */
-var pkgIndex = 0                                      /* Index value of the current package list row */
+var dfIndex, pkgIndex = 0, 0                          /* Index value for the disk usage widgets & package list */
 var showInfo = true									  /* Switch to the package information page */  
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
 	"{print tolower($2)}' /etc/*-release"
