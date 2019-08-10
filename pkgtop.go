@@ -247,13 +247,17 @@ func initUi(osId string) int {
 	ui.Render(termGrid)
 
 	// TODO: Add new key events (remove...)
+	
+	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
 	for {
 		select {
 		case e := <-uiEvents:
 			switch e.ID {
+			/* Quit. */
 			case "q", "<C-c>", "<C-d>":
 				return 0
+			/* Terminal resize. */
 			case "<Resize>":
 				payload := e.Payload.(ui.Resize)
 				termGrid.SetRect(0, 0,
@@ -261,11 +265,16 @@ func initUi(osId string) int {
 				ui.Clear()
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
+			/* Go back from information page. */
 			case "<Backspace>":
 				showInfo = false
 				fallthrough
+			/* Show package information. */
 			case "i", "<Enter>", "<Space>":
 				if showInfo {
+					/* Parse the 'package info' command output after execution,
+					 * use first list for showing the information. 
+					 */
 					pkgIndex = lists[0].SelectedRow
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 					lists = lists[:1]
@@ -277,6 +286,7 @@ func initUi(osId string) int {
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 					showInfo = false
 				}else {
+					/* Parse the packages with previous command output and show. */
 					lists[0].Rows = nil
 					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
@@ -284,18 +294,23 @@ func initUi(osId string) int {
 				}
 				ui.Render(pkgGrid)
 				scrollLists(lists, pkgIndex, -1)
-				
+			/* Scroll down. (packages) */
 			case "j", "<Down>":
 				scrollLists(lists, 1, -1)
+			/* Scroll to bottom. (packages) */
 			case "<C-j>":
 				scrollLists(lists, -1, 
 					len(lists[0].Rows) - 1)
+			/* Scroll up. (packages) */
 			case "k", "<Up>":
 				scrollLists(lists, -1, -1)
+			/* Scroll to top. (packages) */
 			case "<C-k>":
 				scrollLists(lists, -1, 0)
+			/* Scroll down. (disk usage) */
 			case "l", "<Right>":
 				dfIndex = showDfInfo(dfIndex + 1)
+			/* Scroll up. (disk usage) */
 			case "h", "<Left>":
 				dfIndex = showDfInfo(dfIndex - 1)
 			}
