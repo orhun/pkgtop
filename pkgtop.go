@@ -280,6 +280,7 @@ func initUi(osId string) int {
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 					lists = lists[:1]
 					lists[0].Title = ""
+					lists[0].WrapText = true
 					lists[0].Rows = []string{"  "+execCmd("sh", "-c", 
 						str.Replace(optCmds[0], "{pkgname}", selectedPkg, 1))}
 					pkgEntries = nil
@@ -289,6 +290,7 @@ func initUi(osId string) int {
 				}else {
 					/* Parse the packages with previous command output and show. */
 					lists[0].Rows = nil
+					lists[0].WrapText = false
 					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 					showInfo = true
