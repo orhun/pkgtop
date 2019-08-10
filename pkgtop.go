@@ -264,6 +264,7 @@ func initUi(osId string) int {
 					payload.Width, payload.Height)
 				ui.Clear()
 				ui.Render(termGrid)
+				dfCount = (dfGrid.Block.Inner.Max.Y + 1) / 3
 				dfIndex = showDfInfo(dfIndex)
 				scrollLists(lists, -1, lists[0].SelectedRow)
 			/* Go back from information page. */
