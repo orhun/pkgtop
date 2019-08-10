@@ -11,7 +11,8 @@ import (
 )
 
 var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
-var pkgText, sysInfoText, cmdText *widgets.Paragraph  /* Paragraph widgets for showing text */
+var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
+var cmdList *widgets.List                             /* List widget for the executed commands. */
 var dfIndex, pkgIndex = 0, 0                          /* Index value for the disk usage widgets & package list */
 var showInfo = true									  /* Switch to the package information page */  
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
@@ -211,10 +212,10 @@ func initUi(osId string) int {
 		ui.NewGrid(),
 		ui.NewGrid(),
 		ui.NewGrid()
-	pkgText, sysInfoText, cmdText =
-		widgets.NewParagraph(),
+	pkgText, sysInfoText =
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
+	cmdList = widgets.NewList()
 	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
 	/* Check the packages count. */
@@ -241,7 +242,7 @@ func initUi(osId string) int {
 			ui.NewCol(1.0/1, pkgGrid),
 		),
 		ui.NewRow(1.0/8,
-			ui.NewCol(1.0, cmdText),
+			ui.NewCol(1.0, cmdList),
 		),
 	)
 	ui.Render(termGrid)
@@ -327,6 +328,5 @@ func initUi(osId string) int {
  * Entry-point
  */
 func main() {
-	
 	initUi(execCmd("sh", "-c", osIdCmd))
 }
