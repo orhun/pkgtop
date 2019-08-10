@@ -33,7 +33,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Installed Size/{size=$4$5; " +
 		"print name \"~\" ver \"~\" size \"~\" desc}' " +
 		"| sort -h -r -t '~' -k3 " +
-		"&& echo \"pacman -Qi {pkgname} | sed -e 's/^/  /'~pacman -Rcns {pkgname}\" " +
+		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~pacman -Rcns %s\" " +
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 
@@ -281,8 +281,8 @@ func initUi(osId string) int {
 					lists = lists[:1]
 					lists[0].Title = ""
 					lists[0].WrapText = true
-					lists[0].Rows = []string{"  "+execCmd("sh", "-c", 
-						str.Replace(optCmds[0], "{pkgname}", selectedPkg, 1))}
+					lists[0].Rows = []string{"  "+
+						execCmd("sh", "-c", fmt.Sprintf(optCmds[0], selectedPkg))}
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
