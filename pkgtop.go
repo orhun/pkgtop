@@ -247,7 +247,7 @@ func initUi(osId string) int {
 	ui.Render(termGrid)
 
 	// TODO: Add new key events (remove...)
-	
+
 	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
 	for {
@@ -265,6 +265,7 @@ func initUi(osId string) int {
 				ui.Clear()
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
+				scrollLists(lists, -1, lists[0].SelectedRow)
 			/* Go back from information page. */
 			case "<Backspace>":
 				showInfo = false
