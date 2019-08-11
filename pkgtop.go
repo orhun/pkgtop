@@ -289,6 +289,7 @@ func initUi(osId string) int {
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
+					cmdList.ScrollTop()
 					lists = lists[:1]
 					lists[0].Title = ""
 					lists[0].WrapText = true
