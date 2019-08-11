@@ -216,6 +216,9 @@ func initUi(osId string) int {
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
 	cmdList = widgets.NewList()
+	cmdList.WrapText = true
+	cmdList.TextStyle = ui.NewStyle(ui.ColorGreen)
+	cmdList.Rows = []string{" λ ~ " + pkgsCmd[osId], " λ ~ " + osIdCmd}
 	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
 	/* Check the packages count. */
