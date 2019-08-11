@@ -232,7 +232,6 @@ func initUi(osId string) int {
 	/* Initialize and render the widgets for showing the package list. */
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-	ui.Render(pkgGrid)
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
 	sysInfoText.Text = " "+execCmd("sh", "-c", sysInfoCmd)
@@ -252,7 +251,7 @@ func initUi(osId string) int {
 			ui.NewCol(1.0, cmdList),
 		),
 	)
-	ui.Render(termGrid)
+	ui.Render(pkgGrid, termGrid)
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
 
