@@ -16,6 +16,7 @@ var cmdList *widgets.List                             /* List widget for the exe
 var dfIndex, pkgIndex = 0, 0                          /* Index value for the disk usage widgets & package list */
 var showInfo = true									  /* Switch to the package information page */ 
 var cmdPrefix = " λ ~ "                               /* Prefix for prepending to the commands */
+var cmdConfirm = " [y] "                              /* Confirmation string for commands to execute */
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
 	"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
@@ -334,6 +335,12 @@ func initUi(osId string) int {
 				}else {
 					cmdList.ScrollTop()
 				}
+				ui.Render(cmdList)
+			case "r":
+				selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
+				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
+				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd}, cmdList.Rows...)
+				cmdList.ScrollTop()
 				ui.Render(cmdList)
 			}
 		}
