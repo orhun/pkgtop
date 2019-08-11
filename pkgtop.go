@@ -14,7 +14,8 @@ var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the la
 var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
 var cmdList *widgets.List                             /* List widget for the executed commands. */
 var dfIndex, pkgIndex = 0, 0                          /* Index value for the disk usage widgets & package list */
-var showInfo = true									  /* Switch to the package information page */  
+var showInfo = true									  /* Switch to the package information page */ 
+var cmdPrefix = " λ ~ "                               /* Prefix for prepending to the commands */
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
 	"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
@@ -218,7 +219,9 @@ func initUi(osId string) int {
 	cmdList = widgets.NewList()
 	cmdList.WrapText = false
 	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
-	cmdList.Rows = []string{" λ ~ " + pkgsCmd[osId], " λ ~ " + osIdCmd}
+	/* Update the commands list. */
+	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osId], 
+		cmdPrefix + osIdCmd}
 	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
 	/* Check the packages count. */
@@ -231,7 +234,7 @@ func initUi(osId string) int {
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
 	/* Show the OS information. */
-	cmdList.Rows = append([]string{" λ ~ " + sysInfoCmd}, cmdList.Rows...)
+	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
 	sysInfoText.Text = " "+execCmd("sh", "-c", sysInfoCmd)
 	/* Configure and render the main grid layout. */
 	termWidth, termHeight := ui.TerminalDimensions()
@@ -285,11 +288,12 @@ func initUi(osId string) int {
 					 */
 					pkgIndex = lists[0].SelectedRow
 					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
+					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
+					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
 					lists = lists[:1]
 					lists[0].Title = ""
 					lists[0].WrapText = true
-					lists[0].Rows = []string{"  "+
-						execCmd("sh", "-c", fmt.Sprintf(optCmds[0], selectedPkg))}
+					lists[0].Rows = []string{"  "+execCmd("sh", "-c", pkgInfoCmd)}
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
@@ -302,7 +306,7 @@ func initUi(osId string) int {
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 					showInfo = true
 				}
-				ui.Render(pkgGrid)
+				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1)
 			/* Scroll down. (packages) */
 			case "j", "<Down>":
