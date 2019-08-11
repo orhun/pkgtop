@@ -286,7 +286,7 @@ func initUi(osId string) int {
 					 * use first list for showing the information. 
 					 */
 					pkgIndex = lists[0].SelectedRow
-					selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
+					selectedPkg := str.Split(pkgs[pkgIndex], "~")[0]
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
 					cmdList.ScrollTop()
@@ -327,6 +327,7 @@ func initUi(osId string) int {
 			/* Scroll up. (disk usage) */
 			case "h", "<Left>":
 				dfIndex = showDfInfo(dfIndex - 1)
+			/* Scroll executed commands list. */
 			case "c":
 				if cmdList.SelectedRow < len(cmdList.Rows) - 1 {
 					cmdList.ScrollDown()
