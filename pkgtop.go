@@ -5,6 +5,7 @@ import (
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 	"log"
+	"os"
 	"os/exec"
 	"strconv"
 	str "strings"
@@ -35,7 +36,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Installed Size/{size=$4$5; " +
 		"print name \"~\" ver \"~\" size \"~\" desc}' " +
 		"| sort -h -r -t '~' -k3 " +
-		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~pacman -Rcns %s\" " +
+		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~pacman -Rcns --noconfirm %s\"" +
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 
@@ -256,7 +257,7 @@ func initUi(osId string) int {
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
 
-	// TODO: Add new key events (remove...)
+	// TODO: Add new key events (remove, search...)
 
 	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
@@ -336,12 +337,31 @@ func initUi(osId string) int {
 					cmdList.ScrollTop()
 				}
 				ui.Render(cmdList)
+			/* Remove package. */
 			case "r":
+				/* Add the 'remove' command to command list with confirmation prefix. */
 				selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
-				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd}, cmdList.Rows...)
+				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd}, 
+					cmdList.Rows...)
 				cmdList.ScrollTop()
 				ui.Render(cmdList)
+			/* Confirm and execute the command. */
+			case "y":
+				selectedCmdRow := cmdList.Rows[cmdList.SelectedRow]
+				if str.Contains(selectedCmdRow, cmdConfirm) {
+					/* Close the UI, execute the command and show output. */
+					ui.Close()
+					cmd := exec.Command("sh", "-c", 
+						str.Replace(selectedCmdRow, cmdConfirm, "", -1))
+					cmd.Stderr = os.Stderr
+					cmd.Stdout = os.Stdout
+					err := cmd.Run()
+					/* Show the UI again if the execution is successful. */
+					if err == nil {
+						initUi(osId)
+					}
+				}
 			}
 		}
 	}
