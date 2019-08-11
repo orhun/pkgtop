@@ -17,14 +17,14 @@ var dfIndex, pkgIndex = 0, 0                          /* Index value for the dis
 var showInfo = true									  /* Switch to the package information page */  
 var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
 	"{print tolower($2)}' /etc/*-release"
-var sysInfoCmd = "printf \"Hostname: $(uname -n)\n" + /* Print the system information with 'uname' */
-	" Kernel: $(uname -s)\n" +
-	" Kernel Release: $(uname -r)\n" +
-	" Kernel Version: $(uname -v)\n" +
-	" Processor Type: $(uname -p)\n" +
-	" Hardware: $(uname --m)\n" +
-	" Hardware Platform: $(uname -i)\n" +
-							" OS: $(uname -o)\n\""
+var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
+	" Kernel: $(uname -s)\\n" +
+	" Kernel Release: $(uname -r)\\n" +
+	" Kernel Version: $(uname -v)\\n" +
+	" Processor Type: $(uname -p)\\n" +
+	" Hardware: $(uname --m)\\n" +
+	" Hardware Platform: $(uname -i)\\n" +
+							" OS: $(uname -o)\\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
 var pkgsCmd = map[string]string{                      /* Commands for listing the installed packages */
 	"arch": "pacman -Qi | awk '/^Name/{name=$3} " +
@@ -216,8 +216,8 @@ func initUi(osId string) int {
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
 	cmdList = widgets.NewList()
-	cmdList.WrapText = true
-	cmdList.TextStyle = ui.NewStyle(ui.ColorGreen)
+	cmdList.WrapText = false
+	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
 	cmdList.Rows = []string{" λ ~ " + pkgsCmd[osId], " λ ~ " + osIdCmd}
 	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
@@ -231,6 +231,7 @@ func initUi(osId string) int {
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	ui.Render(pkgGrid)
 	/* Show the OS information. */
+	cmdList.Rows = append([]string{" λ ~ " + sysInfoCmd}, cmdList.Rows...)
 	sysInfoText.Text = " "+execCmd("sh", "-c", sysInfoCmd)
 	/* Configure and render the main grid layout. */
 	termWidth, termHeight := ui.TerminalDimensions()
@@ -322,6 +323,13 @@ func initUi(osId string) int {
 			/* Scroll up. (disk usage) */
 			case "h", "<Left>":
 				dfIndex = showDfInfo(dfIndex - 1)
+			case "c":
+				if cmdList.SelectedRow < len(cmdList.Rows) - 1 {
+					cmdList.ScrollDown()
+				}else {
+					cmdList.ScrollTop()
+				}
+				ui.Render(cmdList)
 			}
 		}
 	}
