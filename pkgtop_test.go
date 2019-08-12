@@ -39,7 +39,7 @@ func TestGetPkgListEntries(t *testing.T) {
 		t.Errorf("Error occurred while parsing the 'pkg' values. "+
 			"Expected length %d, got %d-%d",
 			len(titles), len(lists), len(entries))
-	}else if optCmds[1] != "echo 'y'" {
+	} else if optCmds[1] != "echo 'y'" {
 		t.Errorf("Error occurred while parsing the 'pkg' values. "+
 			"Expected \"echo 'y'\", got \"%s\"", optCmds[1])
 	}

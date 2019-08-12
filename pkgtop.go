@@ -11,15 +11,15 @@ import (
 	str "strings"
 )
 
-var termGrid, dfGrid, pkgGrid *ui.Grid                /* Grid widgets for the layout */
-var pkgText, sysInfoText *widgets.Paragraph           /* Paragraph widgets for showing text */
-var cmdList *widgets.List                             /* List widget for the executed commands. */
-var dfIndex, pkgIndex = 0, 0                          /* Index value for the disk usage widgets & package list */
-var showInfo = true									  /* Switch to the package information page */ 
-var cmdPrefix = " λ ~ "                               /* Prefix for prepending to the commands */
-var cmdConfirm = " [y] "                              /* Confirmation string for commands to execute */
-var osIdCmd = "awk -F '=' '/^ID=/ " +                 /* Print the OS ID information (for distro checking) */
-	"{print tolower($2)}' /etc/*-release"
+var termGrid, dfGrid, pkgGrid *ui.Grid      /* Grid widgets for the layout */
+var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
+var cmdList *widgets.List                   /* List widget for the executed commands. */
+var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
+var showInfo = true                         /* Switch to the package information page */
+var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
+var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
+var osIdCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
+							"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
 	" Kernel: $(uname -s)\\n" +
 	" Kernel Release: $(uname -r)\\n" +
@@ -122,7 +122,7 @@ func showDfInfo(dfIndex int) int {
 
 /*!
  * Parse the 'packages' command output as List widgets (GridItem) for Grid.
- * 
+ *
  * \param pkgs (output lines)
  * \return pkgls, entries, optCmds
  */
@@ -131,7 +131,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	/* Create a slice of List widgets. */
 	var pkgls []*widgets.List
 	/* Create the title and option command slices from the last lines. */
-	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"), 
+	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"),
 		str.Split(pkgs[len(pkgs)-2], "~")
 	/* Loop through the lines for creating GridItems that contain List widget. */
 	entries := make([]interface{}, len(titles))
@@ -171,7 +171,7 @@ func scrollLists(lists []*widgets.List, amount int, row int) int {
 	for _, l := range lists {
 		if row != -1 {
 			l.SelectedRow = row
-		}else {
+		} else {
 			l.ScrollAmount(amount)
 		}
 		if len(l.Rows) != 0 {
@@ -222,7 +222,7 @@ func initUi(osId string) int {
 	cmdList.WrapText = false
 	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
 	/* Update the commands list. */
-	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osId], 
+	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osId],
 		cmdPrefix + osIdCmd}
 	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
@@ -236,7 +236,7 @@ func initUi(osId string) int {
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
-	sysInfoText.Text = " "+execCmd("sh", "-c", sysInfoCmd)
+	sysInfoText.Text = " " + execCmd("sh", "-c", sysInfoCmd)
 	/* Configure and render the main grid layout. */
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
@@ -285,7 +285,7 @@ func initUi(osId string) int {
 			case "i", "<Enter>", "<Space>":
 				if showInfo {
 					/* Parse the 'package info' command output after execution,
-					 * use first list for showing the information. 
+					 * use first list for showing the information.
 					 */
 					pkgIndex = lists[0].SelectedRow
 					selectedPkg := str.Split(pkgs[pkgIndex], "~")[0]
@@ -295,12 +295,12 @@ func initUi(osId string) int {
 					lists = lists[:1]
 					lists[0].Title = ""
 					lists[0].WrapText = true
-					lists[0].Rows = []string{"  "+execCmd("sh", "-c", pkgInfoCmd)}
+					lists[0].Rows = []string{"  " + execCmd("sh", "-c", pkgInfoCmd)}
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 					showInfo = false
-				}else {
+				} else {
 					/* Parse the packages with previous command output and show. */
 					lists[0].Rows = nil
 					lists[0].WrapText = false
@@ -315,8 +315,8 @@ func initUi(osId string) int {
 				scrollLists(lists, 1, -1)
 			/* Scroll to bottom. (packages) */
 			case "<C-j>":
-				scrollLists(lists, -1, 
-					len(lists[0].Rows) - 1)
+				scrollLists(lists, -1,
+					len(lists[0].Rows)-1)
 			/* Scroll up. (packages) */
 			case "k", "<Up>":
 				scrollLists(lists, -1, -1)
@@ -331,9 +331,9 @@ func initUi(osId string) int {
 				dfIndex = showDfInfo(dfIndex - 1)
 			/* Scroll executed commands list. */
 			case "c":
-				if cmdList.SelectedRow < len(cmdList.Rows) - 1 {
+				if cmdList.SelectedRow < len(cmdList.Rows)-1 {
 					cmdList.ScrollDown()
-				}else {
+				} else {
 					cmdList.ScrollTop()
 				}
 				ui.Render(cmdList)
@@ -344,7 +344,7 @@ func initUi(osId string) int {
 				/* Add the 'remove' command to command list with confirmation prefix. */
 				selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
 				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
-				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd}, 
+				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd},
 					cmdList.Rows...)
 				cmdList.ScrollTop()
 				ui.Render(cmdList)
@@ -354,7 +354,7 @@ func initUi(osId string) int {
 				if str.Contains(selectedCmdRow, cmdConfirm) {
 					/* Close the UI, execute the command and show output. */
 					ui.Close()
-					cmd := exec.Command("sh", "-c", 
+					cmd := exec.Command("sh", "-c",
 						str.Replace(selectedCmdRow, cmdConfirm, "", -1))
 					cmd.Stderr = os.Stderr
 					cmd.Stdout = os.Stdout
