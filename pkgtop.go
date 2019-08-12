@@ -257,7 +257,6 @@ func initUi(osId string) int {
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
 
-	// TODO: Add new key events (search,...)
 	// TODO: Support case insensitive keys
 
 	/* Get events from termui. */
@@ -338,6 +337,8 @@ func initUi(osId string) int {
 					cmdList.ScrollTop()
 				}
 				ui.Render(cmdList)
+			case "s":
+				// TODO: Search package
 			/* Remove package. */
 			case "r":
 				/* Add the 'remove' command to command list with confirmation prefix. */
