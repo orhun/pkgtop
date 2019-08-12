@@ -257,7 +257,8 @@ func initUi(osId string) int {
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
 
-	// TODO: Add new key events (remove, search...)
+	// TODO: Add new key events (search,...)
+	// TODO: Support case insensitive keys
 
 	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
