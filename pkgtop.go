@@ -339,7 +339,17 @@ func initUi(osId string) int {
 				// TODO: Search package
 
 				searchMode = !searchMode
-				
+				if searchMode {
+					pkgIndex = lists[0].SelectedRow
+					lists[0].Title = lists[0].Title + " > search: "
+					ui.Render(lists[0])
+				} else {
+					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
+					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
+					ui.Render(pkgGrid)
+					scrollLists(lists, pkgIndex, -1)
+				}
+
 			/* Remove package. */
 			case "r":
 				/* Add the 'remove' command to command list with confirmation prefix. */
