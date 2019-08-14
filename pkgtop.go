@@ -293,20 +293,19 @@ func initUi(osId string) int {
 					cmdList.ScrollTop()
 					lists = lists[:1]
 					lists[0].Title = ""
-					lists[0].WrapText = true
+					lists[0].WrapText = showInfo
 					lists[0].Rows = []string{"  " + execCmd("sh", "-c", pkgInfoCmd)}
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-					showInfo = false
 				} else {
 					/* Parse the packages with previous command output and show. */
 					lists[0].Rows = nil
 					lists[0].WrapText = false
 					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-					showInfo = true
 				}
+				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1)
 			/* Scroll down. (packages) */
@@ -337,8 +336,10 @@ func initUi(osId string) int {
 				}
 				ui.Render(cmdList)
 			case "s":
-
 				// TODO: Search package
+
+				searchMode = !searchMode
+				
 			/* Remove package. */
 			case "r":
 				/* Add the 'remove' command to command list with confirmation prefix. */
