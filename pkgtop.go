@@ -257,19 +257,17 @@ func initUi(osId string) int {
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
 
-	// TODO: Support case insensitive keys
-
 	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
 	for {
 		select {
 		case e := <-uiEvents:
-			switch e.ID {
+			switch str.ToLower(e.ID) {
 			/* Quit. */
-			case "q", "<C-c>", "<C-d>":
+			case "q", "<c-c>", "<c-d>":
 				return 0
 			/* Terminal resize. */
-			case "<Resize>":
+			case "<resize>":
 				payload := e.Payload.(ui.Resize)
 				termGrid.SetRect(0, 0,
 					payload.Width, payload.Height)
@@ -278,11 +276,11 @@ func initUi(osId string) int {
 				dfIndex = showDfInfo(dfIndex)
 				scrollLists(lists, -1, lists[0].SelectedRow)
 			/* Go back from information page. */
-			case "<Backspace>":
+			case "<backspace>":
 				showInfo = false
 				fallthrough
 			/* Show package information. */
-			case "i", "<Enter>", "<Space>":
+			case "i", "<enter>", "<space>":
 				if showInfo {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
@@ -311,23 +309,23 @@ func initUi(osId string) int {
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1)
 			/* Scroll down. (packages) */
-			case "j", "<Down>":
+			case "j", "<down>":
 				scrollLists(lists, 1, -1)
 			/* Scroll to bottom. (packages) */
-			case "<C-j>":
+			case "<c-j>":
 				scrollLists(lists, -1,
 					len(lists[0].Rows)-1)
 			/* Scroll up. (packages) */
-			case "k", "<Up>":
+			case "k", "<up>":
 				scrollLists(lists, -1, -1)
 			/* Scroll to top. (packages) */
-			case "<C-k>":
+			case "<c-k>":
 				scrollLists(lists, -1, 0)
 			/* Scroll down. (disk usage) */
-			case "l", "<Right>":
+			case "l", "<right>":
 				dfIndex = showDfInfo(dfIndex + 1)
 			/* Scroll up. (disk usage) */
-			case "h", "<Left>":
+			case "h", "<left>":
 				dfIndex = showDfInfo(dfIndex - 1)
 			/* Scroll executed commands list. */
 			case "c":
