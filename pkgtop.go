@@ -16,6 +16,7 @@ var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing tex
 var cmdList *widgets.List                   /* List widget for the executed commands. */
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = true                         /* Switch to the package information page */
+var searchMode = false                      /* Boolean value for enabling/disabling the search mode */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
 var osIdCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
@@ -336,6 +337,7 @@ func initUi(osId string) int {
 				}
 				ui.Render(cmdList)
 			case "s":
+
 				// TODO: Search package
 			/* Remove package. */
 			case "r":
