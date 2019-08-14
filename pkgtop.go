@@ -17,6 +17,8 @@ var cmdList *widgets.List                   /* List widget for the executed comm
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = true                         /* Switch to the package information page */
 var searchMode = false                      /* Boolean value for enabling/disabling the search mode */
+var searchQuery = ""                        /* String for storing the search query */
+var searchSuffix = " > search: "            /* Suffix for appending to the list title */ 
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
 var osIdCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
@@ -263,6 +265,26 @@ func initUi(osId string) int {
 	for {
 		select {
 		case e := <-uiEvents:
+			if searchMode {
+				if len(str.ToLower(e.ID)) == 1 {
+					searchQuery += str.ToLower(e.ID)
+				}
+				switch str.ToLower(e.ID) {
+					case "<c-c>", "<c-d>", "<resize>", "<enter>", "<space>":
+						pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
+						ui.Render(pkgGrid)
+						scrollLists(lists, -1, 0)
+						searchMode = false
+					case "<backspace>":
+						if len(searchQuery) != 0 {
+							searchQuery = searchQuery[:len(searchQuery)-1]
+						}
+				}
+				
+				lists[0].Title = searchSuffix + searchQuery
+				ui.Render(lists[0])
+				break
+			}
 			switch str.ToLower(e.ID) {
 			/* Quit. */
 			case "q", "<c-c>", "<c-d>":
@@ -338,17 +360,10 @@ func initUi(osId string) int {
 			case "s":
 				// TODO: Search package
 
-				searchMode = !searchMode
-				if searchMode {
-					pkgIndex = lists[0].SelectedRow
-					lists[0].Title = lists[0].Title + " > search: "
-					ui.Render(lists[0])
-				} else {
-					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
-					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-					ui.Render(pkgGrid)
-					scrollLists(lists, pkgIndex, -1)
-				}
+				searchMode, searchQuery = true, ""
+				searchSuffix = lists[0].Title + searchSuffix
+				lists[0].Title = searchSuffix
+				ui.Render(lists[0])
 
 			/* Remove package. */
 			case "r":
