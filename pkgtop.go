@@ -15,7 +15,7 @@ var termGrid, dfGrid, pkgGrid *ui.Grid      /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
 var cmdList *widgets.List                   /* List widget for the executed commands. */
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
-var showInfo = true                         /* Switch to the package information page */
+var showInfo = false                        /* Switch to the package information page */
 var searchMode = false                      /* Boolean value for enabling/disabling the search mode */
 var searchQuery, searchSuffix = "", ""      /* List title suffix & search query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
@@ -281,8 +281,8 @@ func initUi(osId string) int {
 				}
 				for s, name := range searchLists[0].Rows {
 					if str.Contains(name, searchQuery) {
-					for i, l := range searchLists {
-						lists[i].Rows = append(lists[i].Rows, l.Rows[s])
+						for i, l := range searchLists {
+							lists[i].Rows = append(lists[i].Rows, l.Rows[s])
 						}
 					}
 				}
@@ -310,11 +310,11 @@ func initUi(osId string) int {
 				scrollLists(lists, -1, lists[0].SelectedRow, false)
 			/* Go back from information page. */
 			case "<backspace>":
-				showInfo = false
+				showInfo = true
 				fallthrough
 			/* Show package information. */
 			case "i", "<enter>", "<space>":
-				if showInfo && len(lists[0].Rows) != 0 {
+				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
 					 */
@@ -324,7 +324,7 @@ func initUi(osId string) int {
 					cmdList.ScrollTop()
 					lists = lists[:1]
 					lists[0].Title = ""
-					lists[0].WrapText = showInfo
+					lists[0].WrapText = !showInfo
 					lists[0].Rows = []string{"  " + execCmd("sh", "-c", pkgInfoCmd)}
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
@@ -337,6 +337,7 @@ func initUi(osId string) int {
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 				}
 				showInfo = !showInfo
+				searchMode = false
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
 			/* Scroll down. (packages) */
@@ -368,7 +369,7 @@ func initUi(osId string) int {
 				ui.Render(cmdList)
 			case "s":
 				// TODO: Search package
-				if showInfo {
+				if !showInfo {
 					searchMode, searchQuery = true, ""
 					if !str.Contains(searchSuffix, "search") {
 						searchSuffix = lists[0].Title + " > search: "
