@@ -177,9 +177,7 @@ func scrollLists(lists []*widgets.List, amount int, row int) int {
 		} else {
 			l.ScrollAmount(amount)
 		}
-		if len(l.Rows) != 0 {
-			ui.Render(l)
-		}
+		ui.Render(l)
 	}
 	return 0
 }
@@ -266,23 +264,38 @@ func initUi(osId string) int {
 		select {
 		case e := <-uiEvents:
 			if searchMode {
-				if len(str.ToLower(e.ID)) == 1 {
-					searchQuery += str.ToLower(e.ID)
-				}
 				switch str.ToLower(e.ID) {
-					case "<c-c>", "<c-d>", "<resize>", "<enter>", "<space>":
-						pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-						ui.Render(pkgGrid)
-						scrollLists(lists, -1, 0)
-						searchMode = false
-					case "<backspace>":
-						if len(searchQuery) != 0 {
-							searchQuery = searchQuery[:len(searchQuery)-1]
-						}
+				case "<c-c>", "<c-d>", "<resize>", "<enter>", "<space>":
+					//pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
+					//ui.Render(pkgGrid)
+					//scrollLists(lists, -1, 0)
+					searchMode = false
+				}
+				searchLists, _, _ := getPkgListEntries(pkgs)
+				if len(str.ToLower(e.ID)) == 1 {
+					searchQuery += str.ToLower(e.ID)	
+				} else if str.ToLower(e.ID) == "<backspace>" && len(searchQuery) != 0 {
+					searchQuery = searchQuery[:len(searchQuery)-1]
+				} else {
+					
 				}
 				
+				for _, l := range lists {
+					l.Rows = nil
+				}
+			
+				for s, name := range searchLists[0].Rows {
+					if str.Contains(name, searchQuery) {
+						for i, l := range searchLists {
+							lists[i].Rows = append(lists[i].Rows, l.Rows[s])
+						}
+					}
+				}
+
 				lists[0].Title = searchSuffix + searchQuery
 				ui.Render(lists[0])
+				scrollLists(lists, -1, 0)
+				
 				break
 			}
 			switch str.ToLower(e.ID) {
