@@ -202,12 +202,12 @@ func execCmd(name string, arg ...string) string {
 }
 
 /*!
- * Initialize the termui and render widgets.
+ * Initialize, execute, render and handle.
  *
  * \param osId (Operating system identity)
  * \return 0 on exit
  */
-func initUi(osId string) int {
+func start(osId string) int {
 	/* Initialize the termui library. */
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
@@ -412,7 +412,7 @@ func initUi(osId string) int {
 					err := cmd.Run()
 					/* Show the UI again if the execution is successful. */
 					if err == nil {
-						initUi(osId)
+						start(osId)
 					}
 				}
 			}
@@ -424,5 +424,5 @@ func initUi(osId string) int {
  * Entry-point
  */
 func main() {
-	initUi(execCmd("sh", "-c", osIdCmd))
+	start(execCmd("sh", "-c", osIdCmd))
 }
