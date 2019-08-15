@@ -379,7 +379,7 @@ func initUi(osId string) int {
 			/* Remove package. */
 			case "r":
 				/* Add the 'remove' command to command list with confirmation prefix. */
-				selectedPkg := str.Split(pkgs[lists[0].SelectedRow], "~")[0]
+				selectedPkg := lists[0].Rows[lists[0].SelectedRow]
 				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
 				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd},
 					cmdList.Rows...)
