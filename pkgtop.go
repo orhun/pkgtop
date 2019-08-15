@@ -17,8 +17,7 @@ var cmdList *widgets.List                   /* List widget for the executed comm
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = true                         /* Switch to the package information page */
 var searchMode = false                      /* Boolean value for enabling/disabling the search mode */
-var searchQuery = ""                        /* String for storing the search query */
-var searchSuffix = " > search: "            /* Suffix for appending to the list title */ 
+var searchQuery, searchSuffix = "", ""      /* List title suffix & search query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
 var osIdCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
@@ -373,8 +372,8 @@ func initUi(osId string) int {
 			case "s":
 				// TODO: Search package
 
-				searchMode, searchQuery = true, ""
-				searchSuffix = lists[0].Title + searchSuffix
+				searchMode, searchQuery, searchSuffix = true, "", 
+					lists[0].Title + " > search: "
 				lists[0].Title = searchSuffix
 				ui.Render(lists[0])
 
