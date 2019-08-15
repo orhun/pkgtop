@@ -266,19 +266,23 @@ func initUi(osId string) int {
 	for {
 		select {
 		case e := <-uiEvents:
+			/* Allow typing to the search area if the search mode is on. */
 			if searchMode && (len(str.ToLower(e.ID)) == 1 || 
 				str.ToLower(e.ID) == "<backspace>") {
-		
+				/* Delete the last char from query on the backspace key press. */
 				if len(searchQuery) != 0 && str.ToLower(e.ID) == "<backspace>" {
 					searchQuery = searchQuery[:len(searchQuery)-1]
+				/* Append key to the query. */
 				} else if str.ToLower(e.ID) != "<backspace>" {
 					searchQuery += str.ToLower(e.ID)
 				}
-				
+				/* Create lists again for searching. */
 				searchLists, _, _ := getPkgListEntries(pkgs)
+				/* Empty the current list rows. */
 				for _, l := range lists {
 					l.Rows = nil
 				}
+				/* Loop through the first list, compare the query and show results. */
 				for s, name := range searchLists[0].Rows {
 					if str.Contains(name, searchQuery) {
 						for i, l := range searchLists {
@@ -286,10 +290,11 @@ func initUi(osId string) int {
 						}
 					}
 				}
+				/* Update the search area. */
 				lists[0].Title = searchSuffix + searchQuery
+				/* Scroll and (force) render the lists. */
 				scrollLists(lists, -1, 0, true)
-				
-				break 
+				break
 			}
 			switch str.ToLower(e.ID) {
 			/* Exit search mode or quit. */
@@ -322,10 +327,12 @@ func initUi(osId string) int {
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
 					cmdList.ScrollTop()
+					/* Prepare the list widget. */
 					lists = lists[:1]
 					lists[0].Title = ""
 					lists[0].WrapText = !showInfo
 					lists[0].Rows = []string{"  " + execCmd("sh", "-c", pkgInfoCmd)}
+					/* Set the Grid entries. */
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
@@ -336,6 +343,7 @@ func initUi(osId string) int {
 					lists, pkgEntries, optCmds = getPkgListEntries(pkgs)
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 				}
+				/* Set the flags for showing info and searching package. */
 				showInfo = !showInfo
 				searchMode = false
 				ui.Render(pkgGrid, cmdList)
@@ -368,16 +376,17 @@ func initUi(osId string) int {
 				}
 				ui.Render(cmdList)
 			case "s":
-				// TODO: Search package
+				/* Allow searching if not showing any package information. */
 				if !showInfo {
+					/* Set variables for the package searching. */
 					searchMode, searchQuery = true, ""
+					/* Use the first lists title for the search. */
 					if !str.Contains(searchSuffix, "search") {
 						searchSuffix = lists[0].Title + " > search: "
 					}
 					lists[0].Title = searchSuffix
 					ui.Render(lists[0])
 				}
-
 			/* Remove package. */
 			case "r":
 				/* Break if no packages found to remove. */
