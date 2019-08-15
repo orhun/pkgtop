@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/gizak/termui/v3/widgets"
 	"strings"
 	"testing"
-	"github.com/gizak/termui/v3/widgets"
 )
 
 func TestGetDfEntries(t *testing.T) {
@@ -56,12 +56,12 @@ func TestExecCmd(t *testing.T) {
 
 func TestScrollLists(t *testing.T) {
 	l1, l2 := widgets.NewList(), widgets.NewList()
-	l1.Rows, l2.Rows = []string {"1", "2", "3"}, 
-		[]string {"x", "y", "z"}
-	lists := []*widgets.List {l1, l2}	
-	if scrollLists(lists, -1, 1, false) != 0 || 
+	l1.Rows, l2.Rows = []string{"1", "2", "3"},
+		[]string{"x", "y", "z"}
+	lists := []*widgets.List{l1, l2}
+	if scrollLists(lists, -1, 1, false) != 0 ||
 		l1.SelectedRow != 1 {
-		t.Errorf("Failed to scroll the List widgets. [row: %d]", 
+		t.Errorf("Failed to scroll the List widgets. [row: %d]",
 			lists[1].SelectedRow)
 	}
 }
