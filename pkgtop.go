@@ -320,8 +320,7 @@ func initUi(osId string) int {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
 					 */
-					pkgIndex = lists[0].SelectedRow
-					selectedPkg := str.Split(pkgs[pkgIndex], "~")[0]
+					selectedPkg := lists[0].Rows[lists[0].SelectedRow]
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
 					cmdList.ScrollTop()
