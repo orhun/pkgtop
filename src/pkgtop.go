@@ -215,6 +215,10 @@ func start(osId string) int {
 	/* Close the UI on function exit. */
 	defer ui.Close()
 	/* Initialize the widgets. */
+
+	// TODO: Add text to pkgText widget.
+	// TODO: Set color of widgets.
+
 	termGrid, dfGrid, pkgGrid =
 		ui.NewGrid(),
 		ui.NewGrid(),
@@ -260,6 +264,8 @@ func start(osId string) int {
 	ui.Render(pkgGrid, termGrid)
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
+
+	// TODO: Add new key events (copy...)
 
 	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
