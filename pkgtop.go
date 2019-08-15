@@ -301,9 +301,8 @@ func initUi(osId string) int {
 			case "q", "<c-c>", "<c-d>":
 				if !searchMode {
 					return 0
-				} else {
-					searchMode = false
-				}
+				} 
+				searchMode = false
 			/* Terminal resize. */
 			case "<resize>":
 				payload := e.Payload.(ui.Resize)
