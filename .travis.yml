@@ -1,0 +1,17 @@
+# Ubuntu environment (18.04)
+dist: xenial
+
+# Golang
+language: go
+
+# Go version
+go:
+  - 1.12.x
+
+# Only clone the most recent commit.
+git:
+  depth: 1
+
+# Dependencies
+before_install:
+  - go get -d ./...
