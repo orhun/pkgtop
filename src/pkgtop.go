@@ -341,6 +341,7 @@ func start(osId string) int {
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
+					searchMode = false
 				} else {
 					/* Parse the packages with previous command output and show. */
 					lists[0].Rows = nil
@@ -350,7 +351,6 @@ func start(osId string) int {
 				}
 				/* Set the flags for showing info and searching package. */
 				showInfo = !showInfo
-				searchMode = false
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
 			/* Scroll down. (packages) */
@@ -394,8 +394,8 @@ func start(osId string) int {
 				}
 			/* Remove package. */
 			case "r":
-				/* Break if no packages found to remove. */
-				if len(lists[0].Rows) == 0 {
+				/* Break if no packages found to remove or showing information. */
+				if len(lists[0].Rows) == 0 || showInfo {
 					break
 				}
 				/* Add the 'remove' command to command list with confirmation prefix. */
