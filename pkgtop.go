@@ -167,16 +167,20 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
  * \param lists
  * \param amount
  * \param row
+ * \param force
  * \return 0 on success
  */
-func scrollLists(lists []*widgets.List, amount int, row int) int {
+func scrollLists(lists []*widgets.List, amount int, 
+	row int, force bool) int {
 	for _, l := range lists {
 		if row != -1 {
 			l.SelectedRow = row
 		} else {
 			l.ScrollAmount(amount)
 		}
-		ui.Render(l)
+		if len(l.Rows) != 0 || force {
+			ui.Render(l)
+		}
 	}
 	return 0
 }
@@ -262,45 +266,39 @@ func initUi(osId string) int {
 	for {
 		select {
 		case e := <-uiEvents:
-			if searchMode {
-				switch str.ToLower(e.ID) {
-				case "<c-c>", "<c-d>", "<resize>", "<enter>", "<space>":
-					//pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-					//ui.Render(pkgGrid)
-					//scrollLists(lists, -1, 0)
-					searchMode = false
-				}
-				searchLists, _, _ := getPkgListEntries(pkgs)
-				if len(str.ToLower(e.ID)) == 1 {
-					searchQuery += str.ToLower(e.ID)	
-				} else if str.ToLower(e.ID) == "<backspace>" && len(searchQuery) != 0 {
+			if searchMode && (len(str.ToLower(e.ID)) == 1 || 
+				str.ToLower(e.ID) == "<backspace>") {
+		
+				if len(searchQuery) != 0 && str.ToLower(e.ID) == "<backspace>" {
 					searchQuery = searchQuery[:len(searchQuery)-1]
-				} else {
-					
+				} else if str.ToLower(e.ID) != "<backspace>" {
+					searchQuery += str.ToLower(e.ID)
 				}
 				
+				searchLists, _, _ := getPkgListEntries(pkgs)
 				for _, l := range lists {
 					l.Rows = nil
 				}
-			
 				for s, name := range searchLists[0].Rows {
 					if str.Contains(name, searchQuery) {
-						for i, l := range searchLists {
-							lists[i].Rows = append(lists[i].Rows, l.Rows[s])
+					for i, l := range searchLists {
+						lists[i].Rows = append(lists[i].Rows, l.Rows[s])
 						}
 					}
 				}
-
 				lists[0].Title = searchSuffix + searchQuery
-				ui.Render(lists[0])
-				scrollLists(lists, -1, 0)
+				scrollLists(lists, -1, 0, true)
 				
-				break
+				break 
 			}
 			switch str.ToLower(e.ID) {
-			/* Quit. */
+			/* Exit search mode or quit. */
 			case "q", "<c-c>", "<c-d>":
-				return 0
+				if !searchMode {
+					return 0
+				} else {
+					searchMode = false
+				}
 			/* Terminal resize. */
 			case "<resize>":
 				payload := e.Payload.(ui.Resize)
@@ -309,14 +307,14 @@ func initUi(osId string) int {
 				ui.Clear()
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
-				scrollLists(lists, -1, lists[0].SelectedRow)
+				scrollLists(lists, -1, lists[0].SelectedRow, false)
 			/* Go back from information page. */
 			case "<backspace>":
 				showInfo = false
 				fallthrough
 			/* Show package information. */
 			case "i", "<enter>", "<space>":
-				if showInfo {
+				if showInfo && len(lists[0].Rows) != 0 {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
 					 */
@@ -340,20 +338,20 @@ func initUi(osId string) int {
 				}
 				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
-				scrollLists(lists, pkgIndex, -1)
+				scrollLists(lists, pkgIndex, -1, false)
 			/* Scroll down. (packages) */
 			case "j", "<down>":
-				scrollLists(lists, 1, -1)
+				scrollLists(lists, 1, -1, false)
 			/* Scroll to bottom. (packages) */
 			case "<c-j>":
 				scrollLists(lists, -1,
-					len(lists[0].Rows)-1)
+					len(lists[0].Rows)-1, false)
 			/* Scroll up. (packages) */
 			case "k", "<up>":
-				scrollLists(lists, -1, -1)
+				scrollLists(lists, -1, -1, false)
 			/* Scroll to top. (packages) */
 			case "<c-k>":
-				scrollLists(lists, -1, 0)
+				scrollLists(lists, -1, 0, false)
 			/* Scroll down. (disk usage) */
 			case "l", "<right>":
 				dfIndex = showDfInfo(dfIndex + 1)
@@ -370,14 +368,21 @@ func initUi(osId string) int {
 				ui.Render(cmdList)
 			case "s":
 				// TODO: Search package
-
-				searchMode, searchQuery, searchSuffix = true, "", 
-					lists[0].Title + " > search: "
-				lists[0].Title = searchSuffix
-				ui.Render(lists[0])
+				if showInfo {
+					searchMode, searchQuery = true, ""
+					if !str.Contains(searchSuffix, "search") {
+						searchSuffix = lists[0].Title + " > search: "
+					}
+					lists[0].Title = searchSuffix
+					ui.Render(lists[0])
+				}
 
 			/* Remove package. */
 			case "r":
+				/* Break if no packages found to remove. */
+				if len(lists[0].Rows) == 0 {
+					break
+				}
 				/* Add the 'remove' command to command list with confirmation prefix. */
 				selectedPkg := lists[0].Rows[lists[0].SelectedRow]
 				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
