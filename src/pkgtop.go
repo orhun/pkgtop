@@ -4,6 +4,7 @@ import (
 	"fmt"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
+	"github.com/atotto/clipboard"
 	"log"
 	"os"
 	"os/exec"
@@ -356,6 +357,13 @@ func start(osId string) int {
 					cmdList.ScrollTop()
 				}
 				ui.Render(cmdList)
+			/* Copy selected package info to the clipboard. */
+			case "p":
+				if lists[0] != nil && len(lists[0].Rows) != 0 && 
+					lists[0].SelectedRow >= 0 {
+					clipboard.WriteAll(str.TrimSpace(
+						lists[0].Rows[lists[0].SelectedRow]))
+				}
 			/* Go back from information page. */
 			case "<backspace>":
 				showInfo = true
