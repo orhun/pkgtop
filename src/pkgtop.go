@@ -21,7 +21,7 @@ var pkgMode = 0                             /* Integer value for changing the pa
 var inputQuery, inputSuffix = "", ""        /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
-var pkgModes = map[string]string{
+var pkgModes = map[string]string{           /* Package management/operation modes */
 	"s": "search", "i":"install",
 }
 var osIDCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
@@ -42,7 +42,8 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Installed Size/{size=$4$5; " +
 		"print name \"~\" ver \"~\" size \"~\" desc}' " +
 		"| sort -h -r -t '~' -k3 " +
-		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~pacman -Rcns --noconfirm %s\"" +
+		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~" + 
+		"pacman -Rcns %s --noconfirm~pacman -S %s --noconfirm\"" +
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 
@@ -381,12 +382,18 @@ func start(osID string) int {
 				fallthrough
 			/* Show package information. */
 			case "<enter>", "<space>":
+				/* Append installation command to list if install mode is on. */
+				if pkgMode == 2 {
+					cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
+					pkgMode = 0
+					break
+				}
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
 					 */
 					pkgIndex = lists[0].SelectedRow
-					selectedPkg := lists[0].Rows[pkgIndex]
+					selectedPkg := str.TrimSpace(lists[0].Rows[pkgIndex])
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
 					cmdList.ScrollTop()
@@ -443,7 +450,7 @@ func start(osID string) int {
 					break
 				}
 				/* Add the 'remove' command to command list with confirmation prefix. */
-				selectedPkg := lists[0].Rows[lists[0].SelectedRow]
+				selectedPkg := str.TrimSpace(lists[0].Rows[lists[0].SelectedRow])
 				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
 				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd},
 					cmdList.Rows...)
