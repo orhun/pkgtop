@@ -12,19 +12,17 @@ import (
 	str "strings"
 )
 
-var termGrid, dfGrid, pkgGrid *ui.Grid      /* Grid widgets for the layout */
-var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
-var cmdList *widgets.List                   /* List widget for the executed commands. */
-var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
-var showInfo = false                        /* Switch to the package information page */
-var pkgMode = 0                             /* Integer value for changing the package operation mode. */
-var inputQuery, inputSuffix = "", ""        /* List title suffix & input query value */
-var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
-var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
-var pkgModes = map[string]string{           /* Package management/operation modes */
-	"s": "search", "i":"install",
-}
-var osIDCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
+var termGrid, dfGrid, pkgGrid *ui.Grid        /* Grid widgets for the layout */
+var pkgText, sysInfoText *widgets.Paragraph   /* Paragraph widgets for showing text */
+var cmdList *widgets.List                     /* List widget for the executed commands. */
+var dfIndex, pkgIndex = 0, 0                  /* Index value for the disk usage widgets & package list */
+var showInfo = false                          /* Switch to the package information page */
+var pkgMode = 0                               /* Integer value for changing the package operation mode. */
+var pkgModes = []string{"search", "install",} /* Package management/operation modes */ 
+var inputQuery, inputSuffix = "", ""          /* List title suffix & input query value */
+var cmdPrefix = " λ ~ "                       /* Prefix for prepending to the commands */
+var cmdConfirm = " [y] "                      /* Confirmation string for commands to execute */
+var osIDCmd = "awk -F '=' '/^ID=/ " +         /* Print the OS ID information (for distro checking) */
 							"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
 	" Kernel: $(uname -s)\\n" +
@@ -432,9 +430,8 @@ func start(osID string) int {
 				if !showInfo {
 					/* Set variables for switching the mode. */
 					inputQuery = ""
-					i := 0
-					for k, v := range pkgModes {
-						if k == str.ToLower(e.ID) {
+					for i, v := range pkgModes {
+						if v[:1] == str.ToLower(e.ID) {
 							pkgMode = i + 1
 							/* Set the first lists title for the selected mode. */
 							if str.Contains(inputSuffix, " > ") {
@@ -443,10 +440,9 @@ func start(osID string) int {
 								inputSuffix = lists[0].Title + " > "+v+": "
 							}
 						}
-						i++
 					}
 					lists[0].Title = inputSuffix
-					ui.Render(lists[0])
+					scrollLists(lists, -1, 0, false)
 				}
 			/* Remove package. */
 			case "r":
