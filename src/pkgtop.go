@@ -17,10 +17,13 @@ var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing tex
 var cmdList *widgets.List                   /* List widget for the executed commands. */
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = false                        /* Switch to the package information page */
-var searchMode = false                      /* Boolean value for enabling/disabling the search mode */
+var pkgMode = 0                             /* Integer value for changing the package operation mode. */
 var searchQuery, searchSuffix = "", ""      /* List title suffix & search query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
+var pkgModes = map[string]string{
+	"s": "search", "i":"install",
+}
 var osIDCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
 							"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
@@ -285,7 +288,7 @@ func start(osID string) int {
 		select {
 		case e := <-uiEvents:
 			/* Allow typing to the search area if the search mode is on. */
-			if searchMode && (len(str.ToLower(e.ID)) == 1 || 
+			if pkgMode != 0 && (len(str.ToLower(e.ID)) == 1 || 
 				str.ToLower(e.ID) == "<backspace>") {
 				/* Delete the last char from query on the backspace key press. */
 				if len(searchQuery) != 0 && str.ToLower(e.ID) == "<backspace>" {
@@ -317,10 +320,10 @@ func start(osID string) int {
 			switch str.ToLower(e.ID) {
 			/* Exit search mode or quit. */
 			case "q", "<c-c>", "<c-d>":
-				if !searchMode {
+				if pkgMode == 0 {
 					return 0
 				} 
-				searchMode = false
+				pkgMode = 0
 			/* Terminal resize. */
 			case "<resize>":
 				payload := e.Payload.(ui.Resize)
@@ -394,10 +397,9 @@ func start(osID string) int {
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-					/* Disable the search mode and set index for scrolling to the first row. */
-					if searchMode {
-						searchMode = false
-						pkgIndex = 0
+					/* Disable the mode and set index for scrolling to the first row. */
+					if pkgMode != 0 {
+						pkgMode, pkgIndex = 0, 0
 					}
 				} else {
 					/* Parse the packages with previous command output and show. */
@@ -410,12 +412,12 @@ func start(osID string) int {
 				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
-			/* Search package. */
-			case "s":
+			/* Search or install package. */
+			case "s", "i":
 				/* Allow searching if not showing any package information. */
 				if !showInfo {
 					/* Set variables for the package searching. */
-					searchMode, searchQuery = true, ""
+					pkgMode, searchQuery = 1, ""
 					/* Use the first lists title for the search. */
 					if !str.Contains(searchSuffix, "search") {
 						searchSuffix = lists[0].Title + " > search: "
