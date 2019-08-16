@@ -373,8 +373,9 @@ func start(osID string) int {
 			/* Copy executed command to clipboard. */
 			case "e":
 				if len(cmdList.Rows) != 0 && cmdList.SelectedRow >= 0 {
+					cmdReplacer := str.NewReplacer(cmdPrefix, "", cmdConfirm, "")
 					clipboard.WriteAll(str.TrimSpace(
-						str.Replace(cmdList.Rows[cmdList.SelectedRow], cmdPrefix, "", -1)))
+						cmdReplacer.Replace(cmdList.Rows[cmdList.SelectedRow])))
 				}
 			/* Go back from information page. */
 			case "<backspace>":
@@ -382,13 +383,17 @@ func start(osID string) int {
 				fallthrough
 			/* Show package information. */
 			case "<enter>", "<space>":
-				/* Append installation command to list if install mode is on. */
-				if pkgMode == 2 {
-					cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
-					pkgMode = 0
-					break
-				}
 				if !showInfo && len(lists[0].Rows) != 0 {
+					/* Append installation command to list if install mode is on. */
+					if pkgMode == 2 && inputQuery != "" {
+						pkgInstallCmd := fmt.Sprintf(optCmds[2], inputQuery)
+						cmdList.Rows = append([]string{cmdConfirm + pkgInstallCmd},
+							cmdList.Rows...)
+						cmdList.ScrollTop()
+						ui.Render(cmdList)
+						pkgMode = 0
+						break
+					}
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
 					 */
