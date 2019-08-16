@@ -18,7 +18,7 @@ var cmdList *widgets.List                   /* List widget for the executed comm
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = false                        /* Switch to the package information page */
 var pkgMode = 0                             /* Integer value for changing the package operation mode. */
-var inputQuery, searchSuffix = "", ""      /* List title suffix & search query value */
+var inputQuery, inputSuffix = "", ""        /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
 var pkgModes = map[string]string{
@@ -314,7 +314,7 @@ func start(osID string) int {
 					}
 				}
 				/* Update the search area. */
-				lists[0].Title = searchSuffix + inputQuery
+				lists[0].Title = inputSuffix + inputQuery
 				/* Scroll and (force) render the lists. */
 				scrollLists(lists, -1, 0, true)
 				break
@@ -416,15 +416,24 @@ func start(osID string) int {
 				scrollLists(lists, pkgIndex, -1, false)
 			/* Search or install package. */
 			case "s", "i":
-				/* Allow searching if not showing any package information. */
+				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
-					/* Set variables for changing the mode. */
-					pkgMode, inputQuery = 1, ""
-					/* Use the first lists title for the selected mode. */
-					if !str.Contains(searchSuffix, pkgModes[str.ToLower(e.ID)]) {
-						searchSuffix = lists[0].Title + " > "+pkgModes[str.ToLower(e.ID)]+": "
+					/* Set variables for switching the mode. */
+					inputQuery = ""
+					i := 0
+					for k, v := range pkgModes {
+						if k == str.ToLower(e.ID) {
+							pkgMode = i + 1
+							/* Set the first lists title for the selected mode. */
+							if str.Contains(inputSuffix, " > ") {
+								inputSuffix = str.Split(inputSuffix, ">")[0]+"> "+v+": "
+							} else if !str.Contains(inputSuffix, v) {
+								inputSuffix = lists[0].Title + " > "+v+": "
+							}
+						}
+						i++
 					}
-					lists[0].Title = searchSuffix
+					lists[0].Title = inputSuffix
 					ui.Render(lists[0])
 				}
 			/* Remove package. */
