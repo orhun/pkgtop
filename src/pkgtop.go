@@ -216,7 +216,6 @@ func start(osId string) int {
 	defer ui.Close()
 	/* Initialize the widgets. */
 
-	// TODO: Add text to pkgText widget.
 	// TODO: Set color of widgets.
 
 	termGrid, dfGrid, pkgGrid =
@@ -226,6 +225,18 @@ func start(osId string) int {
 	pkgText, sysInfoText =
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
+
+	// TODO: Add text to pkgText widget.
+	pkgText.WrapText = true
+	pkgText.Text = ""+
+	"     [.sNMMh+.\n"+
+	"        -+hMMms.\n"+
+	"  `oNMms:  `dMM+\n"+
+	"    `/yNMMo hMM+\n"+
+	"       /MMy yMM+\n"+
+	" `/yN/ /MMy yMM/\n"+
+	"  .+h: /Nh: ++.](fg:white,mod:bold) "
+
 	cmdList = widgets.NewList()
 	cmdList.WrapText = false
 	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
