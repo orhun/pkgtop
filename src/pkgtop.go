@@ -357,12 +357,18 @@ func start(osId string) int {
 					cmdList.ScrollTop()
 				}
 				ui.Render(cmdList)
-			/* Copy selected package info to the clipboard. */
+			/* Copy selected package info to clipboard. */
 			case "p":
 				if lists[0] != nil && len(lists[0].Rows) != 0 && 
 					lists[0].SelectedRow >= 0 {
 					clipboard.WriteAll(str.TrimSpace(
 						lists[0].Rows[lists[0].SelectedRow]))
+				}
+			/* Copy executed command to clipboard. */
+			case "e":
+				if len(cmdList.Rows) != 0 && cmdList.SelectedRow >= 0 {
+					clipboard.WriteAll(str.TrimSpace(
+						str.Replace(cmdList.Rows[cmdList.SelectedRow], cmdPrefix, "", -1)))
 				}
 			/* Go back from information page. */
 			case "<backspace>":
