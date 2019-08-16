@@ -329,12 +329,39 @@ func start(osId string) int {
 				ui.Render(termGrid)
 				dfIndex = showDfInfo(dfIndex)
 				scrollLists(lists, -1, lists[0].SelectedRow, false)
+			/* Scroll down. (packages) */
+			case "j", "<down>":
+				scrollLists(lists, 1, -1, false)
+			/* Scroll to bottom. (packages) */
+			case "<c-j>":
+				scrollLists(lists, -1,
+					len(lists[0].Rows)-1, false)
+			/* Scroll up. (packages) */
+			case "k", "<up>":
+				scrollLists(lists, -1, -1, false)
+			/* Scroll to top. (packages) */
+			case "<c-k>":
+				scrollLists(lists, -1, 0, false)
+			/* Scroll down. (disk usage) */
+			case "l", "<right>":
+				dfIndex = showDfInfo(dfIndex + 1)
+			/* Scroll up. (disk usage) */
+			case "h", "<left>":
+				dfIndex = showDfInfo(dfIndex - 1)
+			/* Scroll executed commands list. */
+			case "c":
+				if cmdList.SelectedRow < len(cmdList.Rows)-1 {
+					cmdList.ScrollDown()
+				} else {
+					cmdList.ScrollTop()
+				}
+				ui.Render(cmdList)
 			/* Go back from information page. */
 			case "<backspace>":
 				showInfo = true
 				fallthrough
 			/* Show package information. */
-			case "i", "<enter>", "<space>":
+			case "<enter>", "<space>":
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
@@ -369,33 +396,7 @@ func start(osId string) int {
 				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
-			/* Scroll down. (packages) */
-			case "j", "<down>":
-				scrollLists(lists, 1, -1, false)
-			/* Scroll to bottom. (packages) */
-			case "<c-j>":
-				scrollLists(lists, -1,
-					len(lists[0].Rows)-1, false)
-			/* Scroll up. (packages) */
-			case "k", "<up>":
-				scrollLists(lists, -1, -1, false)
-			/* Scroll to top. (packages) */
-			case "<c-k>":
-				scrollLists(lists, -1, 0, false)
-			/* Scroll down. (disk usage) */
-			case "l", "<right>":
-				dfIndex = showDfInfo(dfIndex + 1)
-			/* Scroll up. (disk usage) */
-			case "h", "<left>":
-				dfIndex = showDfInfo(dfIndex - 1)
-			/* Scroll executed commands list. */
-			case "c":
-				if cmdList.SelectedRow < len(cmdList.Rows)-1 {
-					cmdList.ScrollDown()
-				} else {
-					cmdList.ScrollTop()
-				}
-				ui.Render(cmdList)
+			/* Search package. */
 			case "s":
 				/* Allow searching if not showing any package information. */
 				if !showInfo {
@@ -421,7 +422,7 @@ func start(osId string) int {
 					cmdList.Rows...)
 				cmdList.ScrollTop()
 				ui.Render(cmdList)
-			/* Confirm and execute the command. */
+			/* Confirm and execute command. */
 			case "y":
 				selectedCmdRow := cmdList.Rows[cmdList.SelectedRow]
 				if str.Contains(selectedCmdRow, cmdConfirm) {
