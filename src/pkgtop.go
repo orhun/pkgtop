@@ -328,7 +328,8 @@ func start(osId string) int {
 					/* Parse the 'package info' command output after execution,
 					 * use first list for showing the information.
 					 */
-					selectedPkg := lists[0].Rows[lists[0].SelectedRow]
+					pkgIndex = lists[0].SelectedRow
+					selectedPkg := lists[0].Rows[pkgIndex]
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
 					cmdList.ScrollTop()
@@ -341,7 +342,11 @@ func start(osId string) int {
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
 					pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
-					searchMode = false
+					/* Disable the search mode and set index for scrolling to the first row. */
+					if searchMode {
+						searchMode = false
+						pkgIndex = 0
+					}
 				} else {
 					/* Parse the packages with previous command output and show. */
 					lists[0].Rows = nil
