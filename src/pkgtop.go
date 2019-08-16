@@ -21,7 +21,7 @@ var searchMode = false                      /* Boolean value for enabling/disabl
 var searchQuery, searchSuffix = "", ""      /* List title suffix & search query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
-var osIdCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
+var osIDCmd = "awk -F '=' '/^ID=/ " +       /* Print the OS ID information (for distro checking) */
 							"{print tolower($2)}' /etc/*-release"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
 	" Kernel: $(uname -s)\\n" +
@@ -205,10 +205,10 @@ func execCmd(name string, arg ...string) string {
 /*!
  * Initialize, execute, render and handle.
  *
- * \param osId (Operating system identity)
+ * \param osID (Operating system identity)
  * \return 0 on exit
  */
-func start(osId string) int {
+func start(osID string) int {
 	/* Initialize the termui library. */
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
@@ -242,14 +242,14 @@ func start(osId string) int {
 	cmdList.WrapText = false
 	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
 	/* Update the commands list. */
-	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osId],
-		cmdPrefix + osIdCmd}
+	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
+		cmdPrefix + osIDCmd}
 	/* Retrieve packages with the OS command. */
-	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osId]), "\n")
+	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osID]), "\n")
 	/* Check the packages count. */
 	if len(pkgs) < 2 {
 		ui.Close()
-		log.Fatalf("Failed to retrieve package list. (OS: '%s')", osId)
+		log.Fatalf("Failed to retrieve package list. (OS: '%s')", osID)
 	}
 	/* Initialize and render the widgets for showing the package list. */
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
@@ -449,7 +449,7 @@ func start(osId string) int {
 					err := cmd.Run()
 					/* Show the UI again if the execution is successful. */
 					if err == nil {
-						start(osId)
+						start(osID)
 					}
 				}
 			}
@@ -461,5 +461,5 @@ func start(osId string) int {
  * Entry-point
  */
 func main() {
-	start(execCmd("sh", "-c", osIdCmd))
+	start(execCmd("sh", "-c", osIDCmd))
 }
