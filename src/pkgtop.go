@@ -229,13 +229,13 @@ func start(osId string) int {
 	// TODO: Add text to pkgText widget.
 	pkgText.WrapText = true
 	pkgText.Text = ""+
-	"     [.sNMMh+.\n"+
-	"        -+hMMms.\n"+
-	"  `oNMms:  `dMM+\n"+
-	"    `/yNMMo hMM+\n"+
-	"       /MMy yMM+\n"+
-	" `/yN/ /MMy yMM/\n"+
-	"  .+h: /Nh: ++.](fg:white,mod:bold) "
+	"      [.smNNho:\n"+
+	"    ..   -+hmMmh+\n"+
+	"  -smNds:.  `sMMN\n"+
+	"   `-+hNMNs  +MMN\n"+
+	"    .  oMMd  /MMN\n"+
+	" .pkg` +MMd  /MMd\n"+
+	" `top` omh/  -o:`](fg:white,mod:bold)"
 
 	cmdList = widgets.NewList()
 	cmdList.WrapText = false
