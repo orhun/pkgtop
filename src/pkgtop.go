@@ -18,7 +18,7 @@ var cmdList *widgets.List                   /* List widget for the executed comm
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = false                        /* Switch to the package information page */
 var pkgMode = 0                             /* Integer value for changing the package operation mode. */
-var searchQuery, searchSuffix = "", ""      /* List title suffix & search query value */
+var inputQuery, searchSuffix = "", ""      /* List title suffix & search query value */
 var cmdPrefix = " λ ~ "                     /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                    /* Confirmation string for commands to execute */
 var pkgModes = map[string]string{
@@ -291,28 +291,30 @@ func start(osID string) int {
 			if pkgMode != 0 && (len(str.ToLower(e.ID)) == 1 || 
 				str.ToLower(e.ID) == "<backspace>") {
 				/* Delete the last char from query on the backspace key press. */
-				if len(searchQuery) != 0 && str.ToLower(e.ID) == "<backspace>" {
-					searchQuery = searchQuery[:len(searchQuery)-1]
+				if len(inputQuery) != 0 && str.ToLower(e.ID) == "<backspace>" {
+					inputQuery = inputQuery[:len(inputQuery)-1]
 				/* Append key to the query. */
 				} else if str.ToLower(e.ID) != "<backspace>" {
-					searchQuery += str.ToLower(e.ID)
+					inputQuery += str.ToLower(e.ID)
 				}
-				/* Create lists again for searching. */
-				searchLists, _, _ := getPkgListEntries(pkgs)
-				/* Empty the current list rows. */
-				for _, l := range lists {
-					l.Rows = nil
-				}
-				/* Loop through the first list, compare the query and show results. */
-				for s, name := range searchLists[0].Rows {
-					if str.Contains(name, searchQuery) {
-						for i, l := range searchLists {
-							lists[i].Rows = append(lists[i].Rows, l.Rows[s])
+				if pkgMode == 1 {
+					/* Create lists again for searching. */
+					searchLists, _, _ := getPkgListEntries(pkgs)
+					/* Empty the current list rows. */
+					for _, l := range lists {
+						l.Rows = nil
+					}
+					/* Loop through the first list, compare the query and show results. */
+					for s, name := range searchLists[0].Rows {
+						if str.Contains(name, inputQuery) {
+							for i, l := range searchLists {
+								lists[i].Rows = append(lists[i].Rows, l.Rows[s])
+							}
 						}
 					}
 				}
 				/* Update the search area. */
-				lists[0].Title = searchSuffix + searchQuery
+				lists[0].Title = searchSuffix + inputQuery
 				/* Scroll and (force) render the lists. */
 				scrollLists(lists, -1, 0, true)
 				break
@@ -416,11 +418,11 @@ func start(osID string) int {
 			case "s", "i":
 				/* Allow searching if not showing any package information. */
 				if !showInfo {
-					/* Set variables for the package searching. */
-					pkgMode, searchQuery = 1, ""
-					/* Use the first lists title for the search. */
-					if !str.Contains(searchSuffix, "search") {
-						searchSuffix = lists[0].Title + " > search: "
+					/* Set variables for changing the mode. */
+					pkgMode, inputQuery = 1, ""
+					/* Use the first lists title for the selected mode. */
+					if !str.Contains(searchSuffix, pkgModes[str.ToLower(e.ID)]) {
+						searchSuffix = lists[0].Title + " > "+pkgModes[str.ToLower(e.ID)]+": "
 					}
 					lists[0].Title = searchSuffix
 					ui.Render(lists[0])
