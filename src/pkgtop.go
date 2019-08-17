@@ -82,6 +82,9 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 			return gauges, nil
 		}
 		dfGau.Percent = percent
+		if percent > 95 {
+			dfGau.BarColor = ui.ColorRed
+		}
 		gauges = append(gauges, dfGau)
 		entries[i-s] = ui.NewRow(
 			1.0/float64(n),
