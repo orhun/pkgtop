@@ -159,7 +159,13 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 		pkgl.Border = false
 		pkgl.TextStyle = ui.NewStyle(ui.ColorBlue)
 		/* Add List widget to the GridItem slice. */
-		entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
+		if i == 0 {
+			entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
+		} else if i == len(titles) - 1 {
+			entries[i] = ui.NewCol(1.0, pkgl)
+		} else {
+			entries[i] = ui.NewCol(1.0/(float64(len(titles))*1.6), pkgl)
+		}
 		pkgls = append(pkgls, pkgl)
 	}
 	return pkgls, entries, optCmds
