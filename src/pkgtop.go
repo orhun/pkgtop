@@ -75,6 +75,7 @@ func getDfEntries(diskUsage []string, s int, n int) ([]*widgets.Gauge,
 		dfGau := widgets.NewGauge()
 		dfGau.Title = fmt.Sprintf("%s ~ (%s/%s) [%s]",
 			dfVal[0], dfVal[2], dfVal[1], dfVal[len(dfVal)-1])
+		dfGau.BorderStyle.Fg = ui.ColorBlack
 		percent, err := strconv.Atoi(
 			str.Replace(dfVal[4], "%", "", 1))
 		if err != nil {
@@ -220,7 +221,6 @@ func start(osID string) int {
 	/* Initialize the widgets. */
 
 	// TODO: Set color of widgets.
-
 	termGrid, dfGrid, pkgGrid =
 		ui.NewGrid(),
 		ui.NewGrid(),
@@ -239,10 +239,13 @@ func start(osID string) int {
 	"    .  oMMd  /MMN\n"+
 	" .pkg` +MMd  /MMd\n"+
 	" `top` omh/  -o:`](fg:white,mod:bold)"
+	pkgText.BorderStyle.Fg = ui.ColorBlack
+	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 
 	cmdList = widgets.NewList()
 	cmdList.WrapText = false
 	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
+	cmdList.BorderStyle.Fg = ui.ColorBlack
 	/* Update the commands list. */
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
