@@ -267,7 +267,11 @@ func start(osID string) int {
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
-	sysInfoText.Text = " " + execCmd("sh", "-c", sysInfoCmd)
+	for _, info := range str.Split(" " + execCmd("sh", "-c", sysInfoCmd), "\n") {
+		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:blue)"+
+			str.Join(str.Split(info, ":")[1:], "") + "\n"
+	}
+
 	/* Configure and render the main grid layout. */
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
