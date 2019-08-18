@@ -231,7 +231,6 @@ func start(osID string) int {
 	defer ui.Close()
 	/* Initialize the widgets. */
 
-	// TODO: Set color of widgets.
 	termGrid, dfGrid, pkgGrid =
 		ui.NewGrid(),
 		ui.NewGrid(),
