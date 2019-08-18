@@ -476,17 +476,22 @@ func start(osID string) int {
 					lists[0].Title = inputSuffix
 					scrollLists(lists, -1, 0, false)
 				}
-			/* Remove package. */
-			case "r":
+			/* Remove or update package. */
+			case "r", "u":
 				/* Break if no packages found to remove or showing information. */
 				if len(lists[0].Rows) == 0 || showInfo {
 					break
 				}
-				/* Add the 'remove' command to command list with confirmation prefix. */
+				/* Set the command index (fixed value) depending on the pressed key. */
+				optCmdIndex := 1
+				if str.ToLower(e.ID) != "r" {
+					optCmdIndex = 3
+				}
+				/* Add command to the command list with confirmation prefix. */
 				selectedPkg := str.TrimSpace(lists[0].Rows[lists[0].SelectedRow])
-				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
-				if cmdList.Rows[0] != cmdConfirm + pkgRemoveCmd {
-					cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd},
+				pkgOptCmd := fmt.Sprintf(optCmds[optCmdIndex], selectedPkg)
+				if cmdList.Rows[0] != cmdConfirm + pkgOptCmd {
+					cmdList.Rows = append([]string{cmdConfirm + pkgOptCmd},
 						cmdList.Rows...)
 				}
 				cmdList.ScrollTop()
