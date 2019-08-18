@@ -340,7 +340,7 @@ func start(osID string) int {
 			}
 			switch str.ToLower(e.ID) {
 			/* Exit search mode or quit. */
-			case "q", "<c-c>", "<c-d>":
+			case "q", "<escape>", "<c-c>", "<c-d>":
 				if pkgMode == 0 {
 					return 0
 				} 
