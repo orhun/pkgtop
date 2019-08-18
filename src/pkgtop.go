@@ -400,7 +400,7 @@ func start(osID string) int {
 				showInfo = true
 				fallthrough
 			/* Show package information. */
-			case "<enter>", "<space>":
+			case "<enter>", "<space>", "<tab>":
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Append installation command to list if install mode is on. */
 					if pkgMode > 1 && inputQuery != "" {
@@ -454,13 +454,15 @@ func start(osID string) int {
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
 			/* Search, install or update package. */
-			case "s", "i", "u":
+			case "s", "i", "<c-u>":
 				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
 					/* Set variables for switching the mode. */
+					pressedKey := str.NewReplacer("<c-", "", ">", "").
+						Replace(str.ToLower(e.ID))
 					inputQuery = ""
 					for i, v := range pkgModes {
-						if v[:1] == str.ToLower(e.ID) {
+						if v[:1] == pressedKey {
 							pkgMode = i + 1
 							/* Set the first lists title for the selected mode. */
 							if str.Contains(inputSuffix, " > ") {
