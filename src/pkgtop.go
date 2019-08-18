@@ -20,7 +20,9 @@ var cmdList *widgets.List                     /* List widget for the executed co
 var dfIndex, pkgIndex = 0, 0                  /* Index value for the disk usage widgets & package list */
 var showInfo = false                          /* Switch to the package information page */
 var pkgMode = 0                               /* Integer value for changing the package operation mode. */
-var pkgModes = []string{"search", "install",} /* Package management/operation modes */ 
+var pkgModes = []string {                     /* Package management/operation modes */ 
+	"search", "install","update",
+}
 var inputQuery, inputSuffix = "", ""          /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "                       /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                      /* Confirmation string for commands to execute */
@@ -43,7 +45,8 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"print name \"~\" ver \"~\" size \"~\" desc}' " +
 		"| sort -h -r -t '~' -k3 " +
 		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~" + 
-		"pacman -Rcns %s --noconfirm~pacman -S %s --noconfirm\"" +
+		"pacman -Rcns %s --noconfirm~pacman -S %s --noconfirm~" + 
+		"pacman -Sy %s --noconfirm\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 
@@ -400,8 +403,8 @@ func start(osID string) int {
 			case "<enter>", "<space>":
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Append installation command to list if install mode is on. */
-					if pkgMode == 2 && inputQuery != "" {
-						pkgInstallCmd := fmt.Sprintf(optCmds[2], inputQuery)
+					if pkgMode > 1 && inputQuery != "" {
+						pkgInstallCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
 						cmdList.Rows = append([]string{cmdConfirm + pkgInstallCmd},
 							cmdList.Rows...)
 						cmdList.ScrollTop()
@@ -441,8 +444,8 @@ func start(osID string) int {
 				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
-			/* Search or install package. */
-			case "s", "i":
+			/* Search, install or update package. */
+			case "s", "i", "u":
 				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
 					/* Set variables for switching the mode. */
@@ -456,6 +459,7 @@ func start(osID string) int {
 							} else if !str.Contains(inputSuffix, v) {
 								inputSuffix = lists[0].Title + " > "+v+": "
 							}
+							break
 						}
 					}
 					lists[0].Title = inputSuffix
