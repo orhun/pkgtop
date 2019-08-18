@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"flag"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 	"github.com/atotto/clipboard"
@@ -12,6 +13,7 @@ import (
 	str "strings"
 )
 
+var version = "1.0.0"                         /* Version variable */
 var termGrid, dfGrid, pkgGrid *ui.Grid        /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph   /* Paragraph widgets for showing text */
 var cmdList *widgets.List                     /* List widget for the executed commands. */
@@ -498,5 +500,13 @@ func start(osID string) int {
  * Entry-point
  */
 func main() {
+	/* Parse command-line flags. */
+	showVersion := flag.Bool("v", false, "print version")
+	flag.Parse()
+	if *showVersion {
+		fmt.Printf("pkgtop v%s\n", version)
+		return
+	}
+	/* Initialize and start the termui. */
 	start(execCmd("sh", "-c", osIDCmd))
 }
