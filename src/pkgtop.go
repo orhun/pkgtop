@@ -404,9 +404,11 @@ func start(osID string) int {
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Append installation command to list if install mode is on. */
 					if pkgMode > 1 && inputQuery != "" {
-						pkgInstallCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
-						cmdList.Rows = append([]string{cmdConfirm + pkgInstallCmd},
-							cmdList.Rows...)
+						pkgOptCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
+						if cmdList.Rows[0] != cmdConfirm + pkgOptCmd {
+							cmdList.Rows = append([]string{cmdConfirm + pkgOptCmd},
+								cmdList.Rows...)
+						}
 						cmdList.ScrollTop()
 						ui.Render(cmdList)
 						pkgMode = 0
@@ -418,7 +420,14 @@ func start(osID string) int {
 					pkgIndex = lists[0].SelectedRow
 					selectedPkg := str.TrimSpace(lists[0].Rows[pkgIndex])
 					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
-					cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, cmdList.Rows...)
+					/* Update the commands list. */
+					if str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[0]) && 
+						str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[1]) {
+						cmdList.Rows[0] = cmdPrefix + pkgInfoCmd
+					} else {
+						cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, 
+							cmdList.Rows...)
+					}
 					cmdList.ScrollTop()
 					/* Prepare the list widget. */
 					lists = lists[:1]
@@ -474,8 +483,10 @@ func start(osID string) int {
 				/* Add the 'remove' command to command list with confirmation prefix. */
 				selectedPkg := str.TrimSpace(lists[0].Rows[lists[0].SelectedRow])
 				pkgRemoveCmd := fmt.Sprintf(optCmds[1], selectedPkg)
-				cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd},
-					cmdList.Rows...)
+				if cmdList.Rows[0] != cmdConfirm + pkgRemoveCmd {
+					cmdList.Rows = append([]string{cmdConfirm + pkgRemoveCmd},
+						cmdList.Rows...)
+				}
 				cmdList.ScrollTop()
 				ui.Render(cmdList)
 			/* Confirm and execute command. */
