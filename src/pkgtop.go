@@ -49,6 +49,22 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"pacman -Sy %s --noconfirm\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
+var keyActions = " Key                     Action\n"+
+	"   ?                       : Help\n"+
+	"   enter, space, tab       : Show package information\n"+
+	"   i                       : Install package\n"+
+	"   u/ctrl-u                : Upgrade package/with input\n"+
+	"   r                       : Remove package\n"+
+	"   s                       : Search package\n"+
+	"   y                       : Confirm and execute the selected command\n"+
+	"   p                       : Copy selected package name/information\n"+
+	"   e                       : Copy selected command\n"+
+	"   c                       : Scroll executed commands list\n"+
+	"   j/k, down/up            : Scroll down/up (packages)\n"+
+	"   ctrl-j/ctrl-k           : Scroll to bottom/top (packages)\n"+
+	"   l/h, right/left         : Scroll down/up (disk usage)\n"+
+	"   backspace               : Go back\n"+
+	"   q, esc, ctrl-c, ctrl-d  : Exit\n"
 
 /*!
  * Parse the 'df' command output as Gauge and GridItem.
@@ -432,11 +448,8 @@ func start(osID string) int {
 						cmdList.ScrollTop()
 						infoRow += execCmd("sh", "-c", pkgInfoCmd)
 					} else {
-						// TODO: Add help message
-
 						/* Help message. */
-						infoRow += "?: help\n"+
-							"  q, esc, ctrl-c, ctrl-d: exit"
+						infoRow += keyActions
 					}
 					/* Prepare the list widget. */
 					lists = lists[:1]
@@ -505,7 +518,7 @@ func start(osID string) int {
 				}
 				cmdList.ScrollTop()
 				ui.Render(cmdList)
-			/* Confirm and execute command. */
+			/* Confirm and execute the selected command. */
 			case "y":
 				selectedCmdRow := cmdList.Rows[cmdList.SelectedRow]
 				if str.Contains(selectedCmdRow, cmdConfirm) {
