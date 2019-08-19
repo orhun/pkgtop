@@ -49,7 +49,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"pacman -Sy %s --noconfirm\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
-var keyActions = " Key                     Action\n"+
+var keyActions = "   Key                     Action\n"+
 	"   ?                       : Help\n"+
 	"   enter, space, tab       : Show package information\n"+
 	"   i                       : Install package\n"+
@@ -437,8 +437,9 @@ func start(osID string) int {
 						pkgMode = 0
 						break
 					}
-					infoRow := "  "
-					/* Check pressed key for information to show. */
+					/* Help message. */
+					infoRow := keyActions
+					/* Check pressed key for showing the package information. */
 					if str.Contains(str.ToLower(e.ID), "<") {
 						/* Parse the 'package info' command output after execution,
 						 * use first list for showing the information.
@@ -455,10 +456,7 @@ func start(osID string) int {
 								cmdList.Rows...)
 						}
 						cmdList.ScrollTop()
-						infoRow += execCmd("sh", "-c", pkgInfoCmd)
-					} else {
-						/* Help message. */
-						infoRow += keyActions
+						infoRow = "  " + execCmd("sh", "-c", pkgInfoCmd)
 					}
 					/* Prepare the list widget. */
 					lists = lists[:1]
