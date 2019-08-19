@@ -21,7 +21,7 @@ var dfIndex, pkgIndex = 0, 0                  /* Index value for the disk usage 
 var showInfo = false                          /* Switch to the package information page */
 var pkgMode = 0                               /* Integer value for changing the package operation mode. */
 var pkgModes = []string {                     /* Package management/operation modes */ 
-	"search", "install","update",
+	"search", "install","upgrade",
 }
 var inputQuery, inputSuffix = "", ""          /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "                       /* Prefix for prepending to the commands */
@@ -433,9 +433,10 @@ func start(osID string) int {
 						infoRow += execCmd("sh", "-c", pkgInfoCmd)
 					} else {
 						// TODO: Add help message
-						
+
 						/* Help message. */
-						infoRow += "pkgtop help>"
+						infoRow += "?: help\n"+
+							"  q, esc, ctrl-c, ctrl-d: exit"
 					}
 					/* Prepare the list widget. */
 					lists = lists[:1]
@@ -461,7 +462,7 @@ func start(osID string) int {
 				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
-			/* Search, install or update package. */
+			/* Search, install or upgrade package. */
 			case "s", "i", "<c-u>":
 				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
@@ -484,7 +485,7 @@ func start(osID string) int {
 					lists[0].Title = inputSuffix
 					scrollLists(lists, -1, 0, false)
 				}
-			/* Remove or update package. */
+			/* Remove or upgrade package. */
 			case "r", "u":
 				/* Break if no packages found to remove or showing information. */
 				if len(lists[0].Rows) == 0 || showInfo {
