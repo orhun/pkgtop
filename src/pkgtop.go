@@ -399,8 +399,8 @@ func start(osID string) int {
 			case "<backspace>":
 				showInfo = true
 				fallthrough
-			/* Show package information. */
-			case "<enter>", "<space>", "<tab>":
+			/* Show package information or help message. */
+			case "<enter>", "<space>", "<tab>", "?":
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Append installation command to list if install mode is on. */
 					if pkgMode > 1 && inputQuery != "" {
@@ -414,26 +414,34 @@ func start(osID string) int {
 						pkgMode = 0
 						break
 					}
-					/* Parse the 'package info' command output after execution,
-					 * use first list for showing the information.
-					 */
-					pkgIndex = lists[0].SelectedRow
-					selectedPkg := str.TrimSpace(lists[0].Rows[pkgIndex])
-					pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
-					/* Update the commands list. */
-					if str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[0]) && 
-						str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[1]) {
-						cmdList.Rows[0] = cmdPrefix + pkgInfoCmd
+					infoRow := "  "
+					/* Check pressed key for information to show. */
+					if str.Contains(str.ToLower(e.ID), "<") {
+						/* Parse the 'package info' command output after execution,
+						 * use first list for showing the information.
+						 */
+						pkgIndex = lists[0].SelectedRow
+						selectedPkg := str.TrimSpace(lists[0].Rows[pkgIndex])
+						pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
+						/* Update the commands list. */
+						if str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[0]) && 
+							str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[1]) {
+							cmdList.Rows[0] = cmdPrefix + pkgInfoCmd
+						} else {
+							cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, 
+								cmdList.Rows...)
+						}
+						cmdList.ScrollTop()
+						infoRow += execCmd("sh", "-c", pkgInfoCmd)
 					} else {
-						cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, 
-							cmdList.Rows...)
+						/* Help message. */
+						infoRow += "pkgtop help>"
 					}
-					cmdList.ScrollTop()
 					/* Prepare the list widget. */
 					lists = lists[:1]
 					lists[0].Title = ""
 					lists[0].WrapText = !showInfo
-					lists[0].Rows = []string{"  " + execCmd("sh", "-c", pkgInfoCmd)}
+					lists[0].Rows = []string{infoRow}
 					/* Set the Grid entries. */
 					pkgEntries = nil
 					pkgEntries = append(pkgEntries, ui.NewCol(1.0, lists[0]))
