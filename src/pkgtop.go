@@ -299,8 +299,6 @@ func start(osID string) int {
 	/* Show the disk usage information. (post-render) */
 	dfIndex = showDfInfo(dfIndex)
 
-	// TODO: Add new key events (copy...)
-
 	/* Get events from termui. */
 	uiEvents := ui.PollEvents()
 	for {
@@ -434,6 +432,8 @@ func start(osID string) int {
 						cmdList.ScrollTop()
 						infoRow += execCmd("sh", "-c", pkgInfoCmd)
 					} else {
+						// TODO: Add help message
+						
 						/* Help message. */
 						infoRow += "pkgtop help>"
 					}
