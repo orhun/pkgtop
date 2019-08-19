@@ -295,15 +295,15 @@ func start(osID string) int {
 			str.Join(str.Split(info, ":")[1:], "") + "\n"
 	}
 	/* Configure and render the main grid layout.
-	* ....................................................................
-	* :     [Disk Usage]  : [System Information] : [Project Information] :
-	* :...................:......................:.......................:
-	* :                                                                  :
-	* :                     [Installed Packages]                         :
-	* :                                                                  :
-	* :..................................................................:
-	* :                         [Commands]                               :
-	* :..................................................................:
+	* ...................................................
+	* :  [Disk Usage]  : [System Info] : [Project Info] :
+	* :................:...............:................:
+	* :                                                 :
+	* :               [Installed Packages]              :
+	* :                                                 :
+	* :.................................................:
+	* :                   [Commands]                    :
+	* :.................................................:
 	*/
 	termWidth, termHeight := ui.TerminalDimensions()
 	termGrid.SetRect(0, 0, termWidth, termHeight)
