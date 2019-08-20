@@ -214,7 +214,7 @@ func scrollLists(lists []*widgets.List, amount int,
 		} else {
 			l.ScrollAmount(amount)
 		}
-		if i == len(lists) - 1 {
+		if i == len(lists) - 1 && l.Title != "" {
 			l.Title = fmt.Sprintf("%s (%d/%d)", 
 			str.Split(l.Title, " (")[0], 
 			l.SelectedRow+1, len(l.Rows))
