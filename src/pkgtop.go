@@ -195,6 +195,8 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	return pkgls, entries, optCmds
 }
 
+// TODO: Show the current row and count. Support going to the row index
+
 /*!
  * Scroll and render a slice of List widgets.
  *
@@ -550,6 +552,8 @@ func start(osID string) int {
  * Entry-point
  */
 func main() {
+	// TODO: Add new flag for the alphabetical order
+
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
 	flag.Parse()
