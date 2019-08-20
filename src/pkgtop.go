@@ -21,7 +21,7 @@ var dfIndex, pkgIndex = 0, 0                  /* Index value for the disk usage 
 var showInfo = false                          /* Switch to the package information page */
 var pkgMode = 0                               /* Integer value for changing the package operation mode. */
 var pkgModes = []string {                     /* Package management/operation modes */ 
-	"search", "install","upgrade",
+	"search", "install", "upgrade", "go-to",
 }
 var inputQuery, inputSuffix = "", ""          /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "                       /* Prefix for prepending to the commands */
@@ -209,7 +209,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 func scrollLists(lists []*widgets.List, amount int, 
 	row int, force bool) int {
 	for i, l := range lists {
-		if row != -1 {
+		if row != -1 && row < len(l.Rows) {
 			l.SelectedRow = row
 		} else {
 			l.ScrollAmount(amount)
@@ -345,7 +345,13 @@ func start(osID string) int {
 					inputQuery = inputQuery[:len(inputQuery)-1]
 				/* Append key to the query. */
 				} else if str.ToLower(e.ID) != "<backspace>" {
-					inputQuery += str.ToLower(e.ID)
+					/* Check for 'go-to' mode. */
+					if pkgMode != 4 {
+						inputQuery += str.ToLower(e.ID)
+					/* Allow typing only numbers for the package index. */
+					} else if _, err := strconv.Atoi(e.ID); err == nil {
+						inputQuery += e.ID
+					}
 				}
 				if pkgMode == 1 {
 					/* Create lists again for searching. */
@@ -435,13 +441,19 @@ func start(osID string) int {
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Append installation command to list if install mode is on. */
 					if pkgMode > 1 && inputQuery != "" {
-						pkgOptCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
-						if cmdList.Rows[0] != cmdConfirm + pkgOptCmd {
-							cmdList.Rows = append([]string{cmdConfirm + pkgOptCmd},
-								cmdList.Rows...)
+						if pkgMode != 4 {
+							pkgOptCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
+							if cmdList.Rows[0] != cmdConfirm + pkgOptCmd {
+								cmdList.Rows = append([]string{cmdConfirm + pkgOptCmd},
+									cmdList.Rows...)
+							}
+							cmdList.ScrollTop()
+							ui.Render(cmdList)
+						/* Scroll to the entered row. */
+						} else {
+							rowInput, _ := strconv.Atoi(inputQuery)
+							scrollLists(lists, -1, rowInput-1, false)
 						}
-						cmdList.ScrollTop()
-						ui.Render(cmdList)
 						pkgMode = 0
 						break
 					}
@@ -490,8 +502,8 @@ func start(osID string) int {
 				showInfo = !showInfo
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
-			/* Search, install or upgrade package. */
-			case "s", "i", "<c-u>":
+			/* Search, install, upgrade or go-to package. */
+			case "s", "i", "<c-u>", "g":
 				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
 					/* Set variables for switching the mode. */
