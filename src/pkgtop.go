@@ -195,8 +195,6 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	return pkgls, entries, optCmds
 }
 
-// TODO: Show the current row and count. Support going to the row index
-
 /*!
  * Scroll and render a slice of List widgets.
  *
