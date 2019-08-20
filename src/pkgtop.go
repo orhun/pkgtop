@@ -208,11 +208,16 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
  */
 func scrollLists(lists []*widgets.List, amount int, 
 	row int, force bool) int {
-	for _, l := range lists {
+	for i, l := range lists {
 		if row != -1 {
 			l.SelectedRow = row
 		} else {
 			l.ScrollAmount(amount)
+		}
+		if i == len(lists) - 1 {
+			l.Title = fmt.Sprintf("%s (%d/%d)", 
+			str.Split(l.Title, " (")[0], 
+			l.SelectedRow+1, len(l.Rows))
 		}
 		if len(l.Rows) != 0 || force {
 			ui.Render(l)
@@ -289,6 +294,7 @@ func start(osID string) int {
 	}
 	/* Initialize and render the widgets for showing the package list. */
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
+	scrollLists(lists, -1, 0, false)
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
