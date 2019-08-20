@@ -46,7 +46,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"| sort -h -r -t '~' -k3 " +
 		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~" + 
 		"pacman -Rcns %s --noconfirm~pacman -S %s --noconfirm~" + 
-		"pacman -Sy %s --noconfirm\"" + 
+		"pacman -Sy %s --noconfirm~x\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 var keyActions = "   Key                     Action\n"+
