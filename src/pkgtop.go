@@ -254,32 +254,31 @@ func start(osID string) int {
 	/* Close the UI on function exit. */
 	defer ui.Close()
 	/* Initialize the widgets. */
-
 	termGrid, dfGrid, pkgGrid =
 		ui.NewGrid(),
 		ui.NewGrid(),
 		ui.NewGrid()
-	pkgText, sysInfoText =
-		widgets.NewParagraph(),
-		widgets.NewParagraph()
-
-	// TODO: Add text to pkgText widget.
-	pkgText.WrapText = true
-	pkgText.Text = ""+
-	"      [.smNNho:\n"+
-	"    ..   -+hmMmh+\n"+
-	"  -smNds:.  `sMMN\n"+
-	"   `-+hNMNs  +MMN\n"+
-	"    .  oMMd  /MMN\n"+
-	" .pkg` +MMd  /MMd\n"+
-	" `top` omh/  -o:`](fg:white,mod:bold)"
-	pkgText.BorderStyle.Fg = ui.ColorBlack
-	sysInfoText.BorderStyle.Fg = ui.ColorBlack
-
 	cmdList = widgets.NewList()
 	cmdList.WrapText = false
 	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
 	cmdList.BorderStyle.Fg = ui.ColorBlack
+	pkgText, sysInfoText =
+		widgets.NewParagraph(),
+		widgets.NewParagraph()
+	pkgText.WrapText = true
+	pkgText.Text = ""+
+	"       [.smNNho:\n"+
+	"     ..   -+hmMmh+\n"+
+	"   -smNds:.  `sMMN\n"+
+	"    `-+hNMNs  +MMN\n"+
+	"     .  oMMd  /MMN\n"+
+	"  .pkg` +MMd  /MMd\n"+
+	"  `top` omh/  -o:`](fg:white,mod:bold)\n"+
+	" > [github.com/keylo99/pkgtop](fg:blue,mod:bold)\n"+
+	" > [Interactive package manager & resource monitor (v"+
+	version+")](fg:blue,mod:bold)"
+	pkgText.BorderStyle.Fg = ui.ColorBlack
+	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Update the commands list. */
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
@@ -316,8 +315,8 @@ func start(osID string) int {
 	termGrid.Set(
 		ui.NewRow(1.0/4,
 			ui.NewCol(1.0/2, dfGrid),
-			ui.NewCol(1.0/4, sysInfoText),
-			ui.NewCol(1.0/4, pkgText),
+			ui.NewCol(0.3, sysInfoText),
+			ui.NewCol(1.0/5, pkgText),
 		),
 		ui.NewRow(1.0/1.6,
 			ui.NewCol(1.0/1, pkgGrid),
