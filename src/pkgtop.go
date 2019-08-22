@@ -279,6 +279,13 @@ func start(osID string) int {
 	version+")](fg:blue,mod:bold)"
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
+	/* Set the operating system variable. */
+	for id, _ := range pkgsCmd {
+		if str.Contains(id, osID) {
+			osID = id
+			break
+		}
+	}
 	/* Update the commands list. */
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
