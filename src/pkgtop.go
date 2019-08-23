@@ -285,7 +285,7 @@ func start(osID string) int {
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
-	for id, _ := range pkgsCmd {
+	for id := range pkgsCmd {
 		if str.Contains(id, osID) {
 			osID = id
 			break
