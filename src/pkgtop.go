@@ -52,7 +52,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"${Installed-Size};${binary:Summary}\n' | sort -n -r -t ';' -k3 "+
 		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;"+
 		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" "+
-		"&& echo 'Name|Version|Installed Size|Description'"
+		"&& echo 'Name|Version|Installed Size|Description'",
 }
 var keyActions = "   Key                     Action\n"+
 	"   ?                       : Help\n"+
