@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"flag"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
@@ -17,6 +18,7 @@ var version = "1.0.0"                         /* Version variable */
 var termGrid, dfGrid, pkgGrid *ui.Grid        /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph   /* Paragraph widgets for showing text */
 var cmdList *widgets.List                     /* List widget for the executed commands. */
+var sortPackages = false                      /* Boolean value for sorting the packages alphabetically */
 var dfIndex, pkgIndex = 0, 0                  /* Index value for the disk usage widgets & package list */
 var showInfo = false                          /* Switch to the package information page */
 var pkgMode = 0                               /* Integer value for changing the package operation mode. */
@@ -302,6 +304,10 @@ func start(osID string) int {
 		ui.Close()
 		log.Fatalf("Failed to retrieve package list. (OS: '%s')", osID)
 	}
+	/* Sort package names if the command line argument provided. */
+	if sortPackages {
+		sort.Strings(pkgs[:len(pkgs)-2])
+	}
 	/* Initialize and render the widgets for showing the package list. */
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	scrollLists(lists, -1, 0, false)
@@ -583,6 +589,7 @@ func main() {
 	// TODO: Add new flag for the alphabetical order
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
+	flag.BoolVar(&sortPackages, "s", false, "sort packages alphabetically")
 	flag.Parse()
 	if *showVersion {
 		fmt.Printf("pkgtop v%s\n", version)
