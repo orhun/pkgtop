@@ -48,6 +48,11 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" + 
 		"pacman -Sy %s --noconfirm;x\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
+	"ubuntu": "dpkg-query -W --showformat='${Package};${Version};"+
+		"${Installed-Size};${binary:Summary}\n' | sort -n -r -t ';' -k3 "+
+		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;"+
+		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" "+
+		"&& echo 'Name|Version|Installed Size|Description'"
 }
 var keyActions = "   Key                     Action\n"+
 	"   ?                       : Help\n"+
