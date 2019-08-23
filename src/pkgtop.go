@@ -42,11 +42,11 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Version/{ver=$3} " +
 		"/^Description/{desc=substr($0,index($0,$3))} " +
 		"/^Installed Size/{size=$4$5; " +
-		"print name \"~\" ver \"~\" size \"~\" desc}' " +
-		"| sort -h -r -t '~' -k3 " +
-		"&& echo \"pacman -Qi %s | sed -e 's/^/  /'~" + 
-		"pacman -Rcns %s --noconfirm~pacman -S %s --noconfirm~" + 
-		"pacman -Sy %s --noconfirm~x\"" + 
+		"print name \";\" ver \";\" size \";\" desc}' " +
+		"| sort -h -r -t ';' -k3 " +
+		"&& echo \"pacman -Qi %s | sed -e 's/^/  /';" + 
+		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" + 
+		"pacman -Sy %s --noconfirm;x\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
 var keyActions = "   Key                     Action\n"+
@@ -162,7 +162,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 	var pkgls []*widgets.List
 	/* Create the title and option command slices from the last lines. */
 	titles, optCmds := str.Split(pkgs[len(pkgs)-1], "|"),
-		str.Split(pkgs[len(pkgs)-2], "~")
+		str.Split(pkgs[len(pkgs)-2], ";")
 	/* Loop through the lines for creating GridItems that contain List widget. */
 	entries := make([]interface{}, len(titles))
 	for i := 0; i < len(titles); i++ {
@@ -170,10 +170,10 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 		var rows []string
 		for _, pkg := range pkgs {
 			/* Pass the lines that have insufficient length. */
-			if len(str.Split(pkg, "~")) != len(titles) {
+			if len(str.Split(pkg, ";")) != len(titles) {
 				continue
 			}
-			rows = append(rows, " "+str.Split(pkg, "~")[i])
+			rows = append(rows, " "+str.Split(pkg, ";")[i])
 		}
 		/* Create a List widget and initialize with the parsed values. */
 		pkgl := widgets.NewList()

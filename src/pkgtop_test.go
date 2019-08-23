@@ -28,9 +28,9 @@ func TestGetDfEntries(t *testing.T) {
 
 func TestGetPkgListEntries(t *testing.T) {
 	pkgs := []string{
-		"val0~10~x~test1",
-		"val1~20~y~test2",
-		"test~echo 'y'",
+		"val0;10;x;test1",
+		"val1;20;y;test2",
+		"test;echo 'y'",
 		"[1]|[2]",
 	}
 	titles := strings.Split(pkgs[len(pkgs)-1], "|")
