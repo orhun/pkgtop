@@ -279,9 +279,9 @@ func start(osID string) int {
 	"     .  oMMd  /MMN\n"+
 	"  .pkg` +MMd  /MMd\n"+
 	"  `top` omh/  -o:`](fg:white,mod:bold)\n"+
-	" > [github.com/keylo99/pkgtop](fg:blue,mod:bold)\n"+
+	" > [github.com/keylo99/pkgtop](fg:blue)\n"+
 	" > [Interactive package manager & resource monitor (v"+
-	version+")](fg:blue,mod:bold)"
+	version+")](fg:blue)"
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
