@@ -586,7 +586,6 @@ func start(osID string) int {
  * Entry-point
  */
 func main() {
-	// TODO: Add new flag for the alphabetical order
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
 	flag.BoolVar(&sortPackages, "s", false, "sort packages alphabetically")
