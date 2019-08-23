@@ -27,7 +27,7 @@ var inputQuery, inputSuffix = "", ""          /* List title suffix & input query
 var cmdPrefix = " λ ~ "                       /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "                      /* Confirmation string for commands to execute */
 var osIDCmd = "awk -F '=' '/^ID=/ " +         /* Print the OS ID information (for distro checking) */
-							"{print tolower($2)}' /etc/*-release"
+		"{print tolower($2)}' /etc/*-release 2>/dev/null"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
 	" Kernel: $(uname -s)\\n" +
 	" Kernel Release: $(uname -r)\\n" +
@@ -35,7 +35,7 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system infor
 	" Processor Type: $(uname -p)\\n" +
 	" Hardware: $(uname --m)\\n" +
 	" Hardware Platform: $(uname -i)\\n" +
-							" OS: $(uname -o)\\n\""
+			" OS: $(uname -o)\\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
 var pkgsCmd = map[string]string{                      /* Commands for listing the installed packages */
 	"arch": "pacman -Qi | awk '/^Name/{name=$3} " +
@@ -48,8 +48,8 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" + 
 		"pacman -Sy %s --noconfirm;x\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
-	"ubuntu": "dpkg-query -W --showformat='${Package};${Version};"+
-		"${Installed-Size};${binary:Summary}\n' | sort -n -r -t ';' -k3 "+
+	"ubuntu,linuxmint": "dpkg-query -W --showformat='${Package};${Version};"+
+		"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 "+
 		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;"+
 		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" "+
 		"&& echo 'Name|Version|Installed Size|Description'",
@@ -285,6 +285,7 @@ func start(osID string) int {
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
+	osID = str.TrimSpace(str.Split(osID, "\n")[0])
 	for id := range pkgsCmd {
 		if str.Contains(id, osID) {
 			osID = id
@@ -580,7 +581,6 @@ func start(osID string) int {
  */
 func main() {
 	// TODO: Add new flag for the alphabetical order
-
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
 	flag.Parse()
