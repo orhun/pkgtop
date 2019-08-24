@@ -302,10 +302,20 @@ func start(osID string) int {
 		cmdPrefix + osIDCmd}
 	/* Retrieve packages with the OS command. */
 	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osID]), "\n")
-	/* Check the packages count. */
-	if len(pkgs) < 2 {
+	/* Check if the operating system command exists. */
+	if _, hasKey := pkgsCmd[osID]; !hasKey {
 		ui.Close()
-		log.Fatalf("Failed to retrieve package list. (OS: '%s')", osID)
+		keys := make([]string, 0, len(pkgsCmd))
+		for k := range pkgsCmd {
+			keys = append(keys, k)
+		}
+		log.Fatalf("Failed to start pkgtop on '%s'. "+
+			"Try providing Linux distribution with -d argument. (%s)", 
+			osID, str.Join(keys, ","))
+	/* Check the packages count. */
+	} else if len(pkgs) < 2 {
+		ui.Close()
+		log.Fatalf("Failed to retrieve package list on '%s'.", osID)
 	}
 	/* Sort package names if the command line argument provided. */
 	if sortPackages {
@@ -591,12 +601,15 @@ func start(osID string) int {
 func main() {
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
+	osID := flag.String("d", "", "linux distribution")
 	flag.BoolVar(&sortPackages, "s", false, "sort packages alphabetically")
 	flag.Parse()
 	if *showVersion {
 		fmt.Printf("pkgtop v%s\n", version)
 		return
+	} else if *osID == "" {
+		*osID = execCmd("sh", "-c", osIDCmd)
 	}
 	/* Initialize and start the termui. */
-	start(execCmd("sh", "-c", osIDCmd))
+	start(*osID)
 }
