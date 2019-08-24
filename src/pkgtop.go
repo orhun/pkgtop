@@ -1,35 +1,35 @@
 package main
 
 import (
-	"fmt"
-	"sort"
 	"flag"
+	"fmt"
+	"github.com/atotto/clipboard"
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
-	"github.com/atotto/clipboard"
 	"log"
 	"os"
 	"os/exec"
+	"sort"
 	"strconv"
 	str "strings"
 )
 
-var version = "1.0.0"                         /* Version variable */
-var termGrid, dfGrid, pkgGrid *ui.Grid        /* Grid widgets for the layout */
-var pkgText, sysInfoText *widgets.Paragraph   /* Paragraph widgets for showing text */
-var cmdList *widgets.List                     /* List widget for the executed commands. */
-var sortPackages = false                      /* Boolean value for sorting the packages alphabetically */
-var dfIndex, pkgIndex = 0, 0                  /* Index value for the disk usage widgets & package list */
-var showInfo = false                          /* Switch to the package information page */
-var pkgMode = 0                               /* Integer value for changing the package operation mode. */
-var pkgModes = []string {                     /* Package management/operation modes */ 
+var version = "1.0.0"                       /* Version variable */
+var termGrid, dfGrid, pkgGrid *ui.Grid      /* Grid widgets for the layout */
+var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
+var cmdList *widgets.List                   /* List widget for the executed commands. */
+var sortPackages = false                    /* Boolean value for sorting the packages alphabetically */
+var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
+var showInfo = false                        /* Switch to the package information page */
+var pkgMode = 0                             /* Integer value for changing the package operation mode. */
+var pkgModes = []string{                    /* Package management/operation modes */
 	"search", "install", "upgrade", "go-to",
 }
-var inputQuery, inputSuffix = "", ""          /* List title suffix & input query value */
-var cmdPrefix = " λ ~ "                       /* Prefix for prepending to the commands */
-var cmdConfirm = " [y] "                      /* Confirmation string for commands to execute */
-var osIDCmd = "awk -F '=' '/^ID=/ " +         /* Print the OS ID information (for distro checking) */
-		"{print tolower($2)}' /etc/*-release 2>/dev/null"
+var inputQuery, inputSuffix = "", ""  /* List title suffix & input query value */
+var cmdPrefix = " λ ~ "               /* Prefix for prepending to the commands */
+var cmdConfirm = " [y] "              /* Confirmation string for commands to execute */
+var osIDCmd = "awk -F '=' '/^ID=/ " + /* Print the OS ID information (for distro checking) */
+							"{print tolower($2)}' /etc/*-release 2>/dev/null"
 var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
 	" Kernel: $(uname -s)\\n" +
 	" Kernel Release: $(uname -r)\\n" +
@@ -37,7 +37,7 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system infor
 	" Processor Type: $(uname -p)\\n" +
 	" Hardware: $(uname --m)\\n" +
 	" Hardware Platform: $(uname -i)\\n" +
-			" OS: $(uname -o)\\n\""
+							" OS: $(uname -o)\\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
 var pkgsCmd = map[string]string{                      /* Commands for listing the installed packages */
 	"arch": "pacman -Qi | awk '/^Name/{name=$3} " +
@@ -46,32 +46,32 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"/^Installed Size/{size=$4$5; " +
 		"print name \";\" ver \";\" size \";\" desc}' " +
 		"| sort -h -r -t ';' -k3 " +
-		"&& echo \"pacman -Qi %s | sed -e 's/^/  /';" + 
-		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" + 
-		"pacman -Sy %s --noconfirm;x\"" + 
+		"&& echo \"pacman -Qi %s | sed -e 's/^/  /';" +
+		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" +
+		"pacman -Sy %s --noconfirm;x\"" +
 		"&& echo 'Name|Version|Installed Size|Description'",
-	"ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};"+
-		"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 "+
-		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;"+
-		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" "+
+	"ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};" +
+		"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 " +
+		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;" +
+		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" " +
 		"&& echo 'Name|Version|Installed Size|Description'",
 }
-var keyActions = "   Key                     Action\n"+
-	"   ?                       : Help\n"+
-	"   enter, space, tab       : Show package information\n"+
-	"   i                       : Install package\n"+
-	"   u/ctrl-u                : Upgrade package/with input\n"+
-	"   r                       : Remove package\n"+
-	"   s                       : Search package\n"+
-	"   g                       : Go to package (index)\n"+
-	"   y                       : Confirm and execute the selected command\n"+
-	"   p                       : Copy selected package name/information\n"+
-	"   e                       : Copy selected command\n"+
-	"   c                       : Scroll executed commands list\n"+
-	"   j/k, down/up            : Scroll down/up (packages)\n"+
-	"   ctrl-j/ctrl-k           : Scroll to bottom/top (packages)\n"+
-	"   l/h, right/left         : Scroll down/up (disk usage)\n"+
-	"   backspace               : Go back\n"+
+var keyActions = "   Key                     Action\n" +
+	"   ?                       : Help\n" +
+	"   enter, space, tab       : Show package information\n" +
+	"   i                       : Install package\n" +
+	"   u/ctrl-u                : Upgrade package/with input\n" +
+	"   r                       : Remove package\n" +
+	"   s                       : Search package\n" +
+	"   g                       : Go to package (index)\n" +
+	"   y                       : Confirm and execute the selected command\n" +
+	"   p                       : Copy selected package name/information\n" +
+	"   e                       : Copy selected command\n" +
+	"   c                       : Scroll executed commands list\n" +
+	"   j/k, down/up            : Scroll down/up (packages)\n" +
+	"   ctrl-j/ctrl-k           : Scroll to bottom/top (packages)\n" +
+	"   l/h, right/left         : Scroll down/up (disk usage)\n" +
+	"   backspace               : Go back\n" +
 	"   q, esc, ctrl-c, ctrl-d  : Exit\n"
 
 /*!
@@ -193,7 +193,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 		/* Add List widget to the GridItem slice. */
 		if i == 0 {
 			entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
-		} else if i == len(titles) - 1 {
+		} else if i == len(titles)-1 {
 			entries[i] = ui.NewCol(1.0, pkgl)
 		} else {
 			entries[i] = ui.NewCol(1.0/(float64(len(titles))*1.6), pkgl)
@@ -212,7 +212,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
  * \param force
  * \return 0 on success
  */
-func scrollLists(lists []*widgets.List, amount int, 
+func scrollLists(lists []*widgets.List, amount int,
 	row int, force bool) int {
 	for i, l := range lists {
 		if row != -1 && row < len(l.Rows) {
@@ -220,10 +220,10 @@ func scrollLists(lists []*widgets.List, amount int,
 		} else {
 			l.ScrollAmount(amount)
 		}
-		if i == len(lists) - 1 && l.Title != "" {
-			l.Title = fmt.Sprintf("%s (%d/%d)", 
-			str.Split(l.Title, " (")[0], 
-			l.SelectedRow+1, len(l.Rows))
+		if i == len(lists)-1 && l.Title != "" {
+			l.Title = fmt.Sprintf("%s (%d/%d)",
+				str.Split(l.Title, " (")[0],
+				l.SelectedRow+1, len(l.Rows))
 		}
 		if len(l.Rows) != 0 || force {
 			ui.Render(l)
@@ -274,30 +274,30 @@ func start(osID string) int {
 		widgets.NewParagraph(),
 		widgets.NewParagraph()
 	pkgText.WrapText = true
-	pkgText.Text = ""+
-	"       [.smNNho:\n"+
-	"     ..   -+hmMmh+\n"+
-	"   -smNds:.  `sMMN\n"+
-	"    `-+hNMNs  +MMN\n"+
-	"     .  oMMd  /MMN\n"+
-	"  .pkg` +MMd  /MMd\n"+
-	"  `top` omh/  -o:`](fg:white,mod:bold)\n"+
-	" > [github.com/keylo99/pkgtop](fg:blue)\n"+
-	" > [Interactive package manager & resource monitor (v"+
-	version+")](fg:blue)"
+	pkgText.Text = "" +
+		"       [.smNNho:\n" +
+		"     ..   -+hmMmh+\n" +
+		"   -smNds:.  `sMMN\n" +
+		"    `-+hNMNs  +MMN\n" +
+		"     .  oMMd  /MMN\n" +
+		"  .pkg` +MMd  /MMd\n" +
+		"  `top` omh/  -o:`](fg:white,mod:bold)\n" +
+		" > [github.com/keylo99/pkgtop](fg:blue)\n" +
+		" > [Interactive package manager & resource monitor (v" +
+		version + ")](fg:blue)"
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
 	osID = str.TrimSpace(str.Split(osID, "\n")[0])
-	OSCheckLoop:
-		for ids := range pkgsCmd {
-			for _, id := range str.Split(ids, ",") {
-				if str.Contains(osID, id) {
-					osID = id
-					break OSCheckLoop
-				}
+OSCheckLoop:
+	for ids := range pkgsCmd {
+		for _, id := range str.Split(ids, ",") {
+			if str.Contains(osID, id) {
+				osID = id
+				break OSCheckLoop
 			}
 		}
+	}
 	/* Update the commands list. */
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
@@ -311,9 +311,9 @@ func start(osID string) int {
 			keys = append(keys, k)
 		}
 		log.Fatalf("Failed to start pkgtop on '%s'. "+
-			"Try providing Linux distribution with -d argument. (%s)", 
+			"Try providing Linux distribution with -d argument. (%s)",
 			osID, str.Join(keys, ","))
-	/* Check the packages count. */
+		/* Check the packages count. */
 	} else if len(pkgs) < 2 {
 		ui.Close()
 		log.Fatalf("Failed to retrieve package list on '%s'.", osID)
@@ -328,11 +328,11 @@ func start(osID string) int {
 	pkgGrid.Set(ui.NewRow(1.0, pkgEntries...))
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
-	for _, info := range str.Split(" " + execCmd("sh", "-c", sysInfoCmd), "\n") {
-		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:blue)"+
+	for _, info := range str.Split(" "+execCmd("sh", "-c", sysInfoCmd), "\n") {
+		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:blue)" +
 			str.Join(str.Split(info, ":")[1:], "") + "\n"
 	}
-	/* Configure and render the main grid layout.
+    /* Configure and render the main grid layout.
 	* ...................................................
 	* :  [Disk Usage]  : [System Info] : [Project Info] :
 	* :................:...............:................:
@@ -368,17 +368,17 @@ func start(osID string) int {
 		select {
 		case e := <-uiEvents:
 			/* Allow typing to the search area if the search mode is on. */
-			if pkgMode != 0 && (len(str.ToLower(e.ID)) == 1 || 
+			if pkgMode != 0 && (len(str.ToLower(e.ID)) == 1 ||
 				str.ToLower(e.ID) == "<backspace>") {
 				/* Delete the last char from query on the backspace key press. */
 				if len(inputQuery) != 0 && str.ToLower(e.ID) == "<backspace>" {
 					inputQuery = inputQuery[:len(inputQuery)-1]
-				/* Append key to the query. */
+					/* Append key to the query. */
 				} else if str.ToLower(e.ID) != "<backspace>" {
 					/* Check for 'go-to' mode. */
 					if pkgMode != 4 {
 						inputQuery += str.ToLower(e.ID)
-					/* Allow typing only numbers for the package index. */
+						/* Allow typing only numbers for the package index. */
 					} else if _, err := strconv.Atoi(e.ID); err == nil {
 						inputQuery += e.ID
 					}
@@ -410,7 +410,7 @@ func start(osID string) int {
 			case "q", "<escape>", "<c-c>", "<c-d>":
 				if pkgMode == 0 {
 					return 0
-				} 
+				}
 				pkgMode = 0
 			/* Terminal resize. */
 			case "<resize>":
@@ -450,7 +450,7 @@ func start(osID string) int {
 				ui.Render(cmdList)
 			/* Copy selected package info to clipboard. */
 			case "p":
-				if lists[0] != nil && len(lists[0].Rows) != 0 && 
+				if lists[0] != nil && len(lists[0].Rows) != 0 &&
 					lists[0].SelectedRow >= 0 {
 					clipboard.WriteAll(str.TrimSpace(
 						lists[0].Rows[lists[0].SelectedRow]))
@@ -473,13 +473,13 @@ func start(osID string) int {
 					if pkgMode > 1 && inputQuery != "" {
 						if pkgMode != 4 {
 							pkgOptCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
-							if cmdList.Rows[0] != cmdConfirm + pkgOptCmd {
+							if cmdList.Rows[0] != cmdConfirm+pkgOptCmd {
 								cmdList.Rows = append([]string{cmdConfirm + pkgOptCmd},
 									cmdList.Rows...)
 							}
 							cmdList.ScrollTop()
 							ui.Render(cmdList)
-						/* Scroll to the entered row. */
+							/* Scroll to the entered row. */
 						} else {
 							rowInput, _ := strconv.Atoi(inputQuery)
 							scrollLists(lists, -1, rowInput-1, false)
@@ -498,11 +498,11 @@ func start(osID string) int {
 						selectedPkg := str.TrimSpace(lists[0].Rows[pkgIndex])
 						pkgInfoCmd := fmt.Sprintf(optCmds[0], selectedPkg)
 						/* Update the commands list. */
-						if str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[0]) && 
+						if str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[0]) &&
 							str.Contains(cmdList.Rows[0], str.Split(optCmds[0], "%s")[1]) {
 							cmdList.Rows[0] = cmdPrefix + pkgInfoCmd
 						} else {
-							cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd}, 
+							cmdList.Rows = append([]string{cmdPrefix + pkgInfoCmd},
 								cmdList.Rows...)
 						}
 						cmdList.ScrollTop()
@@ -545,9 +545,10 @@ func start(osID string) int {
 							pkgMode = i + 1
 							/* Set the first lists title for the selected mode. */
 							if str.Contains(inputSuffix, " > ") {
-								inputSuffix = str.Split(inputSuffix, ">")[0]+"> "+v+": "
+								inputSuffix = str.Split(inputSuffix, ">")[0] 
+									+ "> " + v + ": "
 							} else if !str.Contains(inputSuffix, v) {
-								inputSuffix = lists[0].Title + " > "+v+": "
+								inputSuffix = lists[0].Title + " > " + v + ": "
 							}
 							break
 						}
@@ -569,7 +570,7 @@ func start(osID string) int {
 				/* Add command to the command list with confirmation prefix. */
 				selectedPkg := str.TrimSpace(lists[0].Rows[lists[0].SelectedRow])
 				pkgOptCmd := fmt.Sprintf(optCmds[optCmdIndex], selectedPkg)
-				if cmdList.Rows[0] != cmdConfirm + pkgOptCmd {
+				if cmdList.Rows[0] != cmdConfirm+pkgOptCmd {
 					cmdList.Rows = append([]string{cmdConfirm + pkgOptCmd},
 						cmdList.Rows...)
 				}
