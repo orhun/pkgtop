@@ -63,6 +63,7 @@ var keyActions = "   Key                     Action\n"+
 	"   u/ctrl-u                : Upgrade package/with input\n"+
 	"   r                       : Remove package\n"+
 	"   s                       : Search package\n"+
+	"   g                       : Go to package (index)\n"+
 	"   y                       : Confirm and execute the selected command\n"+
 	"   p                       : Copy selected package name/information\n"+
 	"   e                       : Copy selected command\n"+
