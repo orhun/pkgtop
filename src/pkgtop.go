@@ -50,7 +50,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" + 
 		"pacman -Sy %s --noconfirm;x\"" + 
 		"&& echo 'Name|Version|Installed Size|Description'",
-	"ubuntu,linuxmint": "dpkg-query -W --showformat='${Package};${Version};"+
+	"ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};"+
 		"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 "+
 		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;"+
 		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" "+
@@ -288,12 +288,15 @@ func start(osID string) int {
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
 	osID = str.TrimSpace(str.Split(osID, "\n")[0])
-	for id := range pkgsCmd {
-		if str.Contains(id, osID) {
-			osID = id
-			break
+	OSCheckLoop:
+		for ids := range pkgsCmd {
+			for _, id := range str.Split(ids, ",") {
+				if str.Contains(osID, id) {
+					osID = id
+					break OSCheckLoop
+				}
+			}
 		}
-	}
 	/* Update the commands list. */
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
