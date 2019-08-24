@@ -545,8 +545,8 @@ OSCheckLoop:
 							pkgMode = i + 1
 							/* Set the first lists title for the selected mode. */
 							if str.Contains(inputSuffix, " > ") {
-								inputSuffix = str.Split(inputSuffix, ">")[0] 
-									+ "> " + v + ": "
+								inputSuffix = str.Split(inputSuffix, ">")[0] + 
+									"> " + v + ": "
 							} else if !str.Contains(inputSuffix, v) {
 								inputSuffix = lists[0].Title + " > " + v + ": "
 							}
