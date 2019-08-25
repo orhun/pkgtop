@@ -288,12 +288,12 @@ func start(osID string) int {
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
-	osID = str.TrimSpace(str.Split(osID, "\n")[0])
+	osID = str.ToLower(str.TrimSpace(str.Split(osID, "\n")[0]))
 OSCheckLoop:
 	for ids := range pkgsCmd {
 		for _, id := range str.Split(ids, ",") {
 			if str.Contains(osID, id) {
-				osID = id
+				osID = ids
 				break OSCheckLoop
 			}
 		}
