@@ -40,7 +40,7 @@ var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system infor
 							" OS: $(uname -o)\\n\""
 var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
 var pkgsCmd = map[string]string{                      /* Commands for listing the installed packages */
-	"arch": "pacman -Qi | awk '/^Name/{name=$3} " +
+	"arch,manjaro": "pacman -Qi | awk '/^Name/{name=$3} " +
 		"/^Version/{ver=$3} " +
 		"/^Description/{desc=substr($0,index($0,$3))} " +
 		"/^Installed Size/{size=$4$5; " +
@@ -50,7 +50,7 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" +
 		"pacman -Sy %s --noconfirm;x\"" +
 		"&& echo 'Name|Version|Installed Size|Description'",
-	"ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};" +
+	"debian,ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};" +
 		"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 " +
 		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;" +
 		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" " +
