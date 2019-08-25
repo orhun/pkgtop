@@ -55,6 +55,10 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;" +
 		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" " +
 		"&& echo 'Name|Version|Installed Size|Description'",
+	"suse": "rpm -qa --queryformat '%{Name};%{Version};%{Size};%{Summary}\\n' | "+
+		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';"+
+		"zypper rm -y %s;zypper in -y %s;zypper up -y %s;x\" && "+
+		"echo 'Name|Version|Installed Size|Description'",
 }
 var keyActions = "   Key                     Action\n" +
 	"   ?                       : Help\n" +
