@@ -59,6 +59,11 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';"+
 		"zypper rm -y %s;zypper in -y %s;zypper up -y %s;x\" && "+
 		"echo 'Name|Version|Installed Size|Description'",
+	"fedora,centos,redhat": "rpm -qa --queryformat "+
+		"'%{Name};%{Version};%{Size};%{Summary}\\n' | "+
+		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';"+
+		"dnf -y remove %s;dnf -y install %s;dnf -y upgrade %s;x\" && "+
+		"echo 'Name|Version|Installed Size|Description'",
 }
 var keyActions = "   Key                     Action\n" +
 	"   ?                       : Help\n" +
