@@ -34,6 +34,25 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 
 ## Usage
 
+| Key                      	| Action                                   	|
+|--------------------------	|------------------------------------------	|
+| `?`                      	| help                                     	|
+| `enter, space, tab`      	| show package information                 	|
+| `i`                      	| install package                          	|
+| `u/ctrl-u`               	| upgrade package                          	|
+| `r`                      	| remove package                           	|
+| `s`                      	| search package                           	|
+| `g`                      	| go to package (index)                    	|
+| `y`                      	| confirm and execute the selected command 	|
+| `p`                      	| copy selected package                    	|
+| `e`                      	| copy selected command                    	|
+| `c`                      	| scroll executed commands list            	|
+| `j/k, down/up`           	| scroll down/up (packages)                	|
+| `ctrl-j/ctrl-k`          	| scroll to bottom/top (packages)          	|
+| `l/h, right/left`        	| scroll down/up (disk usage)              	|
+| `backspace`              	| go back                                  	|
+| `q, esc, ctrl-c, ctrl-d` 	| exit                                     	|
+
 ...
 
 ## Screenshots
