@@ -40,13 +40,10 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 
 ![Fedora Screenshot](https://user-images.githubusercontent.com/24392180/63657577-596b0900-c7ac-11e9-9bc3-834f31c557fd.png)
 
-![Manjaro Screenshot](https://user-images.githubusercontent.com/24392180/63648224-2b96ad80-c735-11e9-86c8-5870c82c9554.png)
+![Manjaro-Mint Screenshot](https://user-images.githubusercontent.com/24392180/63795183-158f1580-c90c-11e9-8343-2dc24798c086.jpg)
 
-![Mint Screenshot](https://user-images.githubusercontent.com/24392180/63657582-6d166f80-c7ac-11e9-9174-1009daf62db0.png)
+![Debian-Ubuntu Screenshot](https://user-images.githubusercontent.com/24392180/63795189-17f16f80-c90c-11e9-96cc-dcd9bb660efe.jpg)
 
-![Debian Screenshot](https://user-images.githubusercontent.com/24392180/63657584-769fd780-c7ac-11e9-8206-0d0a029d1c91.png)
-
-![Ubuntu Screenshot](https://user-images.githubusercontent.com/24392180/63650076-2cd4d400-c74f-11e9-8435-55ee42dbfc33.png)
 
 ## Todo(s)
 * Add 'paste' feature
