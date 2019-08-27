@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/atotto/clipboard"
 	ui "github.com/gizak/termui/v3"
+	"github.com/dustin/go-humanize"
 	"github.com/gizak/termui/v3/widgets"
 	"log"
 	"os"
@@ -190,7 +191,13 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 			if len(str.Split(pkg, ";")) != len(titles) {
 				continue
 			}
-			rows = append(rows, " "+str.Split(pkg, ";")[i])
+			/* Convert size to human readable format if possible. */
+			if size, err := strconv.ParseInt(str.Split(pkg, ";")[i], 10, 64);
+				err == nil && titles[i] == "Installed Size" {
+				rows = append(rows, " "+humanize.Bytes(uint64(size)))
+			} else {
+				rows = append(rows, " "+str.Split(pkg, ";")[i])
+			}
 		}
 		/* Create a List widget and initialize with the parsed values. */
 		pkgl := widgets.NewList()

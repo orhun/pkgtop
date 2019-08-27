@@ -12,6 +12,7 @@ pkgtop is an interactive package manager and resource monitor tool designed for 
 ### • Dependencies
 * [gizak/termui](https://github.com/gizak/termui/)
 * [atotto/clipboard](https://github.com/atotto/clipboard)
+* [dustin/go-humanize](https://github.com/dustin/go-humanize)
 
 ### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
 
