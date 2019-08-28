@@ -9,9 +9,9 @@ pkgtop is an interactive package manager and resource monitor tool designed for 
 ## Installation
 
 ### • Dependencies
-*  [gizak/termui](https://github.com/gizak/termui/)
-*  [atotto/clipboard](https://github.com/atotto/clipboard)
-*  [dustin/go-humanize](https://github.com/dustin/go-humanize)
+* [gizak/termui](https://github.com/gizak/termui/)
+* [atotto/clipboard](https://github.com/atotto/clipboard)
+* [dustin/go-humanize](https://github.com/dustin/go-humanize)
 
 ### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
 
@@ -104,6 +104,26 @@ pressed keys: c, y
 pressed key: ?
 ```
 
+## Docker
+
+### Build Docker Image
+
+```
+docker build -f docker/Dockerfile -t pkgtop-docker .
+```
+
+### Run the Container
+
+```
+docker run pkgtop-docker
+```
+
+### Start a shell in the Container
+
+```
+docker run -it pkgtop-docker /bin/ash
+```
+
 ## Screenshots
 
 ![Fedora Screenshot](https://user-images.githubusercontent.com/24392180/63807819-2ef18b00-c927-11e9-85b6-59917283a4f8.png)
@@ -113,7 +133,7 @@ pressed key: ?
 ![Debian-Ubuntu Screenshot](https://user-images.githubusercontent.com/24392180/63795189-17f16f80-c90c-11e9-96cc-dcd9bb660efe.jpg)
 
 ## Todo(s)
-*  Add 'paste' feature
+* Add 'paste' feature
 
 ## License
 
