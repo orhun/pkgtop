@@ -1,4 +1,3 @@
-
 ![Logo](https://user-images.githubusercontent.com/24392180/63693894-dd110e00-c81d-11e9-8f51-e00d5bd7d6a6.png)
 
 # pkgtop [![Release](https://img.shields.io/github/release/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/releases)
@@ -10,9 +9,9 @@ pkgtop is an interactive package manager and resource monitor tool designed for 
 ## Installation
 
 ### • Dependencies
-* [gizak/termui](https://github.com/gizak/termui/)
-* [atotto/clipboard](https://github.com/atotto/clipboard)
-* [dustin/go-humanize](https://github.com/dustin/go-humanize)
+*  [gizak/termui](https://github.com/gizak/termui/)
+*  [atotto/clipboard](https://github.com/atotto/clipboard)
+*  [dustin/go-humanize](https://github.com/dustin/go-humanize)
 
 ### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
 
@@ -66,7 +65,6 @@ pressed keys: down, enter, backspace
 
 ![Search, Go-to Package](https://user-images.githubusercontent.com/24392180/63809733-c35dec80-c92b-11e9-9a99-09317741a86c.gif)
 
-
 ```
 pressed keys: s, (type), enter, g, (type), enter
 ```
@@ -114,9 +112,8 @@ pressed key: ?
 
 ![Debian-Ubuntu Screenshot](https://user-images.githubusercontent.com/24392180/63795189-17f16f80-c90c-11e9-96cc-dcd9bb660efe.jpg)
 
-
 ## Todo(s)
-* Add 'paste' feature
+*  Add 'paste' feature
 
 ## License
 
