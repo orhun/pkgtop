@@ -40,8 +40,8 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 | `?`                      	| help                                     	|
 | `enter, space, tab`      	| show package information                 	|
 | `i`                      	| install package                          	|
-| `u/ctrl-u`               	| upgrade package                          	|
-| `r`                      	| remove package                           	|
+| `u/ctrl-u`               	| upgrade package/with input               	|
+| `r/ctrl-r`               	| remove package/with input                	|
 | `s`                      	| search package                           	|
 | `g`                      	| go to package (index)                    	|
 | `y`                      	| confirm and execute the selected command 	|
@@ -54,11 +54,61 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 | `backspace`              	| go back                                  	|
 | `q, esc, ctrl-c, ctrl-d` 	| exit                                     	|
 
-...
+### List Installed Packages & Show Package Information
+
+![List Packages & Show Information](https://user-images.githubusercontent.com/24392180/63809280-98bf6400-c92a-11e9-960f-8c50257babdd.gif)
+
+```
+pressed keys: down, enter, backspace
+```
+
+### Search, Go-to Package
+
+![Search, Go-to Package](https://user-images.githubusercontent.com/24392180/63809733-c35dec80-c92b-11e9-9a99-09317741a86c.gif)
+
+
+```
+pressed keys: s, (type), enter, g, (type), enter
+```
+
+### Install, Upgrade, Remove Package
+
+![Install, Upgrade, Remove Package](https://user-images.githubusercontent.com/24392180/63811379-f3a78a00-c92f-11e9-9551-430d2437b69c.gif)
+
+```
+pressed keys:
+i, (type), enter, y -> install
+ctrl-u, (type), enter, y -> upgrade
+ctrl-r, (type), enter, y -> remove
+```
+
+### Show Disk Usage Information
+
+![Show Disk Usage Information](https://user-images.githubusercontent.com/24392180/63811686-d9ba7700-c930-11e9-9067-b0e412b5797f.gif)
+
+```
+pressed keys: right, left
+```
+
+### Confirm Command to Execute
+
+![Confirm Command to Execute](https://user-images.githubusercontent.com/24392180/63812019-be03a080-c931-11e9-9732-de8bdcf75204.gif)
+
+```
+pressed keys: c, y
+```
+
+### Show Help
+
+![Show Help](https://user-images.githubusercontent.com/24392180/63812128-15a20c00-c932-11e9-8ffd-7e222c78b588.gif)
+
+```
+pressed key: ?
+```
 
 ## Screenshots
 
-![Fedora Screenshot](https://user-images.githubusercontent.com/24392180/63657577-596b0900-c7ac-11e9-9bc3-834f31c557fd.png)
+![Fedora Screenshot](https://user-images.githubusercontent.com/24392180/63807819-2ef18b00-c927-11e9-85b6-59917283a4f8.png)
 
 ![Manjaro-Mint Screenshot](https://user-images.githubusercontent.com/24392180/63795183-158f1580-c90c-11e9-8343-2dc24798c086.jpg)
 
