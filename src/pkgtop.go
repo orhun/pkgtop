@@ -24,7 +24,7 @@ var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage wi
 var showInfo = false                        /* Switch to the package information page */
 var pkgMode = 0                             /* Integer value for changing the package operation mode. */
 var pkgModes = []string{                    /* Package management/operation modes */
-	"search", "install", "upgrade", "go-to",
+	"remove", "install", "upgrade", "go-to", "search",
 }
 var inputQuery, inputSuffix = "", ""  /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "               /* Prefix for prepending to the commands */
@@ -71,7 +71,7 @@ var keyActions = "   Key                     Action\n" +
 	"   enter, space, tab       : Show package information\n" +
 	"   i                       : Install package\n" +
 	"   u/ctrl-u                : Upgrade package/with input\n" +
-	"   r                       : Remove package\n" +
+	"   r/ctrl-r                : Remove package/with input\n" +
 	"   s                       : Search package\n" +
 	"   g                       : Go to package (index)\n" +
 	"   y                       : Confirm and execute the selected command\n" +
@@ -399,7 +399,7 @@ OSCheckLoop:
 						inputQuery += e.ID
 					}
 				}
-				if pkgMode == 1 {
+				if pkgMode == 5 {
 					/* Create lists again for searching. */
 					searchLists, _, _ := getPkgListEntries(pkgs)
 					/* Empty the current list rows. */
@@ -485,8 +485,8 @@ OSCheckLoop:
 			/* Show package information or help message. */
 			case "<enter>", "<space>", "<tab>", "?":
 				if !showInfo && len(lists[0].Rows) != 0 {
-					/* Append installation command to list if install mode is on. */
-					if pkgMode > 1 && inputQuery != "" {
+					/* Append operation command to list if any mode is on. */
+					if pkgMode > 0 && pkgMode != 5 && inputQuery != ""  {
 						if pkgMode != 4 {
 							pkgOptCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
 							if cmdList.Rows[0] != cmdConfirm+pkgOptCmd {
@@ -549,7 +549,7 @@ OSCheckLoop:
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
 			/* Search, install, upgrade or go-to package. */
-			case "s", "i", "<c-u>", "g":
+			case "s", "i", "<c-u>", "g", "<c-r>":
 				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
 					/* Set variables for switching the mode. */
