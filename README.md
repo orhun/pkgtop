@@ -1,6 +1,6 @@
 ![Logo](https://user-images.githubusercontent.com/24392180/63693894-dd110e00-c81d-11e9-8f51-e00d5bd7d6a6.png)
 
-pkgtop is an interactive package manager and resource monitor tool designed for the GNU/Linux.
+**pkgtop** is an **interactive package manager** and **resource monitor** tool designed for the GNU/Linux.
 
 [![Release](https://img.shields.io/github/release/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/releases)
 [![AUR](https://img.shields.io/aur/version/pkgtop-git.svg?style=flat-square)](https://aur.archlinux.org/packages/pkgtop-git/)
