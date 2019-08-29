@@ -619,7 +619,7 @@ func main() {
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
 	osID := flag.String("d", "", "linux distribution")
-	flag.BoolVar(&sortPackages, "s", false, "sort packages alphabetically")
+	flag.BoolVar(&sortPackages, "a", false, "sort packages alphabetically")
 	flag.Parse()
 	if *showVersion {
 		fmt.Printf("pkgtop v%s\n", version)
