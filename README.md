@@ -8,11 +8,12 @@
 
 ![pkgtop](https://user-images.githubusercontent.com/24392180/63897168-edcbaa80-c9fc-11e9-9092-32a55323fcf1.gif)
 
-Package management (install/upgrade/remove etc.) can be a problem if the user is not familiar with the operating system or the required command for that operation. So pkgtop tries to solve this problem with an easy-to-use terminal interface and shortcut keys. Briefly, **pkgtop aims to provide a terminal dashboard for managing packages on GNU/Linux systems.** It's possible to list installed packages, show information about the package, install/upgrade/remove packages and search package with using the terminal dashboard. Also, there are other handy shortcuts for easing the package management process which mentioned in the [usage information](https://github.com/keylo99/pkgtop#usage).
+Package management (install/upgrade/remove etc.) can be a problem if the user is not familiar with the operating system or the required command for that operation. So pkgtop tries to solve this problem with an easy-to-use terminal interface and shortcut keys.  
+Briefly, **pkgtop aims to provide a terminal dashboard for managing packages on GNU/Linux systems.** Using the terminal dashboard, it's possible to list installed packages by size (or alphabetically with `-a` argument), show information about the package, install/upgrade/remove packages and search package. Also, there are other handy shortcuts for easing the package management process which mentioned in the [usage information](https://github.com/keylo99/pkgtop#usage).
 
-In addition to the package management features, there's a section at the top that shows disk usages and general system information. Especially the available disk space information can be used as a resource monitor and help decide whether the system should be cleaned or not for example.  
+In addition to the package management features, there's a section at the top of the dashboard that shows disk usages and general system information. For example, this section can be used as a resource monitor and help decide whether the system should be cleaned or not.  
 Another useful section is the '`executed`' or '`confirm to execute`' command list which is placed below the installed packages. Thus, the user can see which command executed recently or confirm & execute the selected command. (The commands that need confirmation to execute exist in the list with a prefix like "`[y]`".) 
-After scrolling the commands list with "`c`" key for selecting the command to execute, press "`y`" for executing it. pkgtop will execute the command and restart the terminal dashboard.
+After scrolling the commands list with "`c`" key for selecting the command to execute, press "`y`" for executing it. pkgtop will execute the command and restart the terminal dashboard afterwards.
 
 pkgtop uses the advantage of mainly used package managers being installed on most of the preferred GNU/Linux distributions. As an example, it works on a [Manjaro](https://manjaro.org/) based system as it works on [Arch Linux](https://www.archlinux.org/) systems since both distributions use the [Pacman](https://wiki.archlinux.org/index.php/pacman) package manager. You can use pkgtop if you have one of the package managers listed below.
 
@@ -72,7 +73,7 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 ```
 -h, show help message
 -d, select linux distribution
--s, sort packages alphabetically
+-a, sort packages alphabetically
 -v, print version
 ```
 
