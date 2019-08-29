@@ -23,6 +23,27 @@ pkgtop uses the advantage of mainly used package managers being installed on mos
 
 If the distribution is not defined in the source but has the required package manager for running the pkgtop, `-d` argument can be used for specifying a distribution that has the same package manager. Current defined and supported distributions are `arch, manjaro, debian, ubuntu, mint, suse, fedora, centos, redhat`.
 
+  * [Installation](#installation)
+     * [• Dependencies](#-dependencies)
+     * [• AUR (<a href="https://aur.archlinux.org/packages/pkgtop-git" rel="nofollow">pkgtop-git</a>)](#-aur-pkgtop-git)
+     * [• Manual Insallation](#-manual-insallation)
+  * [Command-Line Arguments](#command-line-arguments)
+  * [Usage](#usage)
+     * [List Installed Packages &amp; Show Package Information](#list-installed-packages--show-package-information)
+     * [Search, Go-to Package](#search-go-to-package)
+     * [Install, Upgrade, Remove Package](#install-upgrade-remove-package)
+     * [Show Disk Usage Information](#show-disk-usage-information)
+     * [Confirm Command to Execute](#confirm-command-to-execute)
+     * [Show Help](#show-help)
+  * [Docker](#docker)
+     * [Build Docker Image](#build-docker-image)
+     * [Run the Container](#run-the-container)
+     * [Start a shell in the Container](#start-a-shell-in-the-container)
+  * [Screenshots](#screenshots)
+  * [Todo(s)](#todos)
+  * [Sponsor](#sponsor)
+  * [License](#license)
+  * [Credit](#credit)
 
 ## Installation
 
