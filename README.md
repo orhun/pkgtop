@@ -1,12 +1,28 @@
 ![Logo](https://user-images.githubusercontent.com/24392180/63693894-dd110e00-c81d-11e9-8f51-e00d5bd7d6a6.png)
 
-**pkgtop** is an **interactive package manager** and **resource monitor** tool designed for the GNU/Linux.
+**pkgtop** is an **interactive package manager** & **resource monitor** tool designed for the GNU/Linux.
 
 [![Release](https://img.shields.io/github/release/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/releases)
 [![AUR](https://img.shields.io/aur/version/pkgtop-git.svg?style=flat-square)](https://aur.archlinux.org/packages/pkgtop-git/)
 [![Travis Build](https://img.shields.io/travis/keylo99/pkgtop.svg?style=flat-square)](https://travis-ci.org/keylo99/pkgtop) [![Docker Build](https://img.shields.io/docker/cloud/build/keylo99/pkgtop.svg?style=flat-square)](https://hub.docker.com/r/keylo99/pkgtop/builds) [![Codacy Badge](https://img.shields.io/codacy/grade/f83f3a6b0bb042f39f799cb372405094.svg?style=flat-square)](https://www.codacy.com/app/keylo99/pkgtop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=keylo99/pkgtop&amp;utm_campaign=Badge_Grade) [![Go Report Card](https://goreportcard.com/badge/github.com/keylo99/pkgtop?style=flat-square)](https://goreportcard.com/report/github.com/keylo99/pkgtop) [![Stars](https://img.shields.io/github/stars/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/stargazers) [![License](https://img.shields.io/github/license/keylo99/pkgtop.svg?color=blue&style=flat-square)](./LICENSE)
 
 ![pkgtop](https://user-images.githubusercontent.com/24392180/63897168-edcbaa80-c9fc-11e9-9092-32a55323fcf1.gif)
+
+Package management (install/upgrade/remove etc.) can be a problem if the user is not familiar with the operating system or the required command for that operation. So pkgtop tries to solve this problem with an easy-to-use terminal interface and shortcut keys. Briefly, **pkgtop aims to provide a terminal dashboard for managing packages on GNU/Linux systems.** It's possible to list installed packages, show information about the package, install/upgrade/remove packages and search package with using the terminal dashboard. Also, there are other handy shortcuts for easing the package management process which mentioned in the [usage information](https://github.com/keylo99/pkgtop#usage).
+
+In addition to the package management features, there's a section at the top that shows disk usages and general system information. Especially the available disk space information can be used as a resource monitor and help decide whether the system should be cleaned or not for example.  
+Another useful section is the '`executed`' or '`confirm to execute`' command list which is placed below the installed packages. Thus, the user can see which command executed recently or confirm & execute the selected command. (The commands that need confirmation to execute exist in the list with a prefix like "`[y]`".) 
+After scrolling the commands list with "`c`" key for selecting the command to execute, press "`y`" for executing it. pkgtop will execute the command and restart the terminal dashboard.
+
+pkgtop uses the advantage of mainly used package managers being installed on most of the preferred GNU/Linux distributions. As an example, it works on a [Manjaro](https://manjaro.org/) based system as it works on [Arch Linux](https://www.archlinux.org/) systems since both distributions use the [Pacman](https://wiki.archlinux.org/index.php/pacman) package manager. You can use pkgtop if you have one of the package managers listed below.
+
+* pacman
+* apt
+* zypper, rpm
+* dnf, rpm
+
+If the distribution is not defined in the source but has the required package manager for running the pkgtop, `-d` argument can be used for specifying a distribution that has the same package manager. Current defined and supported distributions are `arch, manjaro, debian, ubuntu, mint, suse, fedora, centos, redhat`.
+
 
 ## Installation
 
