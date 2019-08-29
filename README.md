@@ -1,10 +1,12 @@
 ![Logo](https://user-images.githubusercontent.com/24392180/63693894-dd110e00-c81d-11e9-8f51-e00d5bd7d6a6.png)
 
-# pkgtop [![Release](https://img.shields.io/github/release/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/releases)
+pkgtop is an interactive package manager and resource monitor tool designed for the GNU/Linux.
+
+[![Release](https://img.shields.io/github/release/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/releases)
 [![AUR](https://img.shields.io/aur/version/pkgtop-git.svg?style=flat-square)](https://aur.archlinux.org/packages/pkgtop-git/)
 [![Travis Build](https://img.shields.io/travis/keylo99/pkgtop.svg?style=flat-square)](https://travis-ci.org/keylo99/pkgtop) [![Docker Build](https://img.shields.io/docker/cloud/build/keylo99/pkgtop.svg?style=flat-square)](https://hub.docker.com/r/keylo99/pkgtop/builds) [![Codacy Badge](https://img.shields.io/codacy/grade/f83f3a6b0bb042f39f799cb372405094.svg?style=flat-square)](https://www.codacy.com/app/keylo99/pkgtop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=keylo99/pkgtop&amp;utm_campaign=Badge_Grade) [![Go Report Card](https://goreportcard.com/badge/github.com/keylo99/pkgtop?style=flat-square)](https://goreportcard.com/report/github.com/keylo99/pkgtop) [![Stars](https://img.shields.io/github/stars/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/stargazers) [![License](https://img.shields.io/github/license/keylo99/pkgtop.svg?color=blue&style=flat-square)](./LICENSE)
 
-pkgtop is an interactive package manager and resource monitor tool designed for the GNU/Linux.
+![pkgtop](https://user-images.githubusercontent.com/24392180/63897168-edcbaa80-c9fc-11e9-9092-32a55323fcf1.gif)
 
 ## Installation
 
@@ -14,6 +16,11 @@ pkgtop is an interactive package manager and resource monitor tool designed for 
 * [dustin/go-humanize](https://github.com/dustin/go-humanize)
 
 ### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
+
+```
+git clone https://aur.archlinux.org/pkgtop-git.git && cd pkgtop-git/
+makepkg --install
+```
 
 ### • Manual Insallation
 
@@ -134,6 +141,12 @@ docker run -it pkgtop-docker /bin/ash
 
 ## Todo(s)
 * Add 'paste' feature
+
+## Sponsor
+
+If you would like to support the development of pkgtop or other projects on my [GitHub](https://github.com/keylo99), consider becoming a sponsor. Very appreciated!
+
+[![Become a Patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=23697306)
 
 ## License
 
