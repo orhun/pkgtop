@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/atotto/clipboard"
-	ui "github.com/gizak/termui/v3"
 	"github.com/dustin/go-humanize"
+	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 	"log"
 	"os"
@@ -56,14 +56,14 @@ var pkgsCmd = map[string]string{                      /* Commands for listing th
 		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;" +
 		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" " +
 		"&& echo 'Name|Version|Installed Size|Description'",
-	"suse": "rpm -qa --queryformat '%{Name};%{Version};%{Size};%{Summary}\\n' | "+
-		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';"+
-		"zypper rm -y %s;zypper in -y %s;zypper up -y %s;x\" && "+
+	"suse": "rpm -qa --queryformat '%{Name};%{Version};%{Size};%{Summary}\\n' | " +
+		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
+		"zypper rm -y %s;zypper in -y %s;zypper up -y %s;x\" && " +
 		"echo 'Name|Version|Installed Size|Description'",
-	"fedora,centos,redhat": "rpm -qa --queryformat "+
-		"'%{Name};%{Version};%{Size};%{Summary}\\n' | "+
-		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';"+
-		"dnf -y remove %s;dnf -y install %s;dnf -y upgrade %s;x\" && "+
+	"fedora,centos,redhat": "rpm -qa --queryformat " +
+		"'%{Name};%{Version};%{Size};%{Summary}\\n' | " +
+		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
+		"dnf -y remove %s;dnf -y install %s;dnf -y upgrade %s;x\" && " +
 		"echo 'Name|Version|Installed Size|Description'",
 }
 var keyActions = "   Key                     Action\n" +
@@ -192,8 +192,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 				continue
 			}
 			/* Convert size to human readable format if possible. */
-			if size, err := strconv.ParseInt(str.Split(pkg, ";")[i], 10, 64);
-				err == nil && titles[i] == "Installed Size" {
+			if size, err := strconv.ParseInt(str.Split(pkg, ";")[i], 10, 64); err == nil && titles[i] == "Installed Size" {
 				rows = append(rows, " "+humanize.Bytes(uint64(size)))
 			} else {
 				rows = append(rows, " "+str.Split(pkg, ";")[i])
@@ -486,7 +485,7 @@ OSCheckLoop:
 			case "<enter>", "<space>", "<tab>", "?":
 				if !showInfo && len(lists[0].Rows) != 0 {
 					/* Append operation command to list if any mode is on. */
-					if pkgMode > 0 && pkgMode != 5 && inputQuery != ""  {
+					if pkgMode > 0 && pkgMode != 5 && inputQuery != "" {
 						if pkgMode != 4 {
 							pkgOptCmd := fmt.Sprintf(optCmds[pkgMode], inputQuery)
 							if cmdList.Rows[0] != cmdConfirm+pkgOptCmd {
