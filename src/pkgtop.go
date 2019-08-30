@@ -299,9 +299,9 @@ func start(osID string) int {
 		"     .  oMMd  /MMN\n" +
 		"  .pkg` +MMd  /MMd\n" +
 		"  `top` omh/  -o:`](fg:white,mod:bold)\n" +
-		" > [github.com/keylo99/pkgtop](fg:"+termColor+")\n" +
+		" > [github.com/keylo99/pkgtop](fg:" + termColor + ")\n" +
 		" > [Interactive package manager & resource monitor (v" +
-		version + ")](fg:"+termColor+")"
+		version + ")](fg:" + termColor + ")"
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
@@ -341,8 +341,8 @@ OSCheckLoop:
 	}
 	/* Reverse the package list if the command line argument provided. */
 	if reversePackages {
-		for i := len(pkgs)/2-1; i >= 0; i-- {
-			opp := len(pkgs)-3-i
+		for i := len(pkgs)/2 - 1; i >= 0; i-- {
+			opp := len(pkgs) - 3 - i
 			pkgs[i], pkgs[opp] = pkgs[opp], pkgs[i]
 		}
 	}
@@ -353,7 +353,7 @@ OSCheckLoop:
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
 	for _, info := range str.Split(" "+execCmd("sh", "-c", sysInfoCmd), "\n") {
-		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:"+termColor+")" +
+		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:" + termColor + ")" +
 			str.Join(str.Split(info, ":")[1:], "") + "\n"
 	}
 	/* Configure and render the main grid layout.
