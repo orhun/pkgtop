@@ -26,6 +26,7 @@ var pkgMode = 0                             /* Integer value for changing the pa
 var pkgModes = []string{                    /* Package management/operation modes */
 	"remove", "install", "upgrade", "go-to", "search",
 }
+var termColor = "blue"                /* Default dashboard color. */
 var inputQuery, inputSuffix = "", ""  /* List title suffix & input query value */
 var cmdPrefix = " λ ~ "               /* Prefix for prepending to the commands */
 var cmdConfirm = " [y] "              /* Confirmation string for commands to execute */
@@ -204,7 +205,7 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 		pkgl.Rows = rows
 		pkgl.WrapText = false
 		pkgl.Border = false
-		pkgl.TextStyle = ui.NewStyle(ui.ColorBlue)
+		pkgl.TextStyle = ui.NewStyle(ui.StyleParserColorMap[termColor])
 		/* Add List widget to the GridItem slice. */
 		if i == 0 {
 			entries[i] = ui.NewCol(1.0/float64(len(titles)), pkgl)
@@ -283,7 +284,7 @@ func start(osID string) int {
 		ui.NewGrid()
 	cmdList = widgets.NewList()
 	cmdList.WrapText = false
-	cmdList.TextStyle = ui.NewStyle(ui.ColorBlue)
+	cmdList.TextStyle = ui.NewStyle(ui.StyleParserColorMap[termColor])
 	cmdList.BorderStyle.Fg = ui.ColorBlack
 	pkgText, sysInfoText =
 		widgets.NewParagraph(),
@@ -297,9 +298,9 @@ func start(osID string) int {
 		"     .  oMMd  /MMN\n" +
 		"  .pkg` +MMd  /MMd\n" +
 		"  `top` omh/  -o:`](fg:white,mod:bold)\n" +
-		" > [github.com/keylo99/pkgtop](fg:blue)\n" +
+		" > [github.com/keylo99/pkgtop](fg:"+termColor+")\n" +
 		" > [Interactive package manager & resource monitor (v" +
-		version + ")](fg:blue)"
+		version + ")](fg:"+termColor+")"
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
@@ -344,7 +345,7 @@ OSCheckLoop:
 	/* Show the OS information. */
 	cmdList.Rows = append([]string{cmdPrefix + sysInfoCmd}, cmdList.Rows...)
 	for _, info := range str.Split(" "+execCmd("sh", "-c", sysInfoCmd), "\n") {
-		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:blue)" +
+		sysInfoText.Text += "[" + str.Split(info, ":")[0] + ":](fg:"+termColor+")" +
 			str.Join(str.Split(info, ":")[1:], "") + "\n"
 	}
 	/* Configure and render the main grid layout.
@@ -619,10 +620,14 @@ func main() {
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
 	osID := flag.String("d", "", "linux distribution")
+	flag.StringVar(&termColor, "c", "blue", "main dashboard color")
 	flag.BoolVar(&sortPackages, "a", false, "sort packages alphabetically")
 	flag.Parse()
 	if *showVersion {
 		fmt.Printf("pkgtop v%s\n", version)
+		return
+	} else if _, hasKey := ui.StyleParserColorMap[termColor]; !hasKey {
+		fmt.Printf("color not supported.\n")
 		return
 	} else if *osID == "" {
 		*osID = execCmd("sh", "-c", osIDCmd)

@@ -72,8 +72,11 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 ```
 -h, show help message
 -d, select linux distribution
+-c, main dashboard color (default: blue)
+   [red, green, yellow, blue, magenta, cyan, white]
 -a, sort packages alphabetically
 -v, print version
+
 ```
 
 ## Usage
