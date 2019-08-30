@@ -3,88 +3,91 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/atotto/clipboard"
-	"github.com/dustin/go-humanize"
-	ui "github.com/gizak/termui/v3"
-	"github.com/gizak/termui/v3/widgets"
 	"log"
 	"os"
 	"os/exec"
 	"sort"
 	"strconv"
 	str "strings"
+
+	"github.com/atotto/clipboard"
+	"github.com/dustin/go-humanize"
+	ui "github.com/gizak/termui/v3"
+	"github.com/gizak/termui/v3/widgets"
 )
 
-var version = "1.0.0"                       /* Version variable */
-var termGrid, dfGrid, pkgGrid *ui.Grid      /* Grid widgets for the layout */
-var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
-var cmdList *widgets.List                   /* List widget for the executed commands. */
-var sortPackages = false                    /* Boolean value for sorting the packages alphabetically */
-var reversePackages = false                 /* Boolean value for reversing the package list. */
-var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
-var showInfo = false                        /* Switch to the package information page */
-var pkgMode = 0                             /* Integer value for changing the package operation mode. */
-var pkgModes = []string{                    /* Package management/operation modes */
-	"remove", "install", "upgrade", "go-to", "search",
-}
-var termColor = "blue"                /* Default dashboard color. */
-var inputQuery, inputSuffix = "", ""  /* List title suffix & input query value */
-var cmdPrefix = " λ ~ "               /* Prefix for prepending to the commands */
-var cmdConfirm = " [y] "              /* Confirmation string for commands to execute */
-var osIDCmd = "awk -F '=' '/^ID=/ " + /* Print the OS ID information (for distro checking) */
-							"{print tolower($2)}' /etc/*-release 2>/dev/null"
-var sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
-	" Kernel: $(uname -s)\\n" +
-	" Kernel Release: $(uname -r)\\n" +
-	" Kernel Version: $(uname -v)\\n" +
-	" Processor Type: $(uname -p)\\n" +
-	" Hardware: $(uname --m)\\n" +
-	" Hardware Platform: $(uname -i)\\n" +
-							" OS: $(uname -o)\\n\""
-var dfCmd = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
-var pkgsCmd = map[string]string{                      /* Commands for listing the installed packages */
-	"arch,manjaro": "pacman -Qi | awk '/^Name/{name=$3} " +
-		"/^Version/{ver=$3} " +
-		"/^Description/{desc=substr($0,index($0,$3))} " +
-		"/^Installed Size/{size=$4$5; " +
-		"print name \";\" ver \";\" size \";\" desc}' " +
-		"| sort -h -r -t ';' -k3 " +
-		"&& echo \"pacman -Qi %s | sed -e 's/^/  /';" +
-		"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" +
-		"pacman -Sy %s --noconfirm;x\"" +
-		"&& echo 'Name|Version|Installed Size|Description'",
-	"debian,ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};" +
-		"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 " +
-		"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;" +
-		"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" " +
-		"&& echo 'Name|Version|Installed Size|Description'",
-	"suse": "rpm -qa --queryformat '%{Name};%{Version};%{Size};%{Summary}\\n' | " +
-		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
-		"zypper rm -y %s;zypper in -y %s;zypper up -y %s;x\" && " +
-		"echo 'Name|Version|Installed Size|Description'",
-	"fedora,centos,redhat": "rpm -qa --queryformat " +
-		"'%{Name};%{Version};%{Size};%{Summary}\\n' | " +
-		"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
-		"dnf -y remove %s;dnf -y install %s;dnf -y upgrade %s;x\" && " +
-		"echo 'Name|Version|Installed Size|Description'",
-}
-var keyActions = "   Key                     Action\n" +
-	"   ?                       : Help\n" +
-	"   enter, space, tab       : Show package information\n" +
-	"   i                       : Install package\n" +
-	"   u/ctrl-u                : Upgrade package/with input\n" +
-	"   r/ctrl-r                : Remove package/with input\n" +
-	"   s                       : Search package\n" +
-	"   g                       : Go to package (index)\n" +
-	"   y                       : Confirm and execute the selected command\n" +
-	"   p                       : Copy selected package name/information\n" +
-	"   e                       : Copy selected command\n" +
-	"   c                       : Scroll executed commands list\n" +
-	"   j/k, down/up            : Scroll down/up (packages)\n" +
-	"   ctrl-j/ctrl-k           : Scroll to bottom/top (packages)\n" +
-	"   l/h, right/left         : Scroll down/up (disk usage)\n" +
-	"   backspace               : Go back\n" +
-	"   q, esc, ctrl-c, ctrl-d  : Exit\n"
+var (
+	version                   = "1.0.0"          /* Version variable */
+	termGrid, dfGrid, pkgGrid *ui.Grid           /* Grid widgets for the layout */
+	pkgText, sysInfoText      *widgets.Paragraph /* Paragraph widgets for showing text */
+	cmdList                   *widgets.List      /* List widget for the executed commands. */
+	sortPackages              = false            /* Boolean value for sorting the packages alphabetically */
+	reversePackages           = false            /* Boolean value for reversing the package list. */
+	dfIndex, pkgIndex         = 0, 0             /* Index value for the disk usage widgets & package list */
+	showInfo                  = false            /* Switch to the package information page */
+	pkgMode                   = 0                /* Integer value for changing the package operation mode. */
+	pkgModes                  = []string{        /* Package management/operation modes */
+		"remove", "install", "upgrade", "go-to", "search",
+	}
+	termColor               = "blue"                  /* Default dashboard color. */
+	inputQuery, inputSuffix = "", ""                  /* List title suffix & input query value */
+	cmdPrefix               = " λ ~ "                 /* Prefix for prepending to the commands */
+	cmdConfirm              = " [y] "                 /* Confirmation string for commands to execute */
+	osIDCmd                 = "awk -F '=' '/^ID=/ " + /* Print the OS ID information (for distro checking) */
+		"{print tolower($2)}' /etc/*-release 2>/dev/null"
+	sysInfoCmd = "printf \"Hostname: $(uname -n)\\n" + /* Print the system information with 'uname' */
+		" Kernel: $(uname -s)\\n" +
+		" Kernel Release: $(uname -r)\\n" +
+		" Kernel Version: $(uname -v)\\n" +
+		" Processor Type: $(uname -p)\\n" +
+		" Hardware: $(uname --m)\\n" +
+		" Hardware Platform: $(uname -i)\\n" +
+		" OS: $(uname -o)\\n\""
+	dfCmd   = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
+	pkgsCmd = map[string]string{                        /* Commands for listing the installed packages */
+		"arch,manjaro": "pacman -Qi | awk '/^Name/{name=$3} " +
+			"/^Version/{ver=$3} " +
+			"/^Description/{desc=substr($0,index($0,$3))} " +
+			"/^Installed Size/{size=$4$5; " +
+			"print name \";\" ver \";\" size \";\" desc}' " +
+			"| sort -h -r -t ';' -k3 " +
+			"&& echo \"pacman -Qi %s | sed -e 's/^/  /';" +
+			"pacman -Rcns %s --noconfirm;pacman -S %s --noconfirm;" +
+			"pacman -Sy %s --noconfirm;x\"" +
+			"&& echo 'Name|Version|Installed Size|Description'",
+		"debian,ubuntu,mint": "dpkg-query -W --showformat='${Package};${Version};" +
+			"${Installed-Size};${binary:Summary}\\n' | sort -n -r -t ';' -k3 " +
+			"&& echo \"apt-cache show %s | sed -e 's/^/  /';apt-get -y remove %s;" +
+			"apt-get -y install %s;apt-get -y install --only-upgrade %s;x\" " +
+			"&& echo 'Name|Version|Installed Size|Description'",
+		"suse": "rpm -qa --queryformat '%{Name};%{Version};%{Size};%{Summary}\\n' | " +
+			"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
+			"zypper rm -y %s;zypper in -y %s;zypper up -y %s;x\" && " +
+			"echo 'Name|Version|Installed Size|Description'",
+		"fedora,centos,redhat": "rpm -qa --queryformat " +
+			"'%{Name};%{Version};%{Size};%{Summary}\\n' | " +
+			"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
+			"dnf -y remove %s;dnf -y install %s;dnf -y upgrade %s;x\" && " +
+			"echo 'Name|Version|Installed Size|Description'",
+	}
+	keyActions = "   Key                     Action\n" +
+		"   ?                       : Help\n" +
+		"   enter, space, tab       : Show package information\n" +
+		"   i                       : Install package\n" +
+		"   u/ctrl-u                : Upgrade package/with input\n" +
+		"   r/ctrl-r                : Remove package/with input\n" +
+		"   s                       : Search package\n" +
+		"   g                       : Go to package (index)\n" +
+		"   y                       : Confirm and execute the selected command\n" +
+		"   p                       : Copy selected package name/information\n" +
+		"   e                       : Copy selected command\n" +
+		"   c                       : Scroll executed commands list\n" +
+		"   j/k, down/up            : Scroll down/up (packages)\n" +
+		"   ctrl-j/ctrl-k           : Scroll to bottom/top (packages)\n" +
+		"   l/h, right/left         : Scroll down/up (disk usage)\n" +
+		"   backspace               : Go back\n" +
+		"   q, esc, ctrl-c, ctrl-d  : Exit\n"
+)
 
 /*!
  * Parse the 'df' command output as Gauge and GridItem.
