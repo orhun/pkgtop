@@ -20,6 +20,7 @@ var termGrid, dfGrid, pkgGrid *ui.Grid      /* Grid widgets for the layout */
 var pkgText, sysInfoText *widgets.Paragraph /* Paragraph widgets for showing text */
 var cmdList *widgets.List                   /* List widget for the executed commands. */
 var sortPackages = false                    /* Boolean value for sorting the packages alphabetically */
+var reversePackages = false                 /* Boolean value for reversing the package list. */
 var dfIndex, pkgIndex = 0, 0                /* Index value for the disk usage widgets & package list */
 var showInfo = false                        /* Switch to the package information page */
 var pkgMode = 0                             /* Integer value for changing the package operation mode. */
@@ -338,6 +339,13 @@ OSCheckLoop:
 	if sortPackages {
 		sort.Strings(pkgs[:len(pkgs)-2])
 	}
+	/* Reverse the package list if the command line argument provided. */
+	if reversePackages {
+		for i := len(pkgs)/2-1; i >= 0; i-- {
+			opp := len(pkgs)-3-i
+			pkgs[i], pkgs[opp] = pkgs[opp], pkgs[i]
+		}
+	}
 	/* Initialize and render the widgets for showing the package list. */
 	lists, pkgEntries, optCmds := getPkgListEntries(pkgs)
 	scrollLists(lists, -1, 0, false)
@@ -622,6 +630,7 @@ func main() {
 	osID := flag.String("d", "", "linux distribution")
 	flag.StringVar(&termColor, "c", "blue", "main dashboard color")
 	flag.BoolVar(&sortPackages, "a", false, "sort packages alphabetically")
+	flag.BoolVar(&reversePackages, "r", false, "reverse the package list")
 	flag.Parse()
 	if *showVersion {
 		fmt.Printf("pkgtop v%s\n", version)
