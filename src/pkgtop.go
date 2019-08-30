@@ -446,14 +446,14 @@ OSCheckLoop:
 				dfIndex = showDfInfo(dfIndex)
 				scrollLists(lists, -1, lists[0].SelectedRow, false)
 			/* Scroll down. (packages) */
-			case "j", "<down>":
+			case "j", "<down>", "<pagedown>":
 				scrollLists(lists, 1, -1, false)
 			/* Scroll to bottom. (packages) */
 			case "<c-j>":
 				scrollLists(lists, -1,
 					len(lists[0].Rows)-1, false)
 			/* Scroll up. (packages) */
-			case "k", "<up>":
+			case "k", "<up>", "<pageup>":
 				scrollLists(lists, -1, -1, false)
 			/* Scroll to top. (packages) */
 			case "<c-k>":
