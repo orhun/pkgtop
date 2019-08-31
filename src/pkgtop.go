@@ -76,7 +76,7 @@ var (
 		"   i                       : Install package\n" +
 		"   u/ctrl-u                : Upgrade package/with input\n" +
 		"   r/ctrl-r                : Remove package/with input\n" +
-		"   s                       : Search package\n" +
+		"   s,/                     : Search package\n" +
 		"   g                       : Go to package (index)\n" +
 		"   y                       : Confirm and execute the selected command\n" +
 		"   p                       : Copy selected package name/information\n" +
@@ -560,11 +560,11 @@ OSCheckLoop:
 				ui.Render(pkgGrid, cmdList)
 				scrollLists(lists, pkgIndex, -1, false)
 			/* Search, install, upgrade or go-to package. */
-			case "s", "i", "<c-u>", "g", "<c-r>":
+			case "s", "i", "<c-u>", "g", "<c-r>", "/":
 				/* Allow changing mode if not showing any package information. */
 				if !showInfo {
 					/* Set variables for switching the mode. */
-					pressedKey := str.NewReplacer("<c-", "", ">", "").
+					pressedKey := str.NewReplacer("<c-", "", ">", "", "/", "s").
 						Replace(str.ToLower(e.ID))
 					inputQuery = ""
 					for i, v := range pkgModes {

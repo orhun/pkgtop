@@ -88,7 +88,7 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 | `i`                      	| install package                          	|
 | `u/ctrl-u`               	| upgrade package/with input               	|
 | `r/ctrl-r`               	| remove package/with input                	|
-| `s`                      	| search package                           	|
+| `s,/`                      	| search package                           	|
 | `g`                      	| go to package (index)                    	|
 | `y`                      	| confirm and execute the selected command 	|
 | `p`                      	| copy selected package                    	|
