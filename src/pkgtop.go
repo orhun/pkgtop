@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	version                   = "1.0.0"          /* Version variable */
+	version                   = "1.3"            /* Version variable */
 	termGrid, dfGrid, pkgGrid *ui.Grid           /* Grid widgets for the layout */
 	pkgText, sysInfoText      *widgets.Paragraph /* Paragraph widgets for showing text */
 	cmdList                   *widgets.List      /* List widget for the executed commands. */
