@@ -69,6 +69,9 @@ var (
 			"sort -n -r -t ';' -k3  && echo \"rpm -qi %s | sed -e 's/^/  /';" +
 			"dnf -y remove %s;dnf -y install %s;dnf -y upgrade %s;x\" && " +
 			"echo 'Name|Version|Installed Size|Description'",
+		"void": "xbps-query -l | awk '{print $2 \";\" substr($0,index($0,$3))}' "+
+			"&& echo \"xbps-query %s | sed -e 's/^/  /';xbps-remove -y %s;"+
+			"xbps-install -Sy %s;xbps-install -Sy %s\" && echo 'Name-version|Description'",
 	}
 	keyActions = "   Key                     Action\n" +
 		"   ?                       : Help\n" +
