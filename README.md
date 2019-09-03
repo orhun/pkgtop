@@ -18,8 +18,9 @@ pkgtop uses the advantage of mainly used package managers being installed on mos
 
 * pacman
 * apt
-* zypper, rpm
-* dnf, rpm
+* zypper
+* dnf
+* xbps
 * portage
 
 If the distribution is not defined in the source but has the required package manager for running the pkgtop, `-d` argument can be used for specifying a distribution that has the same package manager. Current defined and supported distributions are `arch, manjaro, debian, ubuntu, mint, suse, fedora, centos, redhat, void, gentoo`.
@@ -52,6 +53,9 @@ If the distribution is not defined in the source but has the required package ma
 * [gizak/termui](https://github.com/gizak/termui/)
 * [atotto/clipboard](https://github.com/atotto/clipboard)
 * [dustin/go-humanize](https://github.com/dustin/go-humanize)
+* [mattn/go-runewidth](https://github.com/mattn/go-runewidth)
+* [mitchellh/go-wordwrap](https://github.com/mitchellh/go-wordwrap)
+* [nsf/termbox-go](https://github.com/nsf/termbox-go)
 
 ### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
 
