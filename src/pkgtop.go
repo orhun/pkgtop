@@ -71,7 +71,7 @@ var (
 			"echo 'Name|Version|Installed Size|Description'",
 		"void": "xbps-query -l | awk '{print $2 \";\" substr($0,index($0,$3))}' "+
 			"&& echo \"xbps-query %s | sed -e 's/^/  /';xbps-remove -y %s;"+
-			"xbps-install -Sy %s;xbps-install -Sy %s\" && echo 'Name-Version|Description'",
+			"xbps-install -Sy %s;xbps-install -Sy %s\" && echo 'Name-version|Description'",
 	}
 	keyActions = "   Key                     Action\n" +
 		"   ?                       : Help\n" +
