@@ -51,6 +51,9 @@ If the distribution is not defined in the source but has the required package ma
 * [gizak/termui](https://github.com/gizak/termui/)
 * [atotto/clipboard](https://github.com/atotto/clipboard)
 * [dustin/go-humanize](https://github.com/dustin/go-humanize)
+* [mattn/go-runewidth](https://github.com/mattn/go-runewidth)
+* [mitchellh/go-wordwrap](https://github.com/mitchellh/go-wordwrap)
+* [nsf/termbox-go](https://github.com/nsf/termbox-go)
 
 ### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
 
