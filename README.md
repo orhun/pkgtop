@@ -20,6 +20,7 @@ pkgtop uses the advantage of mainly used package managers being installed on mos
 * apt
 * zypper, rpm
 * dnf, rpm
+* portage
 
 If the distribution is not defined in the source but has the required package manager for running the pkgtop, `-d` argument can be used for specifying a distribution that has the same package manager. Current defined and supported distributions are `arch, manjaro, debian, ubuntu, mint, suse, fedora, centos, redhat, void, gentoo`.
 
