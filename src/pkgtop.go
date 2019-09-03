@@ -72,7 +72,7 @@ var (
 		"void": "xbps-query -l | awk '{print $2 \";\" substr($0,index($0,$3))}' " +
 			"&& echo \"xbps-query %s | sed -e 's/^/  /';xbps-remove -y %s;" +
 			"xbps-install -Sy %s;xbps-install -Sy %s\" && echo 'Name-version|Description'",
-		"gentoo": "EIX_LIMIT_COMPACT=0 eix -c | awk '{name=$2} {ver=$3; gsub(/\\:|\\(|\\)/, "", ver)} "+
+		"gentoo": "EIX_LIMIT_COMPACT=0 eix -c | awk '{name=$2} {ver=$3; gsub(/\\:|\\(|\\)/, \"\", ver)} "+
 		"!/Found|\\[1]|^$/{desc=substr($0,index($0,$4)); print name \";\" ver \";\" desc}' "+
 		"&& echo \"equery m %s | sed -e 's/^/  /';emerge -cv %s;emerge %s;emerge -uDU %s\" "+
 		"&& echo 'Name|Version|Description'",
