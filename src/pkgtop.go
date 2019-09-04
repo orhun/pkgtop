@@ -76,8 +76,9 @@ var (
 			"!/Found|\\[1]|^$/{desc=substr($0,index($0,$4)); print name \";\" ver \";\" desc}' " +
 			"&& echo \"equery m %s | sed -e 's/^/  /';emerge -cv %s;emerge %s;emerge -uDU %s\" " +
 			"&& echo 'Name|Version|Description'",
-		"nixos": "nix-env -qa --description | sed -e 's/  \+/;/g'",
-		// nix-env -qa --meta %s --xml | awk '!/<\/item|<\/meta|<items|<\?|^$/{split($0,a,"="); name=a[2]; gsub(/"|value|name/, "", name); val=a[3]; gsub(/"|\/>|system/, "", val); print "  " name ": " val}'
+		"nixos": "nix-env -qa --description | sed -e 's/  \+/;/g' && echo \"nix-env -qa --meta --xml %s " +
+			"| grep -o '\".*\"' | sed -e 's/\"//g' -e 's/ type=[a-z]*//g' -e 's/ value=/: /g' " +
+			"-e 's/^/  /';nix-env -e %s;nix-env -i %s;nix-env -u %s\" && echo 'Name-version|Description'",
 	}
 	keyActions = "   Key                     Action\n" +
 		"   ?                       : Help\n" +
