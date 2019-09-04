@@ -29,7 +29,7 @@ var (
 	pkgModes                  = []string{        /* Package management/operation modes */
 		"remove", "install", "upgrade", "go-to", "search",
 	}
-	termColor               = "blue"                  /* Default dashboard color. */
+	termColor               = "blue"                  /* Default color of the dashboard. */
 	inputQuery, inputSuffix = "", ""                  /* List title suffix & input query value */
 	cmdPrefix               = " λ ~ "                 /* Prefix for prepending to the commands */
 	cmdConfirm              = " [y] "                 /* Confirmation string for commands to execute */
@@ -638,7 +638,7 @@ func main() {
 	/* Parse command-line flags. */
 	showVersion := flag.Bool("v", false, "print version")
 	osID := flag.String("d", "", "linux distribution")
-	flag.StringVar(&termColor, "c", "blue", "main dashboard color")
+	flag.StringVar(&termColor, "c", "blue", "main color of the dashboard")
 	flag.BoolVar(&sortPackages, "a", false, "sort packages alphabetically")
 	flag.BoolVar(&reversePackages, "r", false, "reverse the package list")
 	flag.Parse()
