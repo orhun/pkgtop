@@ -77,6 +77,7 @@ var (
 			"&& echo \"equery m %s | sed -e 's/^/  /';emerge -cv %s;emerge %s;emerge -uDU %s\" " +
 			"&& echo 'Name|Version|Description'",
 		"nixos": "nix-env -qa --description | sed -e 's/  \+/;/g'",
+		// nix-env -qa --meta %s --xml | awk '!/<\/item|<\/meta|<items|<\?|^$/{split($0,a,"="); name=a[2]; gsub(/"|value|name/, "", name); val=a[3]; gsub(/"|\/>|system/, "", val); print "  " name ": " val}'
 	}
 	keyActions = "   Key                     Action\n" +
 		"   ?                       : Help\n" +
