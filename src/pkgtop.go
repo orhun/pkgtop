@@ -76,6 +76,7 @@ var (
 			"!/Found|\\[1]|^$/{desc=substr($0,index($0,$4)); print name \";\" ver \";\" desc}' " +
 			"&& echo \"equery m %s | sed -e 's/^/  /';emerge -cv %s;emerge %s;emerge -uDU %s\" " +
 			"&& echo 'Name|Version|Description'",
+		"nixos": "nix-env -qa --description | sed -e 's/  \+/;/g'",
 	}
 	keyActions = "   Key                     Action\n" +
 		"   ?                       : Help\n" +
