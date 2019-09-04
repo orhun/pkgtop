@@ -77,7 +77,7 @@ var (
 			"&& echo \"equery m %s | sed -e 's/^/  /';emerge -cv %s;emerge %s;emerge -uDU %s\" " +
 			"&& echo 'Name|Version|Description'",
 		"nixos": "nix-env -qa --description | sed -e 's/  \\+/;/g' && echo \"nix-env -qa --meta --xml %s " +
-			"| grep -o '\".*\"' | sed -e 's/\"//g' -e 's/ type=[a-z]*//g' -e 's/ value=/: /g' " +
+			"| grep -o '\\\".*\\\"' | sed -e 's/\\\"//g' -e 's/ type=[a-z]*//g' -e 's/ value=/: /g' " +
 			"-e 's/^/  /';nix-env -e %s;nix-env -i %s;nix-env -u %s\" && echo 'Name-version|Description'",
 	}
 	keyActions = "   Key                     Action\n" +
