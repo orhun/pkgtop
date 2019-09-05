@@ -65,7 +65,7 @@ git clone https://aur.archlinux.org/pkgtop-git.git && cd pkgtop-git/
 makepkg --install
 ```
 
-### • Manual Insallation
+### • Manual Installation
 
 ```
 go get ./...
