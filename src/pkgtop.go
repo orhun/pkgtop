@@ -80,8 +80,8 @@ var (
 			"| grep -o '\\\".*\\\"' | sed -e 's/\\\"//g' -e 's/ type=[a-z]*//g' -e 's/ value=/: /g' " +
 			"-e 's/^/  /';nix-env -e %s;nix-env -i %s;nix-env -u %s\" && echo 'Name-version|Description'",
 		"guix": "guix package --list-available | sed -e 's/  \\+/;/g; s/\\t/;/g' && " +
-			"echo \"guix package --show=%s;guix package -r %s;guix package -i %s;guix package -u %s;x\" && " +
-			"echo 'Name|Version|Output|Location'",
+			"echo \"guix package --show=%s | sed -e 's/^/  /';guix package -r %s;guix package -i %s;" +
+			"guix package -u %s;x\" && echo 'Name|Version|Output|Location'",
 	}
 	keyActions = "   Key                     Action\n" +
 		"   ?                       : Help\n" +
