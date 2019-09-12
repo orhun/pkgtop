@@ -1,5 +1,4 @@
 FROM golang:1.12.9 AS builder
-LABEL maintainer="keylo99 <keylo99official@gmail.com>"
 ENV LC_ALL=C.UTF-8
 WORKDIR /app/
 COPY src .

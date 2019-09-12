@@ -315,7 +315,7 @@ func start(osID string) int {
 		"     .  oMMd  /MMN\n" +
 		"  .pkg` +MMd  /MMd\n" +
 		"  `top` omh/  -o:`](fg:white,mod:bold)\n" +
-		" > [github.com/keylo99/pkgtop](fg:" + termColor + ")\n" +
+		" > [github.com/orhun/pkgtop](fg:" + termColor + ")\n" +
 		" > [Interactive package manager & resource monitor (v" +
 		version + ")](fg:" + termColor + ")"
 	pkgText.BorderStyle.Fg = ui.ColorBlack

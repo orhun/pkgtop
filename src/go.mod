@@ -1,4 +1,4 @@
-module github.com/keylo99/pkgtop
+module github.com/orhun/pkgtop
 
 go 1.12
 

@@ -2,13 +2,13 @@
 
 **pkgtop** is an **interactive package manager** & **resource monitor** tool designed for the GNU/Linux.
 
-[![Release](https://img.shields.io/github/release/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/releases)
+[![Release](https://img.shields.io/github/release/orhun/pkgtop.svg?style=flat-square)](https://github.com/orhun/pkgtop/releases)
 [![AUR](https://img.shields.io/aur/version/pkgtop-git.svg?style=flat-square)](https://aur.archlinux.org/packages/pkgtop-git/)
-[![Travis Build](https://img.shields.io/travis/keylo99/pkgtop.svg?style=flat-square)](https://travis-ci.org/keylo99/pkgtop) [![Docker Build](https://img.shields.io/docker/cloud/build/keylo99/pkgtop.svg?style=flat-square)](https://hub.docker.com/r/keylo99/pkgtop/builds) [![Codacy Badge](https://img.shields.io/codacy/grade/f83f3a6b0bb042f39f799cb372405094.svg?style=flat-square)](https://www.codacy.com/app/keylo99/pkgtop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=keylo99/pkgtop&amp;utm_campaign=Badge_Grade) [![Go Report Card](https://goreportcard.com/badge/github.com/keylo99/pkgtop?style=flat-square)](https://goreportcard.com/report/github.com/keylo99/pkgtop) [![Stars](https://img.shields.io/github/stars/keylo99/pkgtop.svg?style=flat-square)](https://github.com/keylo99/pkgtop/stargazers) [![License](https://img.shields.io/github/license/keylo99/pkgtop.svg?color=blue&style=flat-square)](./LICENSE)
+[![Travis Build](https://img.shields.io/travis/orhun/pkgtop.svg?style=flat-square)](https://travis-ci.org/orhun/pkgtop) [![Docker Build](https://img.shields.io/docker/cloud/build/orhun/pkgtop.svg?style=flat-square)](https://hub.docker.com/r/orhun/pkgtop/builds) [![Codacy Badge](https://img.shields.io/codacy/grade/f83f3a6b0bb042f39f799cb372405094.svg?style=flat-square)](https://www.codacy.com/app/orhun/pkgtop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=orhun/pkgtop&amp;utm_campaign=Badge_Grade) [![Go Report Card](https://goreportcard.com/badge/github.com/orhun/pkgtop?style=flat-square)](https://goreportcard.com/report/github.com/orhun/pkgtop) [![Stars](https://img.shields.io/github/stars/orhun/pkgtop.svg?style=flat-square)](https://github.com/orhun/pkgtop/stargazers) [![License](https://img.shields.io/github/license/orhun/pkgtop.svg?color=blue&style=flat-square)](./LICENSE)
 
 ![pkgtop](https://user-images.githubusercontent.com/24392180/63897168-edcbaa80-c9fc-11e9-9092-32a55323fcf1.gif)
 
-Package management (install/upgrade/remove etc.) can be a problem if the user is not familiar with the operating system or the required command for that operation. So pkgtop tries to solve this problem with an easy-to-use terminal interface and shortcut keys. Briefly, **pkgtop aims to provide a terminal dashboard for managing packages on GNU/Linux systems.** Using the terminal dashboard, it's possible to list installed packages by size (or alphabetically with `-a` argument), show information about the package, install/upgrade/remove packages and search package. Also, there are other handy shortcuts for easing the package management process which mentioned in the [usage information](https://github.com/keylo99/pkgtop#usage).
+Package management (install/upgrade/remove etc.) can be a problem if the user is not familiar with the operating system or the required command for that operation. So pkgtop tries to solve this problem with an easy-to-use terminal interface and shortcut keys. Briefly, **pkgtop aims to provide a terminal dashboard for managing packages on GNU/Linux systems.** Using the terminal dashboard, it's possible to list installed packages by size (or alphabetically with `-a` argument), show information about the package, install/upgrade/remove packages and search package. Also, there are other handy shortcuts for easing the package management process which mentioned in the [usage information](https://github.com/orhun/pkgtop#usage).
 
 In addition to the package management features, there's a section at the top of the dashboard that shows disk usages and general system information. For example, this section can be used as a resource monitor and help decide whether the system should be cleaned or not.  
 Another useful section is the '`executed`' or '`confirm to execute`' command list which is placed below the installed packages. Thus, the user can see which command executed recently or confirm & execute the selected command. (The commands that need confirmation to execute exist in the list with a prefix like "`[y]`".) 
@@ -191,7 +191,7 @@ docker run -it pkgtop-docker /bin/ash
 
 ## Sponsor
 
-If you would like to support the development of pkgtop or other projects on my [GitHub](https://github.com/keylo99), consider becoming a sponsor. Very appreciated!
+If you would like to support the development of pkgtop or other projects on my [GitHub](https://github.com/orhun), consider becoming a sponsor. Very appreciated!
 
 [![Become a Patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=23697306)
 
@@ -201,4 +201,4 @@ GNU General Public License v3. (see [gpl](https://www.gnu.org/licenses/gpl.txt))
 
 ## Credit
 
-Copyright (C) 2019 by [keylo99](https://www.github.com/keylo99)
+Copyright (C) 2019 by [orhun](https://www.github.com/orhun)
