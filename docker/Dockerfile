@@ -1,4 +1,4 @@
-FROM golang:1.12.9 AS builder
+FROM golang:1.13.3 AS builder
 ENV LC_ALL=C.UTF-8
 WORKDIR /app/
 COPY src .
