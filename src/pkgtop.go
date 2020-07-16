@@ -29,6 +29,7 @@ var (
 	pkgModes                  = []string{        /* Package management/operation modes */
 		"remove", "install", "upgrade", "go-to", "search",
 	}
+	pacmanBackend           = "pacman"
 	termColor               = "blue"                  /* Default color of the dashboard. */
 	inputQuery, inputSuffix = "", ""                  /* List title suffix & input query value */
 	cmdPrefix               = " λ ~ "                 /* Prefix for prepending to the commands */
@@ -330,6 +331,9 @@ OSCheckLoop:
 				break OSCheckLoop
 			}
 		}
+	}
+	if str.Contains(osID, "arch") {
+		pkgsCmd[osID] = str.ReplaceAll(pkgsCmd[osID], "pacman", pacmanBackend)
 	}
 	/* Update the commands list. */
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
@@ -645,6 +649,7 @@ func main() {
 	showVersion := flag.Bool("v", false, "print version")
 	osID := flag.String("d", "", "linux distribution")
 	flag.StringVar(&termColor, "c", "blue", "main color of the dashboard")
+	flag.StringVar(&pacmanBackend, "pacman", "pacman", "select pacman backend (for Arch-based distro)")
 	flag.BoolVar(&sortPackages, "a", false, "sort packages alphabetically")
 	flag.BoolVar(&reversePackages, "r", false, "reverse the package list")
 	flag.Parse()
