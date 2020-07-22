@@ -14,7 +14,7 @@ In addition to the package management features, there's a section at the top of 
 Another useful section is the '`executed`' or '`confirm to execute`' command list which is placed below the installed packages. Thus, the user can see which command executed recently or confirm & execute the selected command. (The commands that need confirmation to execute exist in the list with a prefix like "`[y]`".) 
 After scrolling the commands list with "`c`" key for selecting the command to execute, press "`y`" for executing it. pkgtop will execute the command and restart the terminal dashboard afterwards.
 
-pkgtop uses the advantage of mainly used package managers being installed on most of the preferred GNU/Linux distributions. As an example, it works on a [Manjaro](https://manjaro.org/) based system as it works on [Arch Linux](https://www.archlinux.org/) systems since both distributions use the [Pacman](https://wiki.archlinux.org/index.php/pacman) package manager. You can use pkgtop if you have one of the package managers listed below.
+pkgtop uses the advantage of mainly used package managers being installed on most of the preferred GNU/Linux distributions. As an example, it works on a [Manjaro](https://manjaro.org/) based system as it works on [Arch Linux](https://www.archlinux.org/) systems since both distributions use the [Pacman](https://wiki.archlinux.org/index.php/pacman) package manager. You can use pkgtop if you have one of the package managers listed below. 
 
 * pacman
 * apt
@@ -25,6 +25,8 @@ pkgtop uses the advantage of mainly used package managers being installed on mos
 * nix
 * guix
 
+If you are happy user of Arch-based distributive, you can use pkgtop with pacman wrappers and AUR supporters, such as [yay](https://aur.archlinux.org/packages/yay/) or [trizen](https://aur.archlinux.org/packages/trizen/). Look to [this](#aur-support) section for details. 
+
 If the distribution is not defined in the source but has the required package manager for running the pkgtop, `-d` argument can be used for specifying a distribution that has the same package manager. Current defined and supported distributions are `arch, manjaro, debian, ubuntu, mint, suse, fedora, centos, redhat, void, gentoo, nixos, guix`.
 
   * [Installation](#installation)
@@ -32,6 +34,7 @@ If the distribution is not defined in the source but has the required package ma
      * [• AUR (<a href="https://aur.archlinux.org/packages/pkgtop-git" rel="nofollow">pkgtop-git</a>)](#-aur-pkgtop-git)
      * [• Manual Insallation](#-manual-insallation)
   * [Command-Line Arguments](#command-line-arguments)
+  * [AUR Support](#aur-support)
   * [Usage](#usage)
      * [List Installed Packages &amp; Show Package Information](#list-installed-packages--show-package-information)
      * [Search, Go-to Package](#search-go-to-package)
@@ -81,10 +84,29 @@ Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_pack
 -d, select linux distribution
 -c, main color of the dashboard (default: blue)
    [red, green, yellow, blue, magenta, cyan, white]
+-pacman, pacman backend for arch-based distributions (default: pacman)
 -a, sort packages alphabetically
 -r, reverse the package list
 -v, print version
 ```
+
+## AUR Support
+
+You can specify which pacman wrapper you should to use by launch pkgtop with `-pacman` option. 
+For example, for [yay](https://aur.archlinux.org/packages/yay) support: 
+```
+$ pkgtop -pacman yay
+```
+
+If you don't want to provide the `-pacman` option every time on app launch, you can create bash alias on `~/.bashrc` file. 
+```
+~/.bashrc
+
+alias pkgtop='pkgtop -pacman yay'
+
+```
+
+After that you can simply launch `pkgtop` command and get full AUR support, provided by `yay` wrapper. 
 
 ## Usage
 
