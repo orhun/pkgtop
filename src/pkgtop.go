@@ -44,7 +44,7 @@ var (
 		" Hardware: $(uname --m)\\n" +
 		" Hardware Platform: $(uname -i)\\n" +
 		" OS: $(uname -o)\\n\""
-	dfCmd   = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
+	dfCmd   = "df -h 2> /dev/null | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
 	pkgsCmd = map[string]string{                        /* Commands for listing the installed packages */
 		"arch,manjaro": "pacman -Qi | awk '/^Name/{name=$3} " +
 			"/^Version/{ver=$3} " +
