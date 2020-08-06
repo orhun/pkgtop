@@ -339,7 +339,7 @@ OSCheckLoop:
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
 	/* Retrieve packages with the OS command. */
-	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osID]), "\n")
+	pkgs := str.Split(execCmd("env", "LC_ALL=C", "sh", "-c", pkgsCmd[osID]), "\n")
 	/* Check if the operating system command exists. */
 	if _, hasKey := pkgsCmd[osID]; !hasKey {
 		ui.Close()
