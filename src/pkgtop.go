@@ -44,7 +44,7 @@ var (
 		" Hardware: $(uname --m)\\n" +
 		" Hardware Platform: $(uname -i)\\n" +
 		" OS: $(uname -o)\\n\""
-	dfCmd   = "df -h | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
+	dfCmd   = "df -h 2> /dev/null | awk '{$1=$1};1 {if(NR>1)print}'" /* Print the disk usage with 'df' */
 	pkgsCmd = map[string]string{                        /* Commands for listing the installed packages */
 		"arch,manjaro": "pacman -Qi | awk '/^Name/{name=$3} " +
 			"/^Version/{ver=$3} " +
@@ -339,7 +339,7 @@ OSCheckLoop:
 	cmdList.Rows = []string{cmdPrefix + pkgsCmd[osID],
 		cmdPrefix + osIDCmd}
 	/* Retrieve packages with the OS command. */
-	pkgs := str.Split(execCmd("sh", "-c", pkgsCmd[osID]), "\n")
+	pkgs := str.Split(execCmd("env", "LC_ALL=C", "sh", "-c", pkgsCmd[osID]), "\n")
 	/* Check if the operating system command exists. */
 	if _, hasKey := pkgsCmd[osID]; !hasKey {
 		ui.Close()
