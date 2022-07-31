@@ -213,7 +213,7 @@ docker run -it pkgtop-docker /bin/ash
 
 ## Sponsor
 
-If you would like to support the development of pkgtop and my other open source [projects](https://github.com/orhun), consider becoming a [patron](https://www.patreon.com/bePatron?u=23697306).
+If you would like to support the development of pkgtop and my other open source [projects](https://github.com/orhun), consider supporting me on [GitHub Sponsors](https://github.com/sponsors/orhun) or becoming a [patron](https://www.patreon.com/bePatron?u=23697306).
 
 ## License
 
