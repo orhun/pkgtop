@@ -101,6 +101,8 @@ var (
 		"   l/h, right/left         : Scroll down/up (disk usage)\n" +
 		"   backspace               : Go back\n" +
 		"   q, esc, ctrl-c, ctrl-d  : Exit\n"
+
+	osID string
 )
 
 /*!
@@ -212,6 +214,10 @@ func getPkgListEntries(pkgs []string) ([]*widgets.List,
 			}
 			/* Convert size to human readable format if possible. */
 			if size, err := strconv.ParseInt(str.Split(pkg, ";")[i], 10, 64); err == nil && titles[i] == "Installed Size" {
+				// https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-installed-size
+				if osID == "debian,ubuntu,mint" {
+					size = size * 1024
+				}
 				rows = append(rows, " "+humanize.Bytes(uint64(size)))
 			} else {
 				rows = append(rows, " "+str.Split(pkg, ";")[i])
@@ -288,7 +294,7 @@ func execCmd(name string, arg ...string) string {
  * \param osID (Operating system identity)
  * \return 0 on exit
  */
-func start(osID string) int {
+func start(osid string) int {
 	/* Initialize the termui library. */
 	if err := ui.Init(); err != nil {
 		log.Fatalf("Failed to initialize termui: %v", err)
@@ -322,7 +328,7 @@ func start(osID string) int {
 	pkgText.BorderStyle.Fg = ui.ColorBlack
 	sysInfoText.BorderStyle.Fg = ui.ColorBlack
 	/* Set the operating system variable. */
-	osID = str.ToLower(str.TrimSpace(str.Split(osID, "\n")[0]))
+	osID = str.ToLower(str.TrimSpace(str.Split(osid, "\n")[0]))
 OSCheckLoop:
 	for ids := range pkgsCmd {
 		for _, id := range str.Split(ids, ",") {
