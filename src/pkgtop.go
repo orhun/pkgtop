@@ -291,7 +291,7 @@ func execCmd(name string, arg ...string) string {
 /*!
  * Initialize, execute, render and handle.
  *
- * \param osID (Operating system identity)
+ * \param osid (Operating system identity)
  * \return 0 on exit
  */
 func start(osid string) int {
