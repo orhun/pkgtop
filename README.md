@@ -221,4 +221,4 @@ GNU General Public License ([v3](https://www.gnu.org/licenses/gpl.txt))
 
 ## Copyright
 
-Copyright (c) 2019-2020, [orhun](https://www.github.com/orhun)
+Copyright © 2019-2022, [Orhun Parmaksız](mailto:orhunparmaksiz@gmail.com)
