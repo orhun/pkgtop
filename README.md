@@ -197,7 +197,7 @@ docker run pkgtop-docker
 ### Start a shell in the Container
 
 ```
-docker run -it pkgtop-docker /bin/ash
+docker run -it pkgtop-docker /bin/bash
 ```
 
 ## Screenshots

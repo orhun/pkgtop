@@ -1,11 +1,10 @@
-FROM golang:1.13.3 AS builder
+FROM golang:1.19.2 AS builder
 ENV LC_ALL=C.UTF-8
 WORKDIR /app/
-COPY src .
-RUN go get -d ./...
-RUN go build -o pkgtop .
+COPY . .
+RUN go build -o pkgtop cmd/pkgtop.go
 
-FROM alpine:3.10.2
+FROM debian:buster-slim
 WORKDIR /root/
 COPY --from=builder /app/pkgtop .
 CMD ["./pkgtop"]
