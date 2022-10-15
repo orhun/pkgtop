@@ -72,11 +72,11 @@ makepkg --install
 ### • Manual Installation
 
 ```
-go get ./...
-go build src/pkgtop.go
+go build cmd/pkgtop.go
 sudo mv pkgtop /usr/local/bin/
 ```
-Preferably, [go install](https://golang.org/cmd/go/#hdr-Compile_and_install_packages_and_dependencies) command can be used.
+
+Preferably, [go install](https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies) command can be used.
 
 ## Command-Line Arguments
 ```
