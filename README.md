@@ -25,36 +25,36 @@ pkgtop uses the advantage of mainly used package managers being installed on mos
 * nix
 * guix
 
-If you are happy user of Arch-based distributive, you can use pkgtop with pacman wrappers and AUR supporters, such as [yay](https://aur.archlinux.org/packages/yay/) or [trizen](https://aur.archlinux.org/packages/trizen/). Look to [this](#aur-support) section for details. 
+If you are happy user of Arch-based distributive, you can use pkgtop with pacman wrappers and AUR supporters, such as [paru](https://aur.archlinux.org/packages/paru). See [this](#aur-support) section for details.
 
 If the distribution is not defined in the source but has the required package manager for running the pkgtop, `-d` argument can be used for specifying a distribution that has the same package manager. Current defined and supported distributions are `arch, manjaro, debian, ubuntu, mint, suse, fedora, centos, redhat, void, gentoo, nixos, guix`.
 
-  * [Installation](#installation)
-     * [• Dependencies](#-dependencies)
-     * [• AUR (<a href="https://aur.archlinux.org/packages/pkgtop-git" rel="nofollow">pkgtop-git</a>)](#-aur-pkgtop-git)
-     * [• Manual Insallation](#-manual-insallation)
-  * [Command-Line Arguments](#command-line-arguments)
-  * [AUR Support](#aur-support)
-  * [Usage](#usage)
-     * [List Installed Packages &amp; Show Package Information](#list-installed-packages--show-package-information)
-     * [Search, Go-to Package](#search-go-to-package)
-     * [Install, Upgrade, Remove Package](#install-upgrade-remove-package)
-     * [Show Disk Usage Information](#show-disk-usage-information)
-     * [Confirm Command to Execute](#confirm-command-to-execute)
-     * [Show Help](#show-help)
-  * [Docker](#docker)
-     * [Build Docker Image](#build-docker-image)
-     * [Run the Container](#run-the-container)
-     * [Start a shell in the Container](#start-a-shell-in-the-container)
-  * [Screenshots](#screenshots)
-  * [Todo(s)](#todos)
-  * [Sponsor](#sponsor)
-  * [License](#license)
-  * [Credit](#credit)
+- [Installation](#installation)
+  - [Dependencies](#dependencies)
+  - [AUR](#aur)
+  - [Manual Installation](#manual-installation)
+- [Command-Line Arguments](#command-line-arguments)
+- [AUR Support](#aur-support)
+- [Usage](#usage)
+  - [List Installed Packages & Show Package Information](#list-installed-packages--show-package-information)
+  - [Search, Go-to Package](#search-go-to-package)
+  - [Install, Upgrade, Remove Package](#install-upgrade-remove-package)
+  - [Show Disk Usage Information](#show-disk-usage-information)
+  - [Confirm Command to Execute](#confirm-command-to-execute)
+  - [Show Help](#show-help)
+- [Docker](#docker)
+  - [Build Docker Image](#build-docker-image)
+  - [Run the Container](#run-the-container)
+  - [Start a shell in the Container](#start-a-shell-in-the-container)
+- [Screenshots](#screenshots)
+- [Todo(s)](#todos)
+- [Sponsor](#sponsor)
+- [License](#license)
+- [Copyright](#copyright)
 
 ## Installation
 
-### • Dependencies
+### Dependencies
 * [gizak/termui](https://github.com/gizak/termui/)
 * [atotto/clipboard](https://github.com/atotto/clipboard)
 * [dustin/go-humanize](https://github.com/dustin/go-humanize)
@@ -62,14 +62,14 @@ If the distribution is not defined in the source but has the required package ma
 * [mitchellh/go-wordwrap](https://github.com/mitchellh/go-wordwrap)
 * [nsf/termbox-go](https://github.com/nsf/termbox-go)
 
-### • AUR ([pkgtop-git](https://aur.archlinux.org/packages/pkgtop-git))
+### AUR
 
 ```
-git clone https://aur.archlinux.org/pkgtop-git.git && cd pkgtop-git/
+git clone https://aur.archlinux.org/pkgtop.git && cd pkgtop/
 makepkg --install
 ```
 
-### • Manual Installation
+### Manual Installation
 
 ```
 go build cmd/pkgtop.go
@@ -93,20 +93,21 @@ Preferably, [go install](https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packa
 ## AUR Support
 
 You can specify which pacman wrapper you should to use by launch pkgtop with `-pacman` option. 
-For example, for [yay](https://aur.archlinux.org/packages/yay) support: 
+For example, for [paru](https://aur.archlinux.org/packages/paru) support:
+
 ```
-$ pkgtop -pacman yay
+$ pkgtop -pacman paru
 ```
 
 If you don't want to provide the `-pacman` option every time on app launch, you can create bash alias on `~/.bashrc` file. 
 ```
 ~/.bashrc
 
-alias pkgtop='pkgtop -pacman yay'
+alias pkgtop='pkgtop -pacman paru'
 
 ```
 
-After that you can simply launch `pkgtop` command and get full AUR support, provided by `yay` wrapper. 
+After that you can simply launch `pkgtop` command and get full AUR support, provided by `paru` wrapper.
 
 ## Usage
 
