@@ -4,7 +4,7 @@
 
 **pkgtop** is an **interactive package manager** & **resource monitor** tool designed for the GNU/Linux.
 
-[![Release](https://img.shields.io/github/release/orhun/pkgtop.svg?style=flat-square)](https://github.com/orhun/pkgtop/releases) [![AUR](https://img.shields.io/aur/version/pkgtop.svg?style=flat-square)](https://aur.archlinux.org/packages/pkgtop/) [![Builds](https://img.shields.io/github/workflow/status/orhun/pkgtop/Continuous%20Integration?style=flat-square)](https://github.com/orhun/pkgtop/actions) [![Go Report Card](https://goreportcard.com/badge/github.com/orhun/pkgtop?style=flat-square)](https://goreportcard.com/report/github.com/orhun/pkgtop) [![License](https://img.shields.io/github/license/orhun/pkgtop.svg?color=blue&style=flat-square)](./LICENSE)
+[![Release](https://img.shields.io/github/release/orhun/pkgtop.svg?style=flat-square)](https://github.com/orhun/pkgtop/releases) [![AUR](https://img.shields.io/aur/version/pkgtop?style=flat-square)](https://aur.archlinux.org/packages/pkgtop/) [![Builds](https://img.shields.io/github/actions/workflow/status/orhun/pkgtop/ci.yml?style=flat-square)](https://github.com/orhun/pkgtop/actions) [![Go Report Card](https://goreportcard.com/badge/github.com/orhun/pkgtop?style=flat-square)](https://goreportcard.com/report/github.com/orhun/pkgtop) [![License](https://img.shields.io/github/license/orhun/pkgtop.svg?color=blue&style=flat-square)](./LICENSE)
 
 ![pkgtop](https://user-images.githubusercontent.com/24392180/63897168-edcbaa80-c9fc-11e9-9092-32a55323fcf1.gif)
 
