@@ -188,7 +188,8 @@ pressed key: ?
 ```
 docker build -f docker/Dockerfile -t pkgtop-docker .
 ```
-or, if you don't want to clone the repo, just do
+or if you don't want to clone the repository, you can run:
+
 ```
 docker build -f docker/Dockerfile -t pkgtop-docker https://github.com/orhun/pkgtop.git
 ```
